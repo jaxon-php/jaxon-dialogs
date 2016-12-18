@@ -9,17 +9,17 @@ class Library implements Plugin
     protected $dialog = null;
     protected $name = null;
 
-    public function setDialog($dialog)
+    final public function setDialog($dialog)
     {
         $this->dialog = $dialog;
     }
 
-    public function setName($name)
+    final public function setName($name)
     {
         $this->name = $name;
     }
 
-    public function getName()
+    final public function getName()
     {
         return $this->name;
     }
@@ -47,7 +47,7 @@ class Library implements Plugin
      *
      * @return mixed        The option value, or its default value
      */
-    public function getOption($sName, $xDefault = null)
+    final public function getOption($sName, $xDefault = null)
     {
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
         return $this->dialog->getOption($sName, $xDefault);
@@ -60,7 +60,7 @@ class Library implements Plugin
      *
      * @return bool        True if the option exists, and false if not
      */
-    public function hasOption($sName)
+    final public function hasOption($sName)
     {
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
         return $this->dialog->hasOption($sName);
@@ -73,7 +73,7 @@ class Library implements Plugin
      *
      * @return array        The options matching the prefix
      */
-    public function getOptionNames($sPrefix)
+    final public function getOptionNames($sPrefix)
     {
         $sPrefix = 'dialogs.' . $this->getName() . '.' . $sPrefix;
         $this->dialog->getOptionNames($sPrefix);
