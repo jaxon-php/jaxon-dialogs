@@ -3,14 +3,33 @@
 namespace Jaxon\Dialogs;
 
 use Jaxon\Plugin\Response;
+use Jaxon\Dialogs\Interfaces\Modal;
+use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Confirm;
 
-class Dialog extends Response
+class Dialog extends Response implements Modal, Alert, Confirm
 {
-    protected $manager;
+    use \Jaxon\Utils\Traits\Container;
 
+    protected $di;
+    // Libraries
+    protected $aLibraries = array(
+        // Bootbox
+        'bootbox'       => \Jaxon\Dialogs\Libraries\Bootbox\Plugin::class,
+        // Bootstrap
+        'bootstrap'     => \Jaxon\Dialogs\Libraries\Bootstrap\Plugin::class,
+        // PgwJS
+        'pgwjs'         => \Jaxon\Dialogs\Libraries\PgwJS\Plugin::class,
+        // Toastr
+        'toastr'        => \Jaxon\Dialogs\Libraries\Toastr\Plugin::class,
+        // JAlert
+        'jalert'        => \Jaxon\Dialogs\Libraries\JAlert\Plugin::class,
+    );
+    
     public function __construct()
     {
-        $this->manager = new Libraries\Manager($this);
+        $this->di = new \Pimple\Container();
+        $this->registerLibraries();
     }
 
     public function getName()
@@ -24,26 +43,103 @@ class Dialog extends Response
         return '1.1.0b1';
     }
 
+    public function getModal()
+    {
+        if(!($name = $this->getOption('dialogs.libraries.modal', '')))
+        {
+            return null;
+        }
+        // Get the current modal library
+        $library = null;
+        try
+        {
+            $library = $this->di[$name];
+        }
+        catch(\Exception $e){}
+        if(!($library) || !($library instanceof \Jaxon\Dialogs\Interfaces\Modal))
+        {
+            return null;
+        }
+        $library->setName($name);
+        $library->setDialog($this);
+        return $library;
+    }
+    
+    public function getAlert()
+    {
+        if(!($name = $this->getOption('dialogs.libraries.alert', '')))
+        {
+            return null;
+        }
+        // Get the current alert library
+        $library = null;
+        try
+        {
+            $library = $this->di[$name];
+        }
+        catch(\Exception $e){}
+        if(!($library) || !($library instanceof \Jaxon\Dialogs\Interfaces\Alert))
+        {
+            return null;
+        }
+        $library->setName($name);
+        $library->setDialog($this);
+        return $library;
+    }
+    
+    public function getConfirm($bReturnDefault = false)
+    {
+        if(!($name = $this->getOption('dialogs.libraries.confirm', '')))
+        {
+            return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
+        }
+        // Get the current confirm library
+        $library = null;
+        try
+        {
+            $library = $this->di[$name];
+        }
+        catch(\Exception $e){}
+        if(!($library) || !($library instanceof \Jaxon\Request\Interfaces\Confirm))
+        {
+            return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
+        }
+        $library->setName($name);
+        $library->setDialog($this);
+        return $library;
+    }
+
+    protected function getInUseLibraries()
+    {
+        $libraries = array();
+        if(($library = $this->getModal()))
+        {
+            $libraries[$library->getName()] = $library;
+        }
+        if(($library = $this->getAlert()))
+        {
+            $libraries[$library->getName()] = $library;
+        }
+        if(($library = $this->getConfirm()))
+        {
+            $libraries[$library->getName()] = $library;
+        }
+        return $libraries;
+    }
+
     public function getJs()
     {
         if(!$this->includeAssets())
         {
             return '';
         }
-        $js = '';
-        if(($modal = $this->manager->getModal()))
+        $libraries = $this->getInUseLibraries();
+        $code = '';
+        foreach($libraries as $library)
         {
-            $js .= $modal->getJs() . "\n";
+            $code .= $library->getJs() . "\n";
         }
-        if(($alert = $this->manager->getAlert()))
-        {
-            $js .= $alert->getJs() . "\n";
-        }
-        if(($confirm = $this->manager->getConfirm()))
-        {
-            $js .= $confirm->getJs() . "\n";
-        }
-        return $js;
+        return $code;
     }
 
     public function getCss()
@@ -52,54 +148,76 @@ class Dialog extends Response
         {
             return '';
         }
-        $css = '';
-        if(($modal = $this->manager->getModal()))
+        $libraries = $this->getInUseLibraries();
+        $code = '';
+        foreach($libraries as $library)
         {
-            $css .= $modal->getCss() . "\n";
+            $code .= $library->getCss() . "\n";
         }
-        if(($alert = $this->manager->getAlert()))
-        {
-            $css .= $alert->getCss() . "\n";
-        }
-        if(($confirm = $this->manager->getConfirm()))
-        {
-            $css .= $confirm->getCss() . "\n";
-        }
-        return $css;
+        return $code;
     }
 
     public function getScript()
     {
-        return '';
+        $libraries = $this->getInUseLibraries();
+        $code = '';
+        foreach($libraries as $library)
+        {
+            $code .= $library->getScript() . "\n";
+        }
+        return $code;
     }
 
-    public function show($title, $content, $buttons, array $options = array())
+    public function show($title, $content, array $buttons, array $options = array())
     {
-        $this->manager->getModal()->show($title, $content, $buttons, $options);
+        $this->getModal()->show($title, $content, $buttons, $options);
     }
 
     public function hide()
     {
-        $this->manager->getModal()->hide();
+        $this->getModal()->hide();
     }
 
     public function success($message, $title = null)
     {
-        $this->manager->getAlert()->success($message, $title);
+        $this->getAlert()->success($message, $title);
     }
 
     public function info($message, $title = null)
     {
-        $this->manager->getAlert()->info($message, $title);
+        $this->getAlert()->info($message, $title);
     }
 
     public function warning($message, $title = null)
     {
-        $this->manager->getAlert()->warning($message, $title);
+        $this->getAlert()->warning($message, $title);
     }
 
     public function error($message, $title = null)
     {
-        $this->manager->getAlert()->error($message, $title);
+        $this->getAlert()->error($message, $title);
+    }
+
+    /**
+     * Get the script which makes a call only if the user answers yes to the given question
+     * 
+     * This is the implementation of the Jaxon\Request\Interfaces\Confirm interface.
+     * 
+     * @return string
+     */
+    public function getScriptWithQuestion($question, $script)
+    {
+        return $this->getConfirm(true)->getScriptWithQuestion($question, $script);
+    }
+    
+    public function registerLibraries()
+    {
+        // Register libraries in DI
+        foreach($this->aLibraries as $sName => $sClass)
+        {
+            $this->di[$sName] = function($c) use ($sClass) {
+                return new $sClass;
+            };
+        }
     }
 }

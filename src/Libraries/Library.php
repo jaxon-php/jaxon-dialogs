@@ -1,6 +1,6 @@
 <?php
 
-namespace Jaxon\Dialogs\Libraries\Bootbox;
+namespace Jaxon\Dialogs\Libraries;
 
 use Jaxon\Dialogs\Interfaces\Plugin;
 
@@ -9,9 +9,52 @@ class Library implements Plugin
     protected $dialog = null;
     protected $name = null;
 
+    /**
+     * The object used to build the response that will be sent to the client browser
+     *
+     * @var \Jaxon\Response\Response
+     */
+    protected $xResponse;
+    
+    /**
+     * Set the <Jaxon\Response\Response> object
+     *
+     * @param array         $xResponse            The response
+     *
+     * @return void
+     */
+    final public function setResponse($xResponse)
+    {
+        $this->xResponse = $xResponse;
+    }
+    
+    /**
+     * Get the <Jaxon\Response\Response> object
+     *
+     * @return object
+     */
+    final public function response()
+    {
+        return $this->xResponse;
+    }
+    
+    /**
+     * Add a client side plugin command to the response object
+     *
+     * @param array         $aAttributes        The attributes of the command
+     * @param string        $sData                The data to be added to the command
+     *
+     * @return void
+     */
+    final public function addCommand($aAttributes, $sData)
+    {
+        $this->xResponse->addPluginCommand($this, $aAttributes, $sData);
+    }
+
     final public function setDialog($dialog)
     {
         $this->dialog = $dialog;
+        $this->setResponse($dialog->response());
     }
 
     final public function setName($name)
@@ -22,21 +65,6 @@ class Library implements Plugin
     final public function getName()
     {
         return $this->name;
-    }
-
-    public function getJs()
-    {
-        return '';
-    }
-
-    public function getCss()
-    {
-        return '';
-    }
-
-    public function getScript()
-    {
-        return '';
     }
 
     /**
@@ -75,7 +103,27 @@ class Library implements Plugin
      */
     final public function getOptionNames($sPrefix)
     {
+        // The options names are relative to the plugin in Dialogs configuration 
         $sPrefix = 'dialogs.' . $this->getName() . '.' . $sPrefix;
-        $this->dialog->getOptionNames($sPrefix);
+        $nPrefixLength = strlen('dialogs.' . $this->getName() . '.');
+        $aOptionNames = $this->dialog->getOptionNames($sPrefix);
+        // Remove the prefix from the options names
+        array_walk($aOptionNames, function(&$name) use ($nPrefixLength) {$name = substr($name, $nPrefixLength);});
+        return $aOptionNames;
+    }
+
+    public function getJs()
+    {
+        return '';
+    }
+
+    public function getCss()
+    {
+        return '';
+    }
+
+    public function getScript()
+    {
+        return '';
     }
 }
