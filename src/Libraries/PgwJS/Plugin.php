@@ -57,9 +57,9 @@ jaxon.command.handler.register("pgwModal", function(args) {
     public function show($title, $content, array $buttons, array $options = array())
     {
         // Set the value of the max width, if there is no value defined
-        if(!array_key_exists('maxWidth', $aOptions))
+        if(!array_key_exists('maxWidth', $options))
         {
-            $aOptions['maxWidth'] = 600;
+            $options['maxWidth'] = 600;
         }
         // Buttons
         $modalButtons = '
@@ -86,7 +86,7 @@ jaxon.command.handler.register("pgwModal", function(args) {
         </div>
 ';
         // Affectations du contenu de la fenêtre
-        $this->addCommand(array('cmd'=>'pgwModal'), array('title' => $title, 'content' => $modalHtml, 'options' => $aOptions));
+        $this->addCommand(array('cmd'=>'pgwModal'), array('title' => $title, 'content' => $modalHtml, 'options' => $options));
     }
 
     public function hide()

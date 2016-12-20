@@ -38,7 +38,7 @@ class Plugin extends Library implements Alert
             {
                 $value = print_r($value, true);
             }
-            $sScript .= "$name = $value;\n";
+            $sScript .= "toastr.$name = $value;\n";
         }
         return $sScript .  '
 jaxon.command.handler.register("toastr.info", function(args) {
