@@ -88,6 +88,11 @@ jaxon.command.handler.register("bootbox", function(args) {
         $this->response()->script("$('#styledModal').modal('show')");
     }
 
+    public function modal($title, $content, array $buttons, array $options = array())
+    {
+        $this->show($title, $content, $buttons, $options);
+    }
+
     public function hide()
     {
         $this->response()->script("$('#styledModal').modal('hide')");

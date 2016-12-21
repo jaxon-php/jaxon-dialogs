@@ -89,6 +89,11 @@ jaxon.command.handler.register("pgwModal", function(args) {
         $this->addCommand(array('cmd'=>'pgwModal'), array('title' => $title, 'content' => $modalHtml, 'options' => $options));
     }
 
+    public function modal($title, $content, array $buttons, array $options = array())
+    {
+        $this->show($title, $content, $buttons, $options);
+    }
+
     public function hide()
     {
         $this->response()->script('$.pgwModal("close")');

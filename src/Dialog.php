@@ -34,7 +34,7 @@ class Dialog extends Response implements Modal, Alert, Confirm
 
     public function getName()
     {
-        return 'dialogs';
+        return 'dialog';
     }
 
     public function generateHash()
@@ -166,6 +166,11 @@ class Dialog extends Response implements Modal, Alert, Confirm
             $code .= $library->getScript() . "\n";
         }
         return $code;
+    }
+
+    public function modal($title, $content, array $buttons, array $options = array())
+    {
+        $this->getModal()->modal($title, $content, $buttons, $options);
     }
 
     public function show($title, $content, array $buttons, array $options = array())
