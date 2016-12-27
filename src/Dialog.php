@@ -43,75 +43,81 @@ class Dialog extends Response implements Modal, Alert, Confirm
         return '1.1.0b1';
     }
 
+    protected function getLibrary($name)
+    {
+        try
+        {
+            $library = $this->di[$name];
+            $library->setName($name);
+            $library->setDialog($this);
+        }
+        catch(\Exception $e)
+        {
+            $library = null;
+        }
+        return $library;
+    }
+
     public function getModal()
     {
-        if(!($name = $this->getOption('dialogs.libraries.modal', '')))
+        if(!($name = $this->getOption('dialogs.default.modal', '')))
         {
             return null;
         }
         // Get the current modal library
-        $library = null;
-        try
-        {
-            $library = $this->di[$name];
-        }
-        catch(\Exception $e){}
+        $library = $this->getLibrary($name);
         if(!($library) || !($library instanceof \Jaxon\Dialogs\Interfaces\Modal))
         {
             return null;
         }
-        $library->setName($name);
-        $library->setDialog($this);
         return $library;
     }
     
     public function getAlert()
     {
-        if(!($name = $this->getOption('dialogs.libraries.alert', '')))
+        if(!($name = $this->getOption('dialogs.default.alert', '')))
         {
             return null;
         }
         // Get the current alert library
-        $library = null;
-        try
-        {
-            $library = $this->di[$name];
-        }
-        catch(\Exception $e){}
+        $library = $this->getLibrary($name);
         if(!($library) || !($library instanceof \Jaxon\Dialogs\Interfaces\Alert))
         {
             return null;
         }
-        $library->setName($name);
-        $library->setDialog($this);
         return $library;
     }
     
     public function getConfirm($bReturnDefault = false)
     {
-        if(!($name = $this->getOption('dialogs.libraries.confirm', '')))
+        if(!($name = $this->getOption('dialogs.default.confirm', '')))
         {
             return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
         }
         // Get the current confirm library
-        $library = null;
-        try
-        {
-            $library = $this->di[$name];
-        }
-        catch(\Exception $e){}
+        $library = $this->getLibrary($name);
         if(!($library) || !($library instanceof \Jaxon\Request\Interfaces\Confirm))
         {
             return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
         }
-        $library->setName($name);
-        $library->setDialog($this);
         return $library;
     }
 
     protected function getInUseLibraries()
     {
+        $names = $this->getOption('dialogs.libraries', array());
+        if(!is_array($names))
+        {
+            $names = array();
+        }
         $libraries = array();
+        foreach($names as $name)
+        {
+            if(($library = $this->getLibrary($name)))
+            {
+                $libraries[$library->getName()] = $library;
+            }
+        }
         if(($library = $this->getModal()))
         {
             $libraries[$library->getName()] = $library;
