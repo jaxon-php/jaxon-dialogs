@@ -145,6 +145,6 @@ jaxon.command.handler.register("bootbox", function(args) {
      */
     public function getScriptWithQuestion($question, $script)
     {
-        return "bootbox.confirm('" . addslashes($question) . "',function(res){if(res){" . $script . ";}})";
+        return "bootbox.confirm(" . $question . ",function(res){if(res){" . $script . ";}})";
     }
 }

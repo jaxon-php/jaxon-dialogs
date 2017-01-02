@@ -62,7 +62,7 @@ jaxon.command.handler.register("jalert.alert", function(args) {
      */
     public function getScriptWithQuestion($question, $script)
     {
-        return "$.jAlert({type: 'confirm', confirmQuestion: '" . addslashes($question) .
-            "', onConfirm: function(){" . $script . ";}, onDeny: function(){}});return false;";
+        return "$.jAlert({type: 'confirm', confirmQuestion: " . $question .
+            ", onConfirm: function(){" . $script . ";}, onDeny: function(){}});return false;";
     }
 }
