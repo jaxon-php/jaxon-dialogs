@@ -13,15 +13,14 @@ Already supported
 - Toastr: https://codeseven.github.io/toastr/
 - Tingle: http://robinparisi.github.io/tingle/
 - Simply Toast: https://github.com/ericprieto/simply-toast
+- Noty: http://ned.im/noty/
 
 Coming soon
 -----------
 
 - Lobibox: http://lobianijs.com/site/lobibox
-- Noty: http://ned.im/noty/
 - Overhang: http://paulkr.github.io/overhang.js/
 - PNotify: http://sciactive.com/pnotify/
 - Ambiance: http://www.richardhsu.me/jquery.ambiance/
-- Notyfy: http://craga89.github.io/notyfy/
 - Notify: https://notifyjs.com
 - Nutip: http://jquery.michaeleisenbraun.com/nutip/
