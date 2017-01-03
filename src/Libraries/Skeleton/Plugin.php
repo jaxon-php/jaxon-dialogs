@@ -24,7 +24,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
         return '';
     }
 
-    public function show($title, $content, $buttons, $width = 600)
+    public function show($title, $content, array $buttons, array $options = array())
     {}
 
     public function hide()
