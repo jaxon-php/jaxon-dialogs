@@ -6,7 +6,7 @@ Modal, alerts and confirmation dialogs for Jaxon with various javascript librari
 Already supported
 -----------------
 
-- Bootstrap Modal: http://getbootstrap.com/javascript/#modals
+- Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
 - Bootbox: http://bootboxjs.com
 - jAlert: http://flwebsites.biz/jAlert/
 - PgwJS: http://pgwjs.com/pgwmodal/
@@ -17,7 +17,6 @@ Already supported
 Coming soon
 -----------
 
-- Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
 - Lobibox: http://lobianijs.com/site/lobibox
 - Noty: http://ned.im/noty/
 - Overhang: http://paulkr.github.io/overhang.js/

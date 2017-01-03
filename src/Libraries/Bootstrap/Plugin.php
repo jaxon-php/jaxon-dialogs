@@ -7,81 +7,125 @@ use Jaxon\Dialogs\Interfaces\Modal;
 use Jaxon\Dialogs\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
-class Plugin extends Library implements Modal
+class Plugin extends Library implements Modal, Alert, Confirm
 {
+    public function getJs()
+    {
+        return '<script type="text/javascript" src="https://lib.jaxon-php.org/bootstrap-dialog/latest/bootstrap-dialog.min.js"></script>';
+    }
+
+    public function getCss()
+    {
+        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/bootstrap-dialog/latest/bootstrap-dialog.min.css" />';
+    }
+
     public function getScript()
     {
         return '
-jaxon.command.handler.register("twbsModal", function(args) {
-    if(!$("#" + args.data.container).length)
+jaxon.command.handler.register("bootstrap.show", function(args) {
+    // Add buttons
+    for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
     {
-        $("body").append("<div id=\"" + args.data.container + "\"></div>");
+        button = args.data.buttons[ind];
+        if(button.action == "close")
+        {
+            button.action = function(dialog){dialog.close();};
+        }
+        else
+        {
+            button.action = new Function(button.action);
+        }
     }
-    // jaxon.dom.assign(args.data.container, "innerHTML", args.data.content);
-    $("#" + args.data.container).html(args.data.content);
-    $(".modal-dialog", args.data.container).css("width", args.data.width + "px");
-    $("#draggable").modal("show");
+    // Open modal
+    BootstrapDialog.show(args.data);
+});
+jaxon.command.handler.register("bootstrap.hide", function(args) {
+    // Hide modal
+    BootstrapDialog.closeAll();
+});
+jaxon.command.handler.register("bootstrap.success", function(args) {
+    args.data.type = BootstrapDialog.TYPE_SUCCESS;
+    BootstrapDialog.alert(args.data);
+});
+jaxon.command.handler.register("bootstrap.info", function(args) {
+    args.data.type = BootstrapDialog.TYPE_INFO;
+    BootstrapDialog.alert(args.data);
+});
+jaxon.command.handler.register("bootstrap.warning", function(args) {
+    args.data.type = BootstrapDialog.TYPE_WARNING;
+    BootstrapDialog.alert(args.data);
+});
+jaxon.command.handler.register("bootstrap.danger", function(args) {
+    args.data.type = BootstrapDialog.TYPE_DANGER;
+    BootstrapDialog.alert(args.data);
 });';
     }
 
     public function show($title, $content, array $buttons, array $options = array())
     {
-        $sContainer = 'modal-container';
-        if($this->hasOption('dom.container'))
-        {
-            $sContainer = $this->getOption('dom.container');
-        }
-
-        // Set the value of the max width, if there is no value defined
-        $width = array_key_exists('width', $options) ? $options['width'] : 600;
-
-        // Code HTML des boutons
-        $modalButtons = '
-';
+        // Fill the options array with the parameters
+        $options['title'] = $title;
+        $options['message'] = $content;
+        $options['buttons'] = array();
         foreach($buttons as $button)
         {
-            if($button['click'] == 'close')
-            {
-                $modalButtons .= '
-                    <button type="button" class="' . $button['class'] .
-                    '" data-dismiss="modal">' . $button['title'] . '</button>';
-            }
-            else
-            {
-                $modalButtons .= '
-                    <button type="button" class="' . $button['class'] . '" onclick="' .
-                    $button['click'] . '">' . $button['title'] . '</button>';
-            }
+            $options['buttons'][] = array(
+                'label' => $button['title'],
+                'cssClass' => $button['class'],
+                'action' => $button['click'],
+            );
         }
-        // Code HTML de la fenêtre
-        $modalHtml = '
-    <!-- /.modal -->
-    <div class="modal fade draggable-modal" id="draggable" tabindex="-1" role="basic" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">' . $title . '</h4>
-                </div>
-                <div class="modal-body">
-' . $content . '
-                </div>
-                <div class="modal-footer">' . $modalButtons . '
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-';
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'twbsModal'),
-            array('content' => $modalHtml, 'container' => $sContainer, 'width' => $width));
+        $this->addCommand(array('cmd' => 'bootstrap.show'), $options);
     }
 
     public function hide()
     {
-        $this->response()->script('$("#draggable").modal("hide")');
+        // Hide the modal dialog
+        $this->addCommand(array('cmd' => 'bootstrap.hide'));
+    }
+
+    protected function alert($message, $title, $type)
+    {
+        $options = array('message' => $message);
+        if(($title))
+        {
+            $options['title'] = $title;
+        }
+        // Show the alert
+        $this->addCommand(array('cmd' => 'bootstrap.' . $type), $options);
+    }
+
+    public function success($message, $title = null)
+    {
+        $this->alert($message, $title, 'success');
+    }
+
+    public function info($message, $title = null)
+    {
+        $this->alert($message, $title, 'info');
+    }
+
+    public function warning($message, $title = null)
+    {
+        $this->alert($message, $title, 'warning');
+    }
+
+    public function error($message, $title = null)
+    {
+        $this->alert($message, $title, 'danger');
+    }
+
+    /**
+     * Get the script which makes a call only if the user answers yes to the given question
+     * 
+     * This is the implementation of the Jaxon\Request\Interfaces\Confirm interface.
+     * 
+     * @return string
+     */
+    public function getScriptWithQuestion($question, $script)
+    {
+        return "BootstrapDialog.confirm(" . $question . ",function(res){if(res){" . $script . ";}})";
     }
 }
 
