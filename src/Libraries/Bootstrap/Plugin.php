@@ -64,8 +64,8 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
     public function show($title, $content, array $buttons, array $options = array())
     {
         // Fill the options array with the parameters
-        $options['title'] = $title;
-        $options['message'] = $content;
+        $options['title'] = (string)$title;
+        $options['message'] = (string)$content;
         $options['buttons'] = array();
         foreach($buttons as $button)
         {
@@ -75,6 +75,11 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
                 'action' => $button['click'],
             );
         }
+        // Turn the default value of the nl2br option to false, because its alter form rendering.
+        if(!array_key_exists('nl2br', $options))
+        {
+            $options['nl2br'] = false;
+        }
         // Show the modal dialog
         $this->addCommand(array('cmd' => 'bootstrap.show'), $options);
     }
@@ -82,7 +87,7 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.hide'));
+        $this->addCommand(array('cmd' => 'bootstrap.hide'), array());
     }
 
     protected function alert($message, $title, $type)
