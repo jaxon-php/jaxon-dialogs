@@ -112,6 +112,11 @@ class Library implements Plugin
         return $aOptionNames;
     }
 
+    public function modal($title, $content, array $buttons, array $options = array())
+    {
+        $this->show($title, $content, $buttons, $options);
+    }
+
     public function getJs()
     {
         return '';

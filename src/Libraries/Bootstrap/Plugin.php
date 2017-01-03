@@ -79,11 +79,6 @@ jaxon.command.handler.register("twbsModal", function(args) {
             array('content' => $modalHtml, 'container' => $sContainer, 'width' => $width));
     }
 
-    public function modal($title, $content, array $buttons, array $options = array())
-    {
-        $this->show($title, $content, $buttons, $options);
-    }
-
     public function hide()
     {
         $this->response()->script('$("#draggable").modal("hide")');
