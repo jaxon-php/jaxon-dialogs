@@ -71,6 +71,6 @@ jaxon.command.handler.register("tingle.hide", function(args) {
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(array('cmd' => 'tingle.hide'));
+        $this->addCommand(array('cmd' => 'tingle.hide'), array());
     }
 }
