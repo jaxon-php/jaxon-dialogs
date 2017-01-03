@@ -29,7 +29,7 @@ jaxon.command.handler.register("tingle.show", function(args) {
         tingleModal.close();
     }
     tingleModal = new tingle.modal(args.data.options);
-    // Cet content
+    // Set content
     tingleModal.setContent(args.data.content);
     // Add buttons
     for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
@@ -51,6 +51,7 @@ jaxon.command.handler.register("tingle.show", function(args) {
 jaxon.command.handler.register("tingle.hide", function(args) {
     if(tingleModal != null)
     {
+        // Close an destroy modal
         tingleModal.close();
         tingleModal.destroy();
         tingleModal = null;

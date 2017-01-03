@@ -26,6 +26,8 @@ class Dialog extends Response implements Modal, Alert, Confirm
         'jalert'        => \Jaxon\Dialogs\Libraries\JAlert\Plugin::class,
         // Tingle
         'tingle'        => \Jaxon\Dialogs\Libraries\Tingle\Plugin::class,
+        // SimplyToast
+        'simply'        => \Jaxon\Dialogs\Libraries\SimplyToast\Plugin::class,
     );
     
     public function __construct()
