@@ -20,7 +20,7 @@ class Plugin extends Library implements Alert, Confirm
 jaxon.command.handler.register("noty.alert", function(args) {
     noty({text: args.data.text, type: args.data.type, layout: "topCenter", timeout: 5000});
 });
-    ';
+';
     }
 
     protected function alert($message, $title, $type)

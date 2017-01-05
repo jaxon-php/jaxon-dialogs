@@ -1,7 +1,8 @@
 Dialogs for Jaxon
 =================
 
-Modal, alerts and confirmation dialogs for Jaxon with various javascript libraries
+Modals, alerts and confirmation dialogs for Jaxon with various javascript libraries.
+
 
 Already supported
 -----------------
@@ -14,6 +15,7 @@ Already supported
 - Tingle: http://robinparisi.github.io/tingle/
 - Simply Toast: https://github.com/ericprieto/simply-toast
 - Noty: http://ned.im/noty/
+- Notify: https://notifyjs.com
 
 Coming soon
 -----------
@@ -22,5 +24,4 @@ Coming soon
 - Overhang: http://paulkr.github.io/overhang.js/
 - PNotify: http://sciactive.com/pnotify/
 - Ambiance: http://www.richardhsu.me/jquery.ambiance/
-- Notify: https://notifyjs.com
 - Nutip: http://jquery.michaeleisenbraun.com/nutip/
