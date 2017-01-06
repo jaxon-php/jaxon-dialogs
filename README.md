@@ -16,12 +16,14 @@ Already supported
 - Simply Toast: https://github.com/ericprieto/simply-toast
 - Noty: http://ned.im/noty/
 - Notify: https://notifyjs.com
+- Lobibox: http://lobianijs.com/site/lobibox
+- Overhang: http://paulkr.github.io/overhang.js/ (requires jQuery and jQueryUi)
 
 Coming soon
 -----------
 
-- Lobibox: http://lobianijs.com/site/lobibox
-- Overhang: http://paulkr.github.io/overhang.js/
 - PNotify: http://sciactive.com/pnotify/
 - Ambiance: http://www.richardhsu.me/jquery.ambiance/
 - Nutip: http://jquery.michaeleisenbraun.com/nutip/
+- Easy Z Modal: http://markusslima.github.io/easy-z-modal/
+- Sweet Alert: http://t4t5.github.io/sweetalert/

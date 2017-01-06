@@ -32,6 +32,10 @@ class Dialog extends Response implements Modal, Alert, Confirm
         'noty'          => \Jaxon\Dialogs\Libraries\Noty\Plugin::class,
         // Notify
         'notify'        => \Jaxon\Dialogs\Libraries\Notify\Plugin::class,
+        // Lobibox
+        'lobibox'       => \Jaxon\Dialogs\Libraries\Lobibox\Plugin::class,
+        // Overhang
+        'overhang'      => \Jaxon\Dialogs\Libraries\Overhang\Plugin::class,
     );
     
     public function __construct()
@@ -231,7 +235,7 @@ class Dialog extends Response implements Modal, Alert, Confirm
     
     public function registerLibraries()
     {
-        // Register libraries in DI
+        // Register libraries in the DI container
         foreach($this->aLibraries as $sName => $sClass)
         {
             $this->di[$sName] = function($c) use ($sClass) {
