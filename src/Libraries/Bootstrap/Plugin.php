@@ -58,7 +58,8 @@ jaxon.command.handler.register("bootstrap.warning", function(args) {
 jaxon.command.handler.register("bootstrap.danger", function(args) {
     args.data.type = BootstrapDialog.TYPE_DANGER;
     BootstrapDialog.alert(args.data);
-});';
+});
+';
     }
 
     public function show($title, $content, array $buttons, array $options = array())
@@ -75,7 +76,7 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
                 'action' => $button['click'],
             );
         }
-        // Turn the default value of the nl2br option to false, because its alter form rendering.
+        // Turn the default value of the nl2br option to false, because it alters form rendering.
         if(!array_key_exists('nl2br', $options))
         {
             $options['nl2br'] = false;

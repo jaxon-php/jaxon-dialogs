@@ -103,13 +103,40 @@ class Library implements Plugin
      */
     final public function getOptionNames($sPrefix)
     {
+        $sPrefix = trim($sPrefix);
+        $sPrefix = rtrim($sPrefix, '.') . '.';
         // The options names are relative to the plugin in Dialogs configuration 
         $sPrefix = 'dialogs.' . $this->getName() . '.' . $sPrefix;
-        $nPrefixLength = strlen('dialogs.' . $this->getName() . '.');
+        $nPrefixLength = strlen($sPrefix);
         $aOptionNames = $this->dialog->getOptionNames($sPrefix);
         // Remove the prefix from the options names
         array_walk($aOptionNames, function(&$name) use ($nPrefixLength) {$name = substr($name, $nPrefixLength);});
         return $aOptionNames;
+    }
+
+    final public function getOptionScript($sVarPrefix, $sKeyPrefix, $nSpaces = 0)
+    {
+        $aOptions = $this->getOptionNames($sKeyPrefix);
+        $sSpaces = str_repeat(' ', $nSpaces);
+        $sScript = '';
+        foreach($aOptions as $name)
+        {
+            $value = $this->getOption($sKeyPrefix . $name);
+            if(is_string($value))
+            {
+                $value = "'$value'";
+            }
+            else if(is_bool($value))
+            {
+                $value = ($value ? 'true' : 'false');
+            }
+            else if(!is_numeric($value))
+            {
+                $value = print_r($value, true);
+            }
+            $sScript .= "\n" . $sSpaces . $sVarPrefix . $name . ' = ' . $value . ';';
+        }
+        return $sScript;
     }
 
     public function modal($title, $content, array $buttons, array $options = array())

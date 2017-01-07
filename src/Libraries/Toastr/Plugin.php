@@ -11,36 +11,17 @@ class Plugin extends Library implements Alert
 {
     public function getJs()
     {
-        return '<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>';
     }
 
     public function getCss()
     {
-        return '<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">';
+        return '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">';
     }
 
     public function getScript()
     {
-        $aOptions = $this->getOptionNames('options.');
-        $sScript = '';
-        foreach($aOptions as $name)
-        {
-            $value = $this->getOption($name);
-            if(is_string($value))
-            {
-                $value = "'$value'";
-            }
-            else if(is_bool($value))
-            {
-                $value = ($value ? 'true' : 'false');
-            }
-            else if(!is_numeric($value))
-            {
-                $value = print_r($value, true);
-            }
-            $sScript .= "toastr.$name = $value;\n";
-        }
-        return $sScript .  '
+        return $this->getOptionScript('toastr.', 'options.') . '
 jaxon.command.handler.register("toastr.info", function(args) {
     if((args.data.title))
         toastr.info(args.data.message, args.data.title);
