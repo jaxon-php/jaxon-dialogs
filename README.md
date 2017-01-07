@@ -17,13 +17,10 @@ Already supported
 - Noty: http://ned.im/noty/
 - Notify: https://notifyjs.com
 - Lobibox: http://lobianijs.com/site/lobibox
-- Overhang: http://paulkr.github.io/overhang.js/ (requires jQuery and jQueryUi)
+- Overhang: http://paulkr.github.io/overhang.js/ (requires jQuery and jQuery UI)
+- PNotify: http://sciactive.com/pnotify/ (requires jQuery and jQuery UI)
+- Sweet Alert: http://t4t5.github.io/sweetalert/
 
 Coming soon
 -----------
 
-- PNotify: http://sciactive.com/pnotify/
-- Ambiance: http://www.richardhsu.me/jquery.ambiance/
-- Nutip: http://jquery.michaeleisenbraun.com/nutip/
-- Easy Z Modal: http://markusslima.github.io/easy-z-modal/
-- Sweet Alert: http://t4t5.github.io/sweetalert/

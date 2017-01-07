@@ -36,6 +36,10 @@ class Dialog extends Response implements Modal, Alert, Confirm
         'lobibox'       => \Jaxon\Dialogs\Libraries\Lobibox\Plugin::class,
         // Overhang
         'overhang'      => \Jaxon\Dialogs\Libraries\Overhang\Plugin::class,
+        // PNotify
+        'pnotify'       => \Jaxon\Dialogs\Libraries\PNotify\Plugin::class,
+        // SweetAlert
+        'sweetalert'    => \Jaxon\Dialogs\Libraries\SweetAlert\Plugin::class,
     );
     
     public function __construct()
@@ -155,7 +159,7 @@ class Dialog extends Response implements Modal, Alert, Confirm
         $code = '';
         foreach($libraries as $library)
         {
-            $code .= $library->getJs() . "\n";
+            $code .= "\n" . $library->getJs() . "\n";
         }
         return $code;
     }
