@@ -23,8 +23,13 @@ class Plugin extends Library implements Alert, Confirm
     {
         return '
 jaxon.command.handler.register("jalert.alert", function(args) {
-    $.jAlert({title: args.data.title, content: args.data.content, theme: args.data.theme});
+    $.jAlert(args.data);
 });
+jaxon.jalert = {
+    confirm: function(question, callback){
+        $.jAlert({type: "confirm", confirmQuestion: question, onConfirm: callback, onDeny: function(){}});
+    }
+};
 ';
     }
 
@@ -62,7 +67,6 @@ jaxon.command.handler.register("jalert.alert", function(args) {
      */
     public function confirm($question, $script)
     {
-        return "$.jAlert({type: 'confirm', confirmQuestion: " . $question .
-            ", onConfirm: function(){" . $script . ";}, onDeny: function(){}});return false;";
+        return "jaxon.jalert.confirm($question,function(){" . $script . ";})";
     }
 }

@@ -60,6 +60,16 @@ jaxon.command.handler.register("lobibox.hide", function(args) {
 jaxon.command.handler.register("lobibox.notify", function(args) {
     Lobibox.notify(args.data.type, {title: args.data.title, msg: args.data.message});
 });
+jaxon.lobibox = {
+    confirm: function(question, callback){
+        Lobibox.confirm({
+            msg: question,
+            callback: function(lobibox, type){
+                if(type == "yes") callback();
+            }
+        });
+    }
+};
 ';
     }
 
@@ -124,6 +134,6 @@ jaxon.command.handler.register("lobibox.notify", function(args) {
      */
     public function confirm($question, $script)
     {
-        return "Lobibox.confirm({msg: " . $question . ",callback:function(lobibox, type){if(type == 'yes'){" . $script . ";}}})";
+        return "jaxon.lobibox.confirm($question,function(){" . $script . ";})";
     }
 }

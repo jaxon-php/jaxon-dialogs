@@ -20,6 +20,29 @@ class Plugin extends Library implements Alert, Confirm
 jaxon.command.handler.register("noty.alert", function(args) {
     noty({text: args.data.text, type: args.data.type, layout: "topCenter", timeout: 5000});
 });
+jaxon.noty = {
+    confirm: function(question, callback){
+        noty({
+            text: question,
+            buttons:[
+                {
+                    addClass: "btn btn-primary",
+                    text: "Ok",
+                    onClick: function($noty){
+                        $noty.close();
+                        callback();
+                    }
+                },{
+                    addClass: "btn btn-danger",
+                    text: "Cancel",
+                    onClick: function($noty){
+                        $noty.close();
+                    }
+                }
+            ]
+        });
+    }
+};
 ';
     }
 
@@ -59,8 +82,6 @@ jaxon.command.handler.register("noty.alert", function(args) {
      */
     public function confirm($question, $script)
     {
-        return "noty({text: " . $question . ",buttons:[{addClass: 'btn btn-primary', text: 'Ok', " .
-            "onClick: function(\$noty){\$noty.close();" . $script . ";}},{addClass: 'btn btn-danger', " .
-            "text: 'Cancel', onClick: function(\$noty){\$noty.close();}}]})";
+        return "jaxon.noty.confirm($question,function(){" . $script . ";})";
     }
 }

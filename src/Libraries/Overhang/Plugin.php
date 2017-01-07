@@ -27,6 +27,17 @@ jaxon.command.handler.register("overhang.alert", function(args) {
     args.data.duration = 5;
     $("body").overhang(args.data);
 });
+jaxon.overhang = {
+    confirm: function(question, callback){
+        $("body").overhang({
+            type: "confirm",
+            message: question,
+            callback: function(res){
+                if(res) callback();
+            }
+        });
+    }
+};
 ';
     }
 
@@ -66,6 +77,6 @@ jaxon.command.handler.register("overhang.alert", function(args) {
      */
     public function confirm($question, $script)
     {
-        return "$('body').overhang({type: 'confirm', message:" . $question . ", callback: function(res){if(res){" . $script . ";}}});";
+        return "jaxon.overhang.confirm($question,function(){" . $script . ";})";
     }
 }

@@ -7,7 +7,7 @@ use Jaxon\Dialogs\Interfaces\Modal;
 use Jaxon\Dialogs\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
-class Plugin extends Library implements Alert //, Confirm
+class Plugin extends Library implements Alert
 {
     public function getJs()
     {
@@ -54,15 +54,4 @@ jaxon.command.handler.register("notify.alert", function(args) {
     {
         $this->alert($message, $title, 'error');
     }
-
-    /**
-     * Get the script which makes a call only if the user answers yes to the given question
-     * 
-     * This is the implementation of the Jaxon\Request\Interfaces\Confirm interface.
-     * Todo: implement this function based on the Advanced Example section at https://notifyjs.com
-     * 
-     * @return string
-     */
-    /*public function confirm($question, $script)
-    {}*/
 }
