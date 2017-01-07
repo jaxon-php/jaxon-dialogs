@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Plugin.php - Adapter for the PgwJS Modal library.
+ *
+ * @package jaxon-dialogs
+ * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @license https://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
+ * @link https://github.com/jaxon-php/jaxon-dialogs
+ */
+
 namespace Jaxon\Dialogs\Libraries\PgwJS;
 
 use Jaxon\Dialogs\Libraries\Library;
@@ -9,16 +19,37 @@ use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Modal
 {
+    /**
+     * Get the javascript header code and file includes
+     *
+     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     *
+     * @return string
+     */
     public function getJs()
     {
         return '<script type="text/javascript" src="https://lib.jaxon-php.org/pgwjs/modal/2.0.0/pgwmodal.min.js"></script>';
     }
 
+    /**
+     * Get the CSS header code and file includes
+     *
+     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     *
+     * @return string
+     */
     public function getCss()
     {
         return '<link href="https://lib.jaxon-php.org/pgwjs/modal/2.0.0/pgwmodal.min.css" rel="stylesheet" type="text/css">';
     }
 
+    /**
+     * Get the javascript code to be printed into the page
+     *
+     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     *
+     * @return string
+     */
     public function getScript()
     {
         return '
@@ -46,6 +77,18 @@ jaxon.command.handler.register("pgwModal", function(args) {
 });';
     }
 
+    /**
+     * Show a modal dialog.
+     * 
+     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * 
+     * @param string            $title                  The title of the dialog
+     * @param string            $content                The content of the dialog
+     * @param array             $buttons                The buttons of the dialog
+     * @param array             $options                The options of the dialog
+     * 
+     * @return void
+     */
     public function show($title, $content, array $buttons, array $options = array())
     {
         // Set the value of the max width, if there is no value defined
@@ -78,6 +121,13 @@ jaxon.command.handler.register("pgwModal", function(args) {
         $this->addCommand(array('cmd'=>'pgwModal'), $options);
     }
 
+    /**
+     * Hide the modal dialog.
+     * 
+     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * 
+     * @return void
+     */
     public function hide()
     {
         $this->response()->script('$.pgwModal("close")');

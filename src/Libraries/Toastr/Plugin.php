@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Plugin.php - Adapter for the Toastr library.
+ *
+ * @package jaxon-dialogs
+ * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @license https://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
+ * @link https://github.com/jaxon-php/jaxon-dialogs
+ */
+
 namespace Jaxon\Dialogs\Libraries\Toastr;
 
 use Jaxon\Dialogs\Libraries\Library;
@@ -9,16 +19,37 @@ use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Alert
 {
+    /**
+     * Get the javascript header code and file includes
+     *
+     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     *
+     * @return string
+     */
     public function getJs()
     {
         return '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>';
     }
 
+    /**
+     * Get the CSS header code and file includes
+     *
+     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     *
+     * @return string
+     */
     public function getCss()
     {
         return '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">';
     }
 
+    /**
+     * Get the javascript code to be printed into the page
+     *
+     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     *
+     * @return string
+     */
     public function getScript()
     {
         return $this->getOptionScript('toastr.', 'options.') . '
@@ -48,21 +79,61 @@ jaxon.command.handler.register("toastr.error", function(args) {
 });';
     }
 
-    public function info($message, $title = '')
-    {
-        $this->addCommand(array('cmd' => 'toastr.info'), array('message' => $message, 'title' => $title));
-    }
-
+    /**
+     * Print a success message.
+     * 
+     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * 
+     * @param string              $message              The text of the message
+     * @param string|null         $title                The title of the message
+     * 
+     * @return void
+     */
     public function success($message, $title = '')
     {
         $this->addCommand(array('cmd' => 'toastr.success'), array('message' => $message, 'title' => $title));
     }
 
+    /**
+     * Print an information message.
+     * 
+     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * 
+     * @param string              $message              The text of the message
+     * @param string|null         $title                The title of the message
+     * 
+     * @return void
+     */
+    public function info($message, $title = '')
+    {
+        $this->addCommand(array('cmd' => 'toastr.info'), array('message' => $message, 'title' => $title));
+    }
+
+    /**
+     * Print a warning message.
+     * 
+     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * 
+     * @param string              $message              The text of the message
+     * @param string|null         $title                The title of the message
+     * 
+     * @return void
+     */
     public function warning($message, $title = '')
     {
         $this->addCommand(array('cmd' => 'toastr.warning'), array('message' => $message, 'title' => $title));
     }
 
+    /**
+     * Print an error message.
+     * 
+     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * 
+     * @param string              $message              The text of the message
+     * @param string|null         $title                The title of the message
+     * 
+     * @return void
+     */
     public function error($message, $title = '')
     {
         $this->addCommand(array('cmd' => 'toastr.error'), array('message' => $message, 'title' => $title));
