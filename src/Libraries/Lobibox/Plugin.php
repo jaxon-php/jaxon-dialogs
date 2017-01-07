@@ -11,12 +11,12 @@ class Plugin extends Library implements Modal, Alert, Confirm
 {
     public function getJs()
     {
-        return '<script type="text/javascript" src="//lib.jaxon-php.org/lobibox/1.2.4/lobibox.min.js"></script>';
+        return '<script type="text/javascript" src="https://lib.jaxon-php.org/lobibox/1.2.4/lobibox.min.js"></script>';
     }
 
     public function getCss()
     {
-        return '<link href="//lib.jaxon-php.org/lobibox/1.2.4/lobibox.min.css" rel="stylesheet" type="text/css">';
+        return '<link href="https://lib.jaxon-php.org/lobibox/1.2.4/lobibox.min.css" rel="stylesheet" type="text/css">';
     }
 
     public function getScript()
@@ -24,7 +24,8 @@ class Plugin extends Library implements Modal, Alert, Confirm
         return '
 Lobibox.notify.DEFAULTS = $.extend({}, Lobibox.notify.DEFAULTS, {sound: false, position: "top center", delayIndicator: false});
 Lobibox.window.DEFAULTS = $.extend({}, Lobibox.window.DEFAULTS, {width: 700, height: "auto"});
-jaxon.command.handler.register("lobibox.window", function(args) {
+var lobiboxWindowInstance = null;
+jaxon.command.handler.register("lobibox.show", function(args) {
     // Add buttons
     for(key in args.data.buttons)
     {
@@ -43,7 +44,18 @@ jaxon.command.handler.register("lobibox.window", function(args) {
     args.data.callback = function(lobibox, type){
         args.data.buttons[type].action();
     };
-    Lobibox.window(args.data);
+    if((lobiboxWindowInstance))
+    {
+        lobiboxWindowInstance.destroy();
+    }
+    lobiboxWindowInstance = Lobibox.window(args.data);
+});
+jaxon.command.handler.register("lobibox.hide", function(args) {
+    if((lobiboxWindowInstance))
+    {
+        lobiboxWindowInstance.destroy();
+    }
+    lobiboxWindowInstance = null;
 });
 jaxon.command.handler.register("lobibox.notify", function(args) {
     Lobibox.notify(args.data.type, {title: args.data.title, msg: args.data.message});
@@ -67,12 +79,13 @@ jaxon.command.handler.register("lobibox.notify", function(args) {
             $ind++;
         }
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'lobibox.window'), $options);
+        $this->addCommand(array('cmd' => 'lobibox.show'), $options);
     }
 
     public function hide()
     {
-        $this->response()->script('Lobibox.hide()');
+        // Hide the modal dialog
+        $this->addCommand(array('cmd' => 'lobibox.hide'), array());
     }
 
     protected function notify($message, $title, $type)
