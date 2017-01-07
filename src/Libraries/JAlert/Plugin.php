@@ -60,7 +60,7 @@ jaxon.command.handler.register("jalert.alert", function(args) {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "$.jAlert({type: 'confirm', confirmQuestion: " . $question .
             ", onConfirm: function(){" . $script . ";}, onDeny: function(){}});return false;";

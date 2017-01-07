@@ -129,7 +129,7 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "BootstrapDialog.confirm(" . $question . ",function(res){if(res){" . $script . ";}})";
     }

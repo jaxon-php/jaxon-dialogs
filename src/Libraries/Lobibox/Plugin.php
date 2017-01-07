@@ -122,7 +122,7 @@ jaxon.command.handler.register("lobibox.notify", function(args) {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "Lobibox.confirm({msg: " . $question . ",callback:function(lobibox, type){if(type == 'yes'){" . $script . ";}}})";
     }

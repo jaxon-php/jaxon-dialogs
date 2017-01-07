@@ -57,7 +57,7 @@ jaxon.command.handler.register("noty.alert", function(args) {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "noty({text: " . $question . ",buttons:[{addClass: 'btn btn-primary', text: 'Ok', " .
             "onClick: function(\$noty){\$noty.close();" . $script . ";}},{addClass: 'btn btn-danger', " .

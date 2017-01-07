@@ -232,9 +232,9 @@ class Dialog extends Response implements Modal, Alert, Confirm
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
-        return $this->getConfirm(true)->getScriptWithQuestion($question, $script);
+        return $this->getConfirm(true)->confirm($question, $script);
     }
     
     public function registerLibraries()

@@ -84,7 +84,7 @@ jaxon.swal = {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "jaxon.swal.confirm($question,function(){" . $script . ";})";
     }

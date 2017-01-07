@@ -49,6 +49,6 @@ class Plugin extends Library implements Modal, Alert, Confirm
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {}
 }

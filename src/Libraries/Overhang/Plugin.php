@@ -64,7 +64,7 @@ jaxon.command.handler.register("overhang.alert", function(args) {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "$('body').overhang({type: 'confirm', message:" . $question . ", callback: function(res){if(res){" . $script . ";}}});";
     }

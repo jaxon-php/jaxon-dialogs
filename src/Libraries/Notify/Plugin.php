@@ -63,6 +63,6 @@ jaxon.command.handler.register("notify.alert", function(args) {
      * 
      * @return string
      */
-    /*public function getScriptWithQuestion($question, $script)
+    /*public function confirm($question, $script)
     {}*/
 }

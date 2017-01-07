@@ -138,7 +138,7 @@ jaxon.command.handler.register("bootbox", function(args) {
      * 
      * @return string
      */
-    public function getScriptWithQuestion($question, $script)
+    public function confirm($question, $script)
     {
         return "bootbox.confirm(" . $question . ",function(res){if(res){" . $script . ";}})";
     }
