@@ -19,6 +19,8 @@ Interface Alert
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
+     * 
+     * @return void
      */
     public function success($message, $title = null);
 
@@ -27,6 +29,8 @@ Interface Alert
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
+     * 
+     * @return void
      */
     public function info($message, $title = null);
 
@@ -35,6 +39,8 @@ Interface Alert
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
+     * 
+     * @return void
      */
     public function warning($message, $title = null);
 
@@ -43,6 +49,8 @@ Interface Alert
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
+     * 
+     * @return void
      */
     public function error($message, $title = null);
 }
