@@ -52,7 +52,7 @@ class Plugin extends Library implements Alert
      */
     public function getScript()
     {
-        return $this->getOptionScript('toastr.', 'options.') . '
+        return $this->getOptionScript('toastr.options.', 'options.') . '
 jaxon.command.handler.register("toastr.info", function(args) {
     if((args.data.title))
         toastr.info(args.data.message, args.data.title);

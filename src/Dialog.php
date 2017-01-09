@@ -102,14 +102,42 @@ class Dialog extends Response implements Modal, Alert, Confirm
      *
      * @return void
      */
-    public function registerLibraries()
+    protected function registerLibrary($sName, $sClass)
     {
-        // Register libraries in the DI container
+        $sName = (string)$sName;
+        $sClass = (string)$sClass;
+        // Register the library in the DI container
+        $this->di[$sName] = function($c) use ($sClass) {
+            return new $sClass;
+        };
+    }
+
+    /**
+     * Register the javascript libraries adapters in the DI container.
+     *
+     * @return void
+     */
+    protected function registerLibraries()
+    {
+        // Register supported libraries in the DI container
         foreach($this->aLibraries as $sName => $sClass)
         {
-            $this->di[$sName] = function($c) use ($sClass) {
-                return new $sClass;
-            };
+            $this->registerLibrary($sName, $sClass);
+        }
+    }
+
+    /**
+     * Register the javascript libraries adapters in the DI container.
+     *
+     * @return void
+     */
+    public function registerClasses()
+    {
+        // Register user defined libraries in the DI container
+        $aLibraries = $this->getOptionNames('dialogs.classes');
+        foreach($aLibraries as $sShortName => $sFullName)
+        {
+            $this->registerLibrary($sShortName, $this->getOption($sFullName));
         }
     }
 
@@ -148,7 +176,7 @@ class Dialog extends Response implements Modal, Alert, Confirm
         }
         // Get the current modal library
         $library = $this->getLibrary($sName);
-        if(!($library) || !($library instanceof \Jaxon\Dialogs\Interfaces\Modal))
+        if(!($library) || !($library instanceof Modal))
         {
             return null;
         }
@@ -168,7 +196,7 @@ class Dialog extends Response implements Modal, Alert, Confirm
         }
         // Get the current alert library
         $library = $this->getLibrary($sName);
-        if(!($library) || !($library instanceof \Jaxon\Dialogs\Interfaces\Alert))
+        if(!($library) || !($library instanceof Alert))
         {
             return null;
         }
@@ -190,7 +218,7 @@ class Dialog extends Response implements Modal, Alert, Confirm
         }
         // Get the current confirm library
         $library = $this->getLibrary($sName);
-        if(!($library) || !($library instanceof \Jaxon\Request\Interfaces\Confirm))
+        if(!($library) || !($library instanceof Confirm))
         {
             return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
         }

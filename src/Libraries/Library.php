@@ -121,15 +121,8 @@ class Library implements Plugin
      */
     final public function getOptionNames($sPrefix)
     {
-        $sPrefix = trim($sPrefix);
-        $sPrefix = rtrim($sPrefix, '.') . '.';
         // The options names are relative to the plugin in Dialogs configuration 
-        $sPrefix = 'dialogs.' . $this->getName() . '.' . $sPrefix;
-        $nPrefixLength = strlen($sPrefix);
-        $aOptionNames = $this->xDialog->getOptionNames($sPrefix);
-        // Remove the prefix from the options names
-        array_walk($aOptionNames, function(&$sName) use ($nPrefixLength) {$sName = substr($sName, $nPrefixLength);});
-        return $aOptionNames;
+        return $this->xDialog->getOptionNames('dialogs.' . $this->getName() . '.' . $sPrefix);
     }
 
     /**
@@ -144,9 +137,9 @@ class Library implements Plugin
         $aOptions = $this->getOptionNames($sKeyPrefix);
         $sSpaces = str_repeat(' ', $nSpaces);
         $sScript = '';
-        foreach($aOptions as $sName)
+        foreach($aOptions as $sShortName => $sFullName)
         {
-            $value = $this->getOption($sKeyPrefix . $sName);
+            $value = $this->xDialog->getOption($sFullName);
             if(is_string($value))
             {
                 $value = "'$value'";
@@ -159,7 +152,7 @@ class Library implements Plugin
             {
                 $value = print_r($value, true);
             }
-            $sScript .= "\n" . $sSpaces . $sVarPrefix . $sName . ' = ' . $value . ';';
+            $sScript .= "\n" . $sSpaces . $sVarPrefix . $sShortName . ' = ' . $value . ';';
         }
         return $sScript;
     }
