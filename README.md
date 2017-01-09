@@ -7,9 +7,10 @@ Modals, alerts and confirmation dialogs for Jaxon with various javascript librar
 Features
 --------
 
-This package provides modal, alert and confirmation functions to Jaxon applications with various javascript libraries.
-The javascript library to use for each function is chosen by configuration, and the package takes care of loading the
-library files into the page and generating javascript code.
+This package provides modal, alert and confirmation dialogs to Jaxon applications with various javascript libraries.
+13 libraries are currently supported.
+
+The javascript library to use for each function is chosen by configuration, and the package takes care of loading the library files into the page and generating the javascript code.
 
 Installation
 ------------
@@ -18,6 +19,7 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 
 ```json
 "require": {
+    "jaxon-php/jaxon-core": "~2.0",
     "jaxon-php/jaxon-dialogs": "~1.0"
 }
 ```
@@ -25,8 +27,10 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 Configuration
 -------------
 
-This packages defines 3 config options to set the default library resp. for modal, alert and confirmation dialogs.
-A 4th config option can be used to load additional libraries into the page.
+This package defines 3 config options to set the default library to be used resp. for modal, alert and confirmation dialogs.
+A 4th config option allow to load additional libraries into the page.
+
+Specific options can also be set for each library in use.
 
 ```php
     'dialogs' => array(
@@ -46,11 +50,14 @@ A 4th config option can be used to load additional libraries into the page.
     ),
 ```
 
-Specific options can also be set for each library in use.
-
 Usage
 -----
-The plugin provides functions to show and hide modal dialogs. They are called using the response plugin.
+
+
+
+### Modal dialogs
+
+This plugin provides 2 different functions resp. to show and hide modal dialogs.
 
 ```php
 /**
@@ -77,7 +84,9 @@ Example.
     }
 ```
 
-This plugin provides functions to show 4 types of alerts or notification messages. They are also called using the response plugin.
+### Alerts or notifications
+
+This plugin provides functions to show 4 different types of alerts or notification messages.
 
 ```php
 /**
@@ -117,7 +126,9 @@ Example.
     }
 ```
 
-The `confirm()` function adds a confirmation question to a Jaxon request.
+### Confirmation question
+
+The `confirm()` function adds a confirmation question to a Jaxon request, which will then be called only if the user answers yes to the given question.
 
 ```php
 /**
@@ -127,7 +138,9 @@ public function confirm($question, ...);
 ```
 
 The first parameter, which is mandatory, is the question to ask.
-The following parameters are optional; they allow the insertion of content from the web page in the confirmation question, using Jaxon or jQuery selectors.
+
+The next parameters are optional; they allow the insertion of content from the web page in the confirmation question, using Jaxon or jQuery selectors and positional placeholders.
+They are specially useful when pieces of information from the web page need to be inserted in translated strings.
 
 Example with Jaxon selector.
 
@@ -247,6 +260,139 @@ Sweet Alert: http://t4t5.github.io/sweetalert/
 - Implements: Alert, Confirm
 - Options:
 
+
+Adding a new library
+--------------------
+
+In order to add a new javascript library to the Dialogs plugin, a new class needs to be defined and registered.
+
+The class must inherit from `Jaxon\Dialogs\Libraries\Library`, and implement a few functions and interfaces.
+
+### Functions
+
+These optional functions can be defined in the class.
+
+```php
+    /**
+     * Get the javascript header code and file includes
+     *
+     * @return string
+     */
+    public function getJs(){}
+
+    /**
+     * Get the CSS header code and file includes
+     *
+     * @return string
+     */
+    public function getCss(){}
+
+    /**
+     * Get the javascript code to be printed into the page
+     *
+     * @return string
+     */
+    public function getScript(){}
+```
+
+The `getJs()` and `getCss()` methods return the HTML header code for loading javascript and CSS files of the library.
+The `getScript()` method returns the javascript code to be executed after the page is loaded to initialize the library.
+
+### Interfaces
+
+Depending on the javascript library features, the class must implement one or more of the following three interfaces.
+
+```php
+namespace Jaxon\Dialogs\Interfaces;
+
+Interface Modal
+{
+    /**
+     * Show a modal dialog.
+     */
+    public function show($title, $content, array $buttons, array $options = array());
+
+    /**
+     * Hide the modal dialog.
+     */
+    public function hide();
+}
+```
+
+```php
+namespace Jaxon\Dialogs\Interfaces;
+
+Interface Alert
+{
+    /**
+     * Print a success message.
+     */
+    public function success($message, $title = null);
+
+    /**
+     * Print an information message.
+     */
+    public function info($message, $title = null);
+
+    /**
+     * Print a warning message.
+     */
+    public function warning($message, $title = null);
+
+    /**
+     * Print an error message.
+     */
+    public function error($message, $title = null);
+}
+```
+
+```php
+namespace Jaxon\Request\Interfaces;
+
+interface Confirm
+{
+    /**
+     * Return a script which makes a call only if the user answers yes to the given question
+     */
+    public function confirm($question, $script);
+}
+```
+
+### Config options
+
+The `getOption($sName)` method in the above class returns the value of a config option of the library, where the parameter `$sName` is the name of the option without the `dialogs.<library_name>` prefix.
+
+In the example below, a call to `$this->getOption('options.position')` will return the value `center`.
+
+### Registration
+
+After it is defined, the library class needs to be configured and registered before it can be used in the application.
+
+First, declare the class in the Dialogs plugin configuration.
+
+```php
+    'dialogs' => array(
+        'default' => array(
+            'modal' => 'myplugin',   // Default library for modal dialogs
+            'alert' => 'myplugin',   // Default library for alerts
+            'confirm' => 'myplugin', // Default library for confirmation
+        ),
+        'classes' => array(
+            'myplugin' => \Path\To\My\Plugin::class,
+        ),
+        'myplugin' => array(         // Plugin config options
+            'options' => array(
+               'position' => 'center',
+            ),
+        ),
+    ),
+```
+
+Then, make sure to register the classes, right after the configuration is read.
+
+```php
+$jaxon->plugin('dialog')->registerClasses();
+```
 
 Contribute
 ----------
