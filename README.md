@@ -30,7 +30,7 @@ Configuration
 This package defines 3 config options to set the default library to be used resp. for modal, alert and confirmation dialogs.
 A 4th config option allow to load additional libraries into the page.
 
-Specific options can also be set for each library in use.
+Specific options can also be set for each library.
 
 ```php
     'dialogs' => array(
@@ -57,7 +57,7 @@ Usage
 
 ### Modal dialogs
 
-This plugin provides 2 different functions resp. to show and hide modal dialogs.
+This plugin provides functions to show and hide modal dialogs, with a title, a content and zero or more buttons.
 
 ```php
 /**
@@ -141,6 +141,8 @@ The first parameter, which is mandatory, is the question to ask.
 
 The next parameters are optional; they allow the insertion of content from the web page in the confirmation question, using Jaxon or jQuery selectors and positional placeholders.
 They are specially useful when pieces of information from the web page need to be inserted in translated strings.
+
+In the example below, the user has to choose a color, and the selected color is inserted in the confirmation question.
 
 Example with Jaxon selector.
 
@@ -360,7 +362,8 @@ interface Confirm
 
 ### Config options
 
-The `getOption($sName)` method in the above class returns the value of a config option of the library, where the parameter `$sName` is the name of the option without the `dialogs.<library_name>` prefix.
+The `getOption($sName)` method provided by the `Jaxon\Dialogs\Libraries\Library` class returns the value of a config option of the library.
+The parameter `$sName` is the name of the option without the `dialogs.<library_name>` prefix.
 
 In the example below, a call to `$this->getOption('options.position')` will return the value `center`.
 
@@ -388,7 +391,7 @@ First, declare the class in the Dialogs plugin configuration.
     ),
 ```
 
-Then, make sure to register the classes, right after the configuration is read.
+Then, make sure to register the classes, right after the configuration options are set.
 
 ```php
 $jaxon->plugin('dialog')->registerClasses();
