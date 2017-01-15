@@ -181,7 +181,7 @@ use Jaxon\Request\Factory as rq
 Supported libraries
 -------------------
 
-This package currently supports 13 javascript libraries, each implementing one or more interfaces.
+This package currently supports 14 javascript libraries, each implementing one or more interfaces.
 
 Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
 
@@ -260,6 +260,12 @@ Sweet Alert: http://t4t5.github.io/sweetalert/
 
 - Dialog id: sweetalert
 - Implements: Alert, Confirm
+- Options:
+
+JQuery-Confirm: https://craftpip.github.io/jquery-confirm/
+
+- Dialog id: jconfirm
+- Implements: Modal, Alert, Confirm
 - Options:
 
 

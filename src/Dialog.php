@@ -63,6 +63,8 @@ class Dialog extends Response implements Modal, Alert, Confirm
         'pnotify'       => \Jaxon\Dialogs\Libraries\PNotify\Plugin::class,
         // SweetAlert
         'sweetalert'    => \Jaxon\Dialogs\Libraries\SweetAlert\Plugin::class,
+        // JQuery Confirm
+        'jconfirm'      => \Jaxon\Dialogs\Libraries\JQueryConfirm\Plugin::class,
     );
     
     /**
