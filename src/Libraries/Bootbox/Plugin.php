@@ -230,8 +230,15 @@ jaxon.command.handler.register("bootbox", function(args) {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "bootbox.confirm(" . $question . ",function(res){if(res){" . $script . ";}})";
+        if(!$noScript)
+        {
+            return 'bootbox.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}})';
+        }
+        else
+        {
+            return 'bootbox.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}else{' . $noScript . '}})';
+        }
     }
 }

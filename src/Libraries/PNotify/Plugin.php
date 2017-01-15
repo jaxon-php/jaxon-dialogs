@@ -60,21 +60,21 @@ jaxon.command.handler.register("pnotify.alert", function(args) {
     notice = new PNotify(args.data);
     notice.get().click(function(){notice.remove();});
 });
-jaxon.pnotify = {
-    confirm: function(question, callback){
-        notice = new PNotify({
-            text: question,
-            hide: false,
-            confirm:{
-                confirm: true
-            },
-            buttons:{
-                closer: false,
-                sticker: false
-            }
-        });
-        notice.get().on("pnotify.confirm", callback);
-    }
+jaxon.confirm.pnotify = function(question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    notice = new PNotify({
+        text: question,
+        hide: false,
+        confirm:{
+            confirm: true
+        },
+        buttons:{
+            closer: false,
+            sticker: false
+        }
+    });
+    notice.get().on("pnotify.confirm", yesCallback);
+    notice.get().on("pnotify.cancel", noCallback);
 };
 ';
     }
@@ -162,8 +162,15 @@ jaxon.pnotify = {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "jaxon.pnotify.confirm($question,function(){" . $script . ";})";
+        if(!$noScript)
+        {
+            return 'jaxon.confirm.pnotify(' . $question . ',function(){' . $yesScript . ';})';
+        }
+        else
+        {
+            return 'jaxon.confirm.pnotify(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+        }
     }
 }

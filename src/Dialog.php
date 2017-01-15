@@ -438,8 +438,8 @@ class Dialog extends Response implements Modal, Alert, Confirm
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return $this->getConfirm(true)->confirm($question, $script);
+        return $this->getConfirm(true)->confirm($question, $yesScript, $noScript);
     }
 }

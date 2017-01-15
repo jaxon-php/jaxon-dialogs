@@ -68,11 +68,16 @@ jaxon.command.handler.register("sweetalert.alert", function(args) {
     }
     swal(args.data);
 });
-jaxon.swal = {
-    confirm: function(question, callback){
-        swal({type: "warning", title:"", showCancelButton: true, text: question},
-            function(isConfirm){if(isConfirm){callback();}});
-    }
+jaxon.confirm.swal = function(question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    swal({type: "warning", title:"", showCancelButton: true, text: question},
+        function(isConfirm){
+            if(isConfirm)
+                yesCallback();
+            else
+                noCallback();
+        }
+    );
 };
 ';
     }
@@ -164,8 +169,15 @@ jaxon.swal = {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "jaxon.swal.confirm($question,function(){" . $script . ";})";
+        if(!$noScript)
+        {
+            return 'jaxon.confirm.swal(' . $question . ',function(){' . $yesScript . ';})';
+        }
+        else
+        {
+            return 'jaxon.confirm.swal(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+        }
     }
 }

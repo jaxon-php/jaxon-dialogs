@@ -56,10 +56,9 @@ class Plugin extends Library implements Alert, Confirm
 jaxon.command.handler.register("jalert.alert", function(args) {
     $.jAlert(args.data);
 });
-jaxon.jalert = {
-    confirm: function(question, callback){
-        $.jAlert({type: "confirm", confirmQuestion: question, onConfirm: callback, onDeny: function(){}});
-    }
+jaxon.confirm.jalert = function(question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    $.jAlert({type: "confirm", confirmQuestion: question, onConfirm: yesCallback, onDeny: noCallback});
 };
 ';
     }
@@ -145,8 +144,15 @@ jaxon.jalert = {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "jaxon.jalert.confirm($question,function(){" . $script . ";})";
+        if(!$noScript)
+        {
+            return 'jaxon.confirm.jalert(' . $question . ',function(){' . $yesScript . ';})';
+        }
+        else
+        {
+            return 'jaxon.confirm.jalert(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+        }
     }
 }

@@ -91,15 +91,17 @@ jaxon.command.handler.register("lobibox.hide", function(args) {
 jaxon.command.handler.register("lobibox.notify", function(args) {
     Lobibox.notify(args.data.type, {title: args.data.title, msg: args.data.message});
 });
-jaxon.lobibox = {
-    confirm: function(question, callback){
-        Lobibox.confirm({
-            msg: question,
-            callback: function(lobibox, type){
-                if(type == "yes") callback();
-            }
-        });
-    }
+jaxon.confirm.lobibox = function(question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    Lobibox.confirm({
+        msg: question,
+        callback: function(lobibox, type){
+            if(type == "yes")
+                yesCallback();
+            else
+                noCallback();
+        }
+    });
 };
 ';
     }
@@ -231,8 +233,15 @@ jaxon.lobibox = {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "jaxon.lobibox.confirm($question,function(){" . $script . ";})";
+        if(!$noScript)
+        {
+            return 'jaxon.confirm.lobibox(' . $question . ',function(){' . $yesScript . ';})';
+        }
+        else
+        {
+            return 'jaxon.confirm.lobibox(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+        }
     }
 }

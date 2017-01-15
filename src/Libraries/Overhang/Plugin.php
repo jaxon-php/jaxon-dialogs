@@ -58,16 +58,15 @@ jaxon.command.handler.register("overhang.alert", function(args) {
     args.data.duration = 5;
     $("body").overhang(args.data);
 });
-jaxon.overhang = {
-    confirm: function(question, callback){
-        $("body").overhang({
-            type: "confirm",
-            message: question,
-            callback: function(res){
-                if(res) callback();
-            }
-        });
-    }
+jaxon.confirm.overhang = function(question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    $("body").overhang({
+        type: "confirm",
+        message: question,
+        callback: function(res){
+            if(res) yesCallback() else noCallback();
+        }
+    });
 };
 ';
     }
@@ -155,8 +154,15 @@ jaxon.overhang = {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "jaxon.overhang.confirm($question,function(){" . $script . ";})";
+        if(!$noScript)
+        {
+            return 'jaxon.confirm.overhang(' . $question . ',function(){' . $yesScript . ';})';
+        }
+        else
+        {
+            return 'jaxon.confirm.overhang(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+        }
     }
 }

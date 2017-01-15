@@ -228,9 +228,16 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
      * 
      * @return string
      */
-    public function confirm($question, $script)
+    public function confirm($question, $yesScript, $noScript)
     {
-        return "BootstrapDialog.confirm(" . $question . ",function(res){if(res){" . $script . ";}})";
+        if(!$noScript)
+        {
+            return 'BootstrapDialog.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}})';
+        }
+        else
+        {
+            return 'BootstrapDialog.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}else{' . $noScript . '}})';
+        }
     }
 }
 
