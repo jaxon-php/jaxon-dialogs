@@ -19,10 +19,12 @@ use Jaxon\Plugin\Response;
 use Jaxon\Dialogs\Interfaces\Modal;
 use Jaxon\Dialogs\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
+use Jaxon\Utils\Interfaces\EventListener;
 
-class Dialog extends Response implements Modal, Alert, Confirm
+class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 {
     use \Jaxon\Utils\Traits\Container;
+    use \Jaxon\Utils\Traits\Event;
 
     /**
      * Dependency Injection manager
@@ -443,5 +445,21 @@ class Dialog extends Response implements Modal, Alert, Confirm
     public function confirm($question, $yesScript, $noScript)
     {
         return $this->getConfirm(true)->confirm($question, $yesScript, $noScript);
+    }
+
+    /**
+     * Return an array of events to listen to.
+     *
+     * The array keys are event names and the value is the method name to call.
+     * For instance:
+     *  ['eventType' => 'methodName']
+     *
+     * @return array The event names to listen to
+     */
+    public function getEvents()
+    {
+        // The registerClasses() method needs to read the 'dialog.classes' option value.
+        // So it must be called after the config is set.
+        return ['post.config' => 'registerClasses'];
     }
 }
