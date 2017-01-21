@@ -54,9 +54,9 @@ class Plugin extends Library implements Modal, Alert, Confirm
         $sContainer = $this->getContainer();
 
         return '
-if(!$("#' . $sContainer . '").length)
+if(!$(\'#' . $sContainer . '\').length)
 {
-    $("body").append("<div id=\"' . $sContainer . '\"></div>");
+    $(\'body\').append(\'<div id="' . $sContainer . '"></div>\');
 }
 jaxon.command.handler.register("bootbox", function(args) {
     bootbox.alert(args.data.content);

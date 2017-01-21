@@ -8,7 +8,7 @@ Features
 --------
 
 This package provides modal, alert and confirmation dialogs to Jaxon applications with various javascript libraries.
-13 libraries are currently supported.
+15 libraries are currently supported.
 
 The javascript library to use for each function is chosen by configuration, and the package takes care of loading the library files into the page and generating the javascript code.
 
@@ -36,10 +36,10 @@ Specific options can also be set for each library.
     'dialogs' => array(
         'default' => array(
             'modal' => 'bootstrap',  // Default library for modal dialogs
-            'alert' => 'toastr',     // Default library for alerts
-            'confirm' => 'toastr',   // Default library for confirmation
+            'alert' => 'noty',       // Default library for alerts
+            'confirm' => 'noty',     // Default library for confirmation
         ),
-        'libraries' => array('pgwjs', 'noty'), // Additional libraries
+        'libraries' => array('pgwjs', 'toastr'), // Additional libraries
         // Options for the Toastr library
         'toastr' => array(
             'options' => array(
@@ -52,8 +52,6 @@ Specific options can also be set for each library.
 
 Usage
 -----
-
-
 
 ### Modal dialogs
 
@@ -181,7 +179,7 @@ use Jaxon\Request\Factory as rq
 Supported libraries
 -------------------
 
-This package currently supports 14 javascript libraries, each implementing one or more interfaces.
+This package currently supports 15 javascript libraries, each implementing one or more interfaces.
 
 Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
 
@@ -266,6 +264,12 @@ JQuery-Confirm: https://craftpip.github.io/jquery-confirm/
 
 - Dialog id: jconfirm
 - Implements: Modal, Alert, Confirm
+- Options:
+
+IziToast: http://izitoast.marcelodolce.com
+
+- Dialog id: izi.toast
+- Implements: Alert, Confirm
 - Options:
 
 
@@ -397,7 +401,7 @@ First, declare the class in the Dialogs plugin configuration.
     ),
 ```
 
-Then, make sure to register the classes, right after the configuration options are set.
+If you are not using , make sure to register the classes, right after the configuration options are set.
 
 ```php
 $jaxon->plugin('dialog')->registerClasses();

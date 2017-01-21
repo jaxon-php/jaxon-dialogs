@@ -67,6 +67,9 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         'sweetalert'    => \Jaxon\Dialogs\Libraries\SweetAlert\Plugin::class,
         // JQuery Confirm
         'jconfirm'      => \Jaxon\Dialogs\Libraries\JQueryConfirm\Plugin::class,
+        // IziModal and IziToast
+        // 'izi.modal'     => \Jaxon\Dialogs\Libraries\Izi\Modal::class, // Not yet ready
+        'izi.toast'     => \Jaxon\Dialogs\Libraries\Izi\Toast::class,
     );
     
     /**
