@@ -22,11 +22,11 @@ Interface Modal
      * @param array             $buttons                The buttons of the dialog
      * @param array             $options                The options of the dialog
      * 
-     * Each button is an array containin the following entries:
+     * Each button is an array with the following entries:
      * - title: the text to be printed in the button
      * - class: the CSS class of the button
      * - click: the javascript function to be called when the button is clicked
-     * If the click value is set to "close", then the buttons closes the dialog.
+     * If the click value is set to "close", then the button closes the dialog.
      * 
      * The content of the $options depends on the javascript library in use.
      * Check their specific documentation for more information.

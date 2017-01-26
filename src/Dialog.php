@@ -73,6 +73,27 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     );
     
     /**
+     * The name of the library to use for modals
+     *
+     * @var string
+     */
+    protected $sModalLibrary = null;
+
+    /**
+     * The name of the library to use for alerts
+     *
+     * @var string
+     */
+    protected $sAlertLibrary = null;
+
+    /**
+     * The name of the library to use for confirmation
+     *
+     * @var string
+     */
+    protected $sConfirmLibrary = null;
+
+    /**
      * The constructor
      */
     public function __construct()
@@ -171,65 +192,107 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     }
 
     /**
-     * Get the configured library adapter for modals.
+     * Set the library adapter to use for modals.
+     * 
+     * @param string            $sLibrary                   The name of the library adapter
+     *
+     * @return void
+     */
+    public function setModalLibrary($sLibrary)
+    {
+        $this->sModalLibrary = $sLibrary;
+    }
+
+    /**
+     * Get the library adapter to use for modals.
      *
      * @return Libraries\Library|null
      */
-    public function getModal()
+    protected function getModalLibrary()
     {
-        if(!($sName = $this->getOption('dialogs.default.modal', '')))
-        {
-            return null;
-        }
         // Get the current modal library
-        $library = $this->getLibrary($sName);
-        if(!($library) || !($library instanceof Modal))
+        if(($this->sModalLibrary) &&
+            ($library = $this->getLibrary($this->sModalLibrary)) && ($library instanceof Modal))
         {
-            return null;
+            return $library;
         }
-        return $library;
+        // Get the default modal library
+        if(($sName = $this->getOption('dialogs.default.modal', '')) &&
+            ($library = $this->getLibrary($sName)) && ($library instanceof Modal))
+        {
+            return $library;
+        }
+        return null;
     }
     
     /**
-     * Get the configured library adapter for alerts.
+     * Set the library adapter to use for alerts.
+     * 
+     * @param string            $sLibrary                   The name of the library adapter
+     *
+     * @return void
+     */
+    public function setAlertLibrary($sLibrary)
+    {
+        $this->sAlertLibrary = $sLibrary;
+    }
+
+    /**
+     * Get the library adapter to use for alerts.
      *
      * @return Libraries\Library|null
      */
-    public function getAlert()
+    protected function getAlertLibrary()
     {
-        if(!($sName = $this->getOption('dialogs.default.alert', '')))
-        {
-            return null;
-        }
         // Get the current alert library
-        $library = $this->getLibrary($sName);
-        if(!($library) || !($library instanceof Alert))
+        if(($this->sAlertLibrary) &&
+            ($library = $this->getLibrary($this->sAlertLibrary)) && ($library instanceof Alert))
         {
-            return null;
+            return $library;
         }
-        return $library;
+        // Get the default alert library
+        if(($sName = $this->getOption('dialogs.default.alert', '')) &&
+            ($library = $this->getLibrary($sName)) && ($library instanceof Alert))
+        {
+            return $library;
+        }
+        return null;
     }
     
     /**
-     * Get the configured library adapter for confirmation.
+     * Set the library adapter to use for confirmation.
+     * 
+     * @param string            $sLibrary                   The name of the library adapter
+     *
+     * @return void
+     */
+    public function setConfirmLibrary($sLibrary)
+    {
+        $this->sConfirmLibrary = $sLibrary;
+    }
+
+    /**
+     * Get the library adapter to use for confirmation.
      * 
      * @param bool              $bReturnDefault             Return the default confirm if none is configured
      *
      * @return Libraries\Library|null
      */
-    public function getConfirm($bReturnDefault = false)
+    protected function getConfirmLibrary($bReturnDefault = false)
     {
-        if(!($sName = $this->getOption('dialogs.default.confirm', '')))
-        {
-            return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
-        }
         // Get the current confirm library
-        $library = $this->getLibrary($sName);
-        if(!($library) || !($library instanceof Confirm))
+        if(($this->sConfirmLibrary) &&
+            ($library = $this->getLibrary($this->sConfirmLibrary)) && ($library instanceof Confirm))
         {
-            return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
+            return $library;
         }
-        return $library;
+        // Get the default confirm library
+        if(($sName = $this->getOption('dialogs.default.confirm', '')) &&
+            ($library = $this->getLibrary($sName)) && ($library instanceof Confirm))
+        {
+            return $library;
+        }
+        return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
     }
 
     /**
@@ -252,15 +315,15 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
                 $libraries[$library->getName()] = $library;
             }
         }
-        if(($library = $this->getModal()))
+        if(($library = $this->getModalLibrary()))
         {
             $libraries[$library->getName()] = $library;
         }
-        if(($library = $this->getAlert()))
+        if(($library = $this->getAlertLibrary()))
         {
             $libraries[$library->getName()] = $library;
         }
-        if(($library = $this->getConfirm()))
+        if(($library = $this->getConfirmLibrary()))
         {
             $libraries[$library->getName()] = $library;
         }
@@ -346,7 +409,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function show($title, $content, array $buttons, array $options = array())
     {
-        $this->getModal()->show($title, $content, $buttons, $options);
+        $this->getModalLibrary()->show($title, $content, $buttons, $options);
     }
 
     /**
@@ -375,7 +438,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function hide()
     {
-        $this->getModal()->hide();
+        $this->getModalLibrary()->hide();
     }
 
     /**
@@ -390,7 +453,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function success($message, $title = null)
     {
-        $this->getAlert()->success($message, $title);
+        $this->getAlertLibrary()->success((string)$message, (string)$title);
     }
 
     /**
@@ -405,7 +468,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function info($message, $title = null)
     {
-        $this->getAlert()->info($message, $title);
+        $this->getAlertLibrary()->info((string)$message, (string)$title);
     }
 
     /**
@@ -420,7 +483,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function warning($message, $title = null)
     {
-        $this->getAlert()->warning($message, $title);
+        $this->getAlertLibrary()->warning((string)$message, (string)$title);
     }
 
     /**
@@ -435,7 +498,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function error($message, $title = null)
     {
-        $this->getAlert()->error($message, $title);
+        $this->getAlertLibrary()->error((string)$message, (string)$title);
     }
 
     /**
@@ -447,7 +510,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function confirm($question, $yesScript, $noScript)
     {
-        return $this->getConfirm(true)->confirm($question, $yesScript, $noScript);
+        return $this->getConfirmLibrary(true)->confirm($question, $yesScript, $noScript);
     }
 
     /**
