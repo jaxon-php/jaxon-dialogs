@@ -23,7 +23,8 @@ use Jaxon\Utils\Interfaces\EventListener;
 
 class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 {
-    use \Jaxon\Utils\Traits\Container;
+    use \Jaxon\Utils\Traits\Manager;
+    use \Jaxon\Utils\Traits\Config;
     use \Jaxon\Utils\Traits\Event;
 
     /**
