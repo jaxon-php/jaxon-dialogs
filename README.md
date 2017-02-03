@@ -8,7 +8,7 @@ Features
 --------
 
 This package provides modal, alert and confirmation dialogs to Jaxon applications with various javascript libraries.
-15 libraries are currently supported.
+16 libraries are currently supported.
 
 The javascript library to use for each function is chosen by configuration, and the package takes care of loading the library files into the page and generating the javascript code.
 
@@ -27,8 +27,10 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 Configuration
 -------------
 
-This package defines 3 config options to set the default library to be used resp. for modal, alert and confirmation dialogs.
-A 4th config option allow to load additional libraries into the page.
+This package defines 3 config options in the `default` section to set the default library to be used resp.
+for modal, alert and confirmation dialogs.
+The `libraries` config option allows to load additional libraries into the page.
+The `confirm` section contains options for the confirm dialog. 
 
 Specific options can also be set for each library.
 
@@ -40,6 +42,12 @@ Specific options can also be set for each library.
             'confirm' => 'noty',     // Default library for confirmation
         ),
         'libraries' => array('pgwjs', 'toastr'), // Additional libraries
+        // Confirm options
+        'confirm' => array(
+            'title' => 'Question',   // The confirm dialog
+            'yes' => 'Oh Yes',       // The text of the Yes button
+            'no' => 'No way',        // The text of the No button
+        ),
         // Options for the Toastr library
         'toastr' => array(
             'options' => array(
@@ -179,7 +187,7 @@ use Jaxon\Request\Factory as rq
 Supported libraries
 -------------------
 
-This package currently supports 15 javascript libraries, each implementing one or more interfaces.
+This package currently supports 16 javascript libraries, each implementing one or more interfaces.
 
 Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
 
@@ -269,6 +277,12 @@ JQuery-Confirm: https://craftpip.github.io/jquery-confirm/
 IziToast: http://izitoast.marcelodolce.com
 
 - Dialog id: izi.toast
+- Implements: Alert, Confirm
+- Options:
+
+YmzBox: https://github.com/returnphp/ymzbox
+
+- Dialog id: ymzbox
 - Implements: Alert, Confirm
 - Options:
 
