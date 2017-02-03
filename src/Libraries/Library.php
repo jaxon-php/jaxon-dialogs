@@ -216,4 +216,34 @@ class Library implements Plugin
     {
         return '';
     }
+
+    /**
+     * Get the text of the "Yes" button for confirm dialog
+     *
+     * @return string
+     */
+    public function getConfirmTitle()
+    {
+        return $this->xDialog->getOption('dialogs.confirm.title', '');
+    }
+
+    /**
+     * Get the text of the "Yes" button for confirm dialog
+     *
+     * @return string
+     */
+    public function getYesButtonText()
+    {
+        return $this->xDialog->getOption('dialogs.confirm.yes', 'Yes');
+    }
+
+    /**
+     * Get the text of the "No" button for confirm dialog
+     *
+     * @return string
+     */
+    public function getNoButtonText()
+    {
+        return $this->xDialog->getOption('dialogs.confirm.no', 'No');
+    }
 }

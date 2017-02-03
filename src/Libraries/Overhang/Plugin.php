@@ -64,7 +64,10 @@ jaxon.confirm.overhang = function(question, yesCallback, noCallback){
         type: "confirm",
         message: question,
         callback: function(res){
-            if(res) yesCallback() else noCallback();
+            if(res)
+                yesCallback();
+            else
+                noCallback();
         }
     });
 };
@@ -158,11 +161,11 @@ jaxon.confirm.overhang = function(question, yesCallback, noCallback){
     {
         if(!$noScript)
         {
-            return 'jaxon.confirm.overhang(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.overhang(" . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.overhang(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.overhang(" . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

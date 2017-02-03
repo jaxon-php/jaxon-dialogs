@@ -77,7 +77,7 @@ jaxon.command.handler.register("izitoast.error", function(args) {
     args.data.close = true;
     iziToast.error(args.data);
 });
-jaxon.confirm.izi = function(question, yesCallback, noCallback){
+jaxon.confirm.izi = function(title, question, yesCallback, noCallback){
     if(noCallback == undefined) noCallback = function(){};
     iziToast.show({
         close: false,
@@ -85,14 +85,14 @@ jaxon.confirm.izi = function(question, yesCallback, noCallback){
         icon: "icon-person",
         position: "center",
         timeout: 0,
-        title: "",
+        title: title,
         message: question,
         buttons: [
-            ["<button>Yes</button>", function (instance, toast) {
+            ["<button>' . $this->getYesButtonText() . '</button>", function (instance, toast) {
                 instance.hide({transitionOut: "fadeOutUp"}, toast);
                 yesCallback();
             }],
-            ["<button>No</button>", function (instance, toast) {
+            ["<button>' . $this->getNoButtonText() . '</button>", function (instance, toast) {
                 instance.hide({transitionOut: "fadeOutUp"}, toast);
                 noCallback();
             }]
@@ -187,13 +187,14 @@ jaxon.confirm.izi = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.izi(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.izi('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.izi(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.izi('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

@@ -93,14 +93,21 @@ jaxon.command.handler.register("jconfirm.alert", function(args) {
     $.alert(args.data);
 });
 jaxon.confirm.jconfirmDialog = null;
-jaxon.confirm.jconfirm = function(question, yesCallback, noCallback){
+jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
     if(noCallback == undefined) noCallback = function(){};
     $.confirm({
-        title: "",
+        title: title,
         content: question,
         buttons: {
-            confirm: yesCallback,
-            cancel: noCallback
+            yes: {
+                btnClass: "btn-blue",
+                text: "' . $this->getYesButtonText() . '",
+                action: yesCallback
+            },
+            no: {
+                text: "' . $this->getNoButtonText() . '",
+                action: noCallback
+            }
         }
     });
 };
@@ -238,13 +245,14 @@ jaxon.confirm.jconfirm = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.jconfirm(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.jconfirm('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.jconfirm(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.jconfirm('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

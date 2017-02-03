@@ -91,9 +91,12 @@ jaxon.command.handler.register("lobibox.hide", function(args) {
 jaxon.command.handler.register("lobibox.notify", function(args) {
     Lobibox.notify(args.data.type, {title: args.data.title, msg: args.data.message});
 });
-jaxon.confirm.lobibox = function(question, yesCallback, noCallback){
+jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
+    Lobibox.base.OPTIONS.buttons.yes.text = "' . $this->getYesButtonText() . '";
+    Lobibox.base.OPTIONS.buttons.no.text = "' . $this->getNoButtonText() . '";
     if(noCallback == undefined) noCallback = function(){};
     Lobibox.confirm({
+        title: title,
         msg: question,
         callback: function(lobibox, type){
             if(type == "yes")
@@ -235,13 +238,14 @@ jaxon.confirm.lobibox = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.lobibox(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.lobibox('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.lobibox(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.lobibox('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

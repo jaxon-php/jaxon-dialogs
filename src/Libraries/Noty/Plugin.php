@@ -49,17 +49,17 @@ jaxon.confirm.noty = function(question, yesCallback, noCallback){
     noty({
         text: question,
         layout: "topCenter",
-        buttons:[
+        buttons: [
             {
                 addClass: "btn btn-primary",
-                text: "Ok",
+                text: "' . $this->getYesButtonText() . '",
                 onClick: function($noty){
                     $noty.close();
                     yesCallback();
                 }
             },{
                 addClass: "btn btn-danger",
-                text: "Cancel",
+                text: "' . $this->getNoButtonText() . '",
                 onClick: function($noty){
                     $noty.close();
                     noCallback();
@@ -156,13 +156,14 @@ jaxon.confirm.noty = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.noty(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.noty(" . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.noty(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.noty(" . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

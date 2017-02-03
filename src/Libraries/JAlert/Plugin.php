@@ -56,9 +56,17 @@ class Plugin extends Library implements Alert, Confirm
 jaxon.command.handler.register("jalert.alert", function(args) {
     $.jAlert(args.data);
 });
-jaxon.confirm.jalert = function(question, yesCallback, noCallback){
+jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
     if(noCallback == undefined) noCallback = function(){};
-    $.jAlert({type: "confirm", confirmQuestion: question, onConfirm: yesCallback, onDeny: noCallback});
+    $.jAlert({
+        title: title,
+        type: "confirm",
+        confirmQuestion: question,
+        confirmBtnText: "' . $this->getYesButtonText() . '",
+        denyBtnText: "' . $this->getNoButtonText() . '",
+        onConfirm: yesCallback,
+        onDeny: noCallback
+    });
 };
 ';
     }
@@ -146,13 +154,14 @@ jaxon.confirm.jalert = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.jalert(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.jalert('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.jalert(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.jalert('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

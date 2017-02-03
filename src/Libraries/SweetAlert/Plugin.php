@@ -68,16 +68,18 @@ jaxon.command.handler.register("sweetalert.alert", function(args) {
     }
     swal(args.data);
 });
-jaxon.confirm.swal = function(question, yesCallback, noCallback){
+jaxon.confirm.swal = function(title, question, yesCallback, noCallback){
     if(noCallback == undefined) noCallback = function(){};
-    swal({type: "warning", title:"", showCancelButton: true, text: question},
-        function(isConfirm){
-            if(isConfirm)
-                yesCallback();
-            else
-                noCallback();
-        }
-    );
+    swal({
+            type: "warning",
+            title: title,
+            confirmButtonText: "' . $this->getYesButtonText() . '",
+            cancelButtonText: "' . $this->getNoButtonText() . '",
+            showCancelButton: true,
+            text: question
+        },
+        function(res){if(res){yesCallback();}else{noCallback();}
+    });
 };
 ';
     }
@@ -171,13 +173,14 @@ jaxon.confirm.swal = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.swal(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.swal('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.swal(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.swal('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

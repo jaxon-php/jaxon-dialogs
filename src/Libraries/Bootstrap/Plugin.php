@@ -90,6 +90,21 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
     args.data.type = BootstrapDialog.TYPE_DANGER;
     BootstrapDialog.alert(args.data);
 });
+jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    BootstrapDialog.confirm({
+        title: title,
+        message: question,
+        btnOKLabel: "' . $this->getYesButtonText() . '",
+        btnCancelLabel: "' . $this->getNoButtonText() . '",
+        callback: function(res){
+            if(res)
+                yesCallback();
+            else
+                noCallback();
+        }
+    });
+};
 ';
     }
 
@@ -230,13 +245,14 @@ jaxon.command.handler.register("bootstrap.danger", function(args) {
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'BootstrapDialog.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}})';
+            return "jaxon.confirm.bootstrap('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'BootstrapDialog.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}else{' . $noScript . '}})';
+            return "jaxon.confirm.bootstrap('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

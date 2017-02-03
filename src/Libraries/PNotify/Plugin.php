@@ -60,9 +60,12 @@ jaxon.command.handler.register("pnotify.alert", function(args) {
     notice = new PNotify(args.data);
     notice.get().click(function(){notice.remove();});
 });
-jaxon.confirm.pnotify = function(question, yesCallback, noCallback){
+jaxon.confirm.pnotify = function(title, question, yesCallback, noCallback){
+    PNotify.prototype.options.confirm.buttons[0].text = "' . $this->getYesButtonText() . '";
+    PNotify.prototype.options.confirm.buttons[1].text = "' . $this->getNoButtonText() . '";
     if(noCallback == undefined) noCallback = function(){};
     notice = new PNotify({
+        title: title,
         text: question,
         hide: false,
         confirm:{
@@ -70,7 +73,10 @@ jaxon.confirm.pnotify = function(question, yesCallback, noCallback){
         },
         buttons:{
             closer: false,
-            sticker: false
+            sticker: false,
+            labels: {
+                
+            }
         }
     });
     notice.get().on("pnotify.confirm", yesCallback);
@@ -164,13 +170,14 @@ jaxon.confirm.pnotify = function(question, yesCallback, noCallback){
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'jaxon.confirm.pnotify(' . $question . ',function(){' . $yesScript . ';})';
+            return "jaxon.confirm.pnotify('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'jaxon.confirm.pnotify(' . $question . ',function(){' . $yesScript . ';},function(){' . $noScript . ';})';
+            return "jaxon.confirm.pnotify('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

@@ -61,6 +61,18 @@ if(!$(\'#' . $sContainer . '\').length)
 jaxon.command.handler.register("bootbox", function(args) {
     bootbox.alert(args.data.content);
 });
+jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
+    if(noCallback == undefined) noCallback = function(){};
+    bootbox.confirm({
+        title: title,
+        message: question,
+        buttons: {
+            cancel: {label: "' . $this->getNoButtonText() . '"},
+            confirm: {label: "' . $this->getYesButtonText() . '"}
+        },
+        callback: function(res){if(res){yesCallback();}else{noCallback();}}
+    });
+};
 ';
     }
 
@@ -232,13 +244,14 @@ jaxon.command.handler.register("bootbox", function(args) {
      */
     public function confirm($question, $yesScript, $noScript)
     {
+        $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return 'bootbox.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}})';
+            return "jaxon.confirm.bootbox('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return 'bootbox.confirm(' . $question . ',function(res){if(res){' . $yesScript . ';}else{' . $noScript . '}})';
+            return "jaxon.confirm.bootbox('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

@@ -71,6 +71,8 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         // IziModal and IziToast
         // 'izi.modal'     => \Jaxon\Dialogs\Libraries\Izi\Modal::class, // Not yet ready
         'izi.toast'     => \Jaxon\Dialogs\Libraries\Izi\Toast::class,
+        // YmzBox
+        'ymzbox'        => \Jaxon\Dialogs\Libraries\YmzBox\Plugin::class,
     );
     
     /**
