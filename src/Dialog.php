@@ -74,7 +74,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         // YmzBox
         'ymzbox'        => \Jaxon\Dialogs\Libraries\YmzBox\Plugin::class,
     );
-    
+
     /**
      * The name of the library to use for modals
      *

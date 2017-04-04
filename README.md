@@ -415,7 +415,7 @@ First, declare the class in the Dialogs plugin configuration.
     ),
 ```
 
-If you are not using , make sure to register the classes, right after the configuration options are set.
+If you are not using the Module or a framework integration package, make sure to register the classes, after the configuration options are set.
 
 ```php
 $jaxon->plugin('dialog')->registerClasses();
