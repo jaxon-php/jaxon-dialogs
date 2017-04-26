@@ -17,7 +17,7 @@ namespace Jaxon\Dialogs;
 
 use Jaxon\Plugin\Response;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 use Jaxon\Utils\Interfaces\EventListener;
 
@@ -303,7 +303,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      *
      * @return array
      */
-    protected function getInUseLibraries()
+    protected function getLibrariesInUse()
     {
         $aNames = $this->getOption('dialogs.libraries', array());
         if(!is_array($aNames))
@@ -344,7 +344,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         {
             return '';
         }
-        $libraries = $this->getInUseLibraries();
+        $libraries = $this->getLibrariesInUse();
         $code = '';
         foreach($libraries as $library)
         {
@@ -364,7 +364,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         {
             return '';
         }
-        $libraries = $this->getInUseLibraries();
+        $libraries = $this->getLibrariesInUse();
         $code = '';
         foreach($libraries as $library)
         {
@@ -380,7 +380,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function getScript()
     {
-        $libraries = $this->getInUseLibraries();
+        $libraries = $this->getLibrariesInUse();
         $code = '';
         foreach($libraries as $library)
         {
@@ -445,9 +445,35 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     }
 
     /**
+     * Set the library to return the javascript code or run it in the browser.
+     *
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * 
+     * @param boolean             $bReturn              Whether to return the code
+     *
+     * @return void
+     */
+    public function setReturn($bReturn)
+    {
+        $this->getAlertLibrary()->setReturn($bReturn);
+    }
+    
+    /**
+     * Check if the library should return the js code or run it in the browser.
+     *
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * 
+     * @return boolean
+     */
+    public function getReturn()
+    {
+        return $this->getAlertLibrary()->getReturn();
+    }
+
+    /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -456,13 +482,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function success($message, $title = null)
     {
-        $this->getAlertLibrary()->success((string)$message, (string)$title);
+        return $this->getAlertLibrary()->success((string)$message, (string)$title);
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -471,13 +497,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function info($message, $title = null)
     {
-        $this->getAlertLibrary()->info((string)$message, (string)$title);
+        return $this->getAlertLibrary()->info((string)$message, (string)$title);
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -486,13 +512,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function warning($message, $title = null)
     {
-        $this->getAlertLibrary()->warning((string)$message, (string)$title);
+        return $this->getAlertLibrary()->warning((string)$message, (string)$title);
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -501,7 +527,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function error($message, $title = null)
     {
-        $this->getAlertLibrary()->error((string)$message, (string)$title);
+        return $this->getAlertLibrary()->error((string)$message, (string)$title);
     }
 
     /**

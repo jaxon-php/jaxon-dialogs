@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\Lobibox;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Modal, Alert, Confirm
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -164,6 +166,10 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
      */
     protected function notify($message, $title, $type)
     {
+        if($this->getReturn())
+        {
+            return "Lobibox.notify('" . $type . "', {title:'" . $title . "', msg:" . $message . "})";
+        }
         $options = array('message' => $message, 'type' => $type, 'title' => (($title) ?: false));
         // Show the alert
         $this->addCommand(array('cmd' => 'lobibox.notify'), $options);
@@ -172,7 +178,7 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -181,13 +187,13 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
      */
     public function success($message, $title = null)
     {
-        $this->notify($message, $title, 'success');
+        return $this->notify($message, $title, 'success');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -196,13 +202,13 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
      */
     public function info($message, $title = null)
     {
-        $this->notify($message, $title, 'info');
+        return $this->notify($message, $title, 'info');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -211,13 +217,13 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
      */
     public function warning($message, $title = null)
     {
-        $this->notify($message, $title, 'warning');
+        return $this->notify($message, $title, 'warning');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -226,7 +232,7 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
      */
     public function error($message, $title = null)
     {
-        $this->notify($message, $title, 'error');
+        return $this->notify($message, $title, 'error');
     }
 
     /**

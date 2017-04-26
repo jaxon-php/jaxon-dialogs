@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\Bootbox;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Modal, Alert, Confirm
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -159,6 +161,10 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
      */
     protected function alert($message, $title, $class)
     {
+        if($this->getReturn())
+        {
+            return "bootbox.alert(" . $message . ")";
+        }
         $content = '
         <div class="alert alert-' . $class . '" style="margin-top:15px;margin-bottom:-15px;">
 ';
@@ -178,7 +184,7 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -187,13 +193,13 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
      */
     public function success($message, $title = null)
     {
-        $this->alert($message, $title, 'success');
+        return $this->alert($message, $title, 'success');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -202,13 +208,13 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
      */
     public function info($message, $title = null)
     {
-        $this->alert($message, $title, 'info');
+        return $this->alert($message, $title, 'info');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -217,13 +223,13 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
      */
     public function warning($message, $title = null)
     {
-        $this->alert($message, $title, 'warning');
+        return $this->alert($message, $title, 'warning');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -232,7 +238,7 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
      */
     public function error($message, $title = null)
     {
-        $this->alert($message, $title, 'danger');
+        return $this->alert($message, $title, 'danger');
     }
 
     /**

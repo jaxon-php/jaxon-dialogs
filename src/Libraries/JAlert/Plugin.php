@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\Jalert;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Alert, Confirm
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -82,13 +84,21 @@ jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
      */
     protected function alert($content, $title, $theme)
     {
+        if(!$title)
+        {
+            $title = '&nbsp;';
+        }
+        if($this->getReturn())
+        {
+            return "$.jAlert({content:" . $content . ", title:'" . $title . "', theme:'" . $theme . "'})";
+        }
         $this->addCommand(array('cmd' => 'jalert.alert'), array('content' => $content, 'title' => $title, 'theme' => $theme));
     }
 
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -97,13 +107,13 @@ jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
      */
     public function success($message, $title = null)
     {
-        $this->alert($message, $title, 'green');
+        return $this->alert($message, $title, 'green');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -112,13 +122,13 @@ jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
      */
     public function info($message, $title = null)
     {
-        $this->alert($message, $title, 'blue');
+        return $this->alert($message, $title, 'blue');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -127,13 +137,13 @@ jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
      */
     public function warning($message, $title = null)
     {
-        $this->alert($message, $title, 'orange');
+        return $this->alert($message, $title, 'yellow');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -142,7 +152,7 @@ jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
      */
     public function error($message, $title = null)
     {
-        $this->alert($message, $title, 'red');
+        return $this->alert($message, $title, 'red');
     }
 
     /**

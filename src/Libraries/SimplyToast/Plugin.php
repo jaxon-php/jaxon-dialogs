@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\SimplyToast;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Alert
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -69,13 +71,17 @@ jaxon.command.handler.register("simply.alert", function(args) {
      */
     private function alert($message, $type)
     {
+        if($this->getReturn())
+        {
+            return "$.simplyToast(" . $message . ", '" . $type . "')";
+        }
         $this->addCommand(array('cmd' => 'simply.alert'), array('message' => $message, 'type' => $type));
     }
 
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -84,13 +90,13 @@ jaxon.command.handler.register("simply.alert", function(args) {
      */
     public function success($message, $title = null)
     {
-        $this->alert($message, 'success');
+        return $this->alert($message, 'success');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -99,13 +105,13 @@ jaxon.command.handler.register("simply.alert", function(args) {
      */
     public function info($message, $title = null)
     {
-        $this->alert($message, 'info');
+        return $this->alert($message, 'info');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -114,13 +120,13 @@ jaxon.command.handler.register("simply.alert", function(args) {
      */
     public function warning($message, $title = null)
     {
-        $this->alert($message, 'warning');
+        return $this->alert($message, 'warning');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -129,6 +135,6 @@ jaxon.command.handler.register("simply.alert", function(args) {
      */
     public function error($message, $title = null)
     {
-        $this->alert($message, 'danger');
+        return $this->alert($message, 'danger');
     }
 }

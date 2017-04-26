@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\Bootstrap;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Modal, Alert, Confirm
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -74,20 +76,14 @@ jaxon.command.handler.register("bootstrap.hide", function(args) {
     // Hide modal
     BootstrapDialog.closeAll();
 });
-jaxon.command.handler.register("bootstrap.success", function(args) {
-    args.data.type = BootstrapDialog.TYPE_SUCCESS;
-    BootstrapDialog.alert(args.data);
-});
-jaxon.command.handler.register("bootstrap.info", function(args) {
-    args.data.type = BootstrapDialog.TYPE_INFO;
-    BootstrapDialog.alert(args.data);
-});
-jaxon.command.handler.register("bootstrap.warning", function(args) {
-    args.data.type = BootstrapDialog.TYPE_WARNING;
-    BootstrapDialog.alert(args.data);
-});
-jaxon.command.handler.register("bootstrap.danger", function(args) {
-    args.data.type = BootstrapDialog.TYPE_DANGER;
+jaxon.command.handler.register("bootstrap.alert", function(args) {
+    var dataTypes = {
+        "success": BootstrapDialog.TYPE_SUCCESS,
+        "info": BootstrapDialog.TYPE_INFO,
+        "warning": BootstrapDialog.TYPE_WARNING,
+        "danger": BootstrapDialog.TYPE_DANGER
+    };
+    args.data.type = dataTypes[args.data.type];
     BootstrapDialog.alert(args.data);
 });
 jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
@@ -134,7 +130,7 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
                 'action' => $button['click'],
             );
         }
-        // Turn the default value of the nl2br option to false, because it alters form rendering.
+        // Turn the value of the nl2br option to false, because it alters form rendering.
         if(!array_key_exists('nl2br', $options))
         {
             $options['nl2br'] = false;
@@ -167,19 +163,37 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
      */
     protected function alert($message, $title, $type)
     {
-        $options = array('message' => $message);
+        if($this->getReturn())
+        {
+            $aDataTypes = [
+                'success' => 'BootstrapDialog.TYPE_SUCCESS',
+                'info' => 'BootstrapDialog.TYPE_INFO',
+                'warning' => 'BootstrapDialog.TYPE_WARNING',
+                'danger' => 'BootstrapDialog.TYPE_DANGER',
+            ];
+            $type = $aDataTypes[$type];
+            if(($title))
+            {
+                return "BootstrapDialog.alert({message:" . $message . ", title:'" . $title . "', type:" . $type . "})";
+            }
+            else
+            {
+                return "BootstrapDialog.alert({message:" . $message . ", type:" . $type . "})";
+            }
+        }
+        $options = array('message' => $message, 'type' => $type);
         if(($title))
         {
             $options['title'] = $title;
         }
         // Show the alert
-        $this->addCommand(array('cmd' => 'bootstrap.' . $type), $options);
+        $this->addCommand(array('cmd' => 'bootstrap.alert'), $options);
     }
 
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -188,13 +202,13 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
      */
     public function success($message, $title = null)
     {
-        $this->alert($message, $title, 'success');
+        return $this->alert($message, $title, 'success');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -203,13 +217,13 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
      */
     public function info($message, $title = null)
     {
-        $this->alert($message, $title, 'info');
+        return $this->alert($message, $title, 'info');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -218,13 +232,13 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
      */
     public function warning($message, $title = null)
     {
-        $this->alert($message, $title, 'warning');
+        return $this->alert($message, $title, 'warning');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -233,7 +247,7 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
      */
     public function error($message, $title = null)
     {
-        $this->alert($message, $title, 'danger');
+        return $this->alert($message, $title, 'danger');
     }
 
     /**

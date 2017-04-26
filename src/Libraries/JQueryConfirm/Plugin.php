@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\JQueryConfirm;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Modal, Alert, Confirm
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -173,13 +175,17 @@ jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
      */
     protected function alert($content, $title, $type, $icon)
     {
+        if($this->getReturn())
+        {
+            return "$.alert({content:" . $content . ", title:'" . $title . "', type:'" . $type . "', icon:'" . $icon . "'})";
+        }
         $this->addCommand(array('cmd' => 'jconfirm.alert'), compact('content', 'title', 'type', 'icon'));
     }
 
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -188,13 +194,13 @@ jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
      */
     public function success($content, $title = null)
     {
-        $this->alert($content, $title, 'green', 'fa fa-success');
+        return $this->alert($content, $title, 'green', 'fa fa-success');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -203,13 +209,13 @@ jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
      */
     public function info($content, $title = null)
     {
-        $this->alert($content, $title, 'blue', 'fa fa-info');
+        return $this->alert($content, $title, 'blue', 'fa fa-info');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -218,13 +224,13 @@ jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
      */
     public function warning($content, $title = null)
     {
-        $this->alert($content, $title, 'orange', 'fa fa-warning');
+        return $this->alert($content, $title, 'orange', 'fa fa-warning');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -233,7 +239,7 @@ jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
      */
     public function error($content, $title = null)
     {
-        $this->alert($content, $title, 'red', 'fa fa-error');
+        return $this->alert($content, $title, 'red', 'fa fa-error');
     }
 
     /**

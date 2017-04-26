@@ -14,11 +14,13 @@ namespace Jaxon\Dialogs\Libraries\Notify;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Dialogs\Interfaces\Alert;
+use Jaxon\Request\Interfaces\Alert;
 use Jaxon\Request\Interfaces\Confirm;
 
 class Plugin extends Library implements Alert
 {
+    use \Jaxon\Request\Traits\Alert;
+
     /**
      * Get the javascript header code and file includes
      *
@@ -70,6 +72,10 @@ jaxon.command.handler.register("notify.alert", function(args) {
      */
     protected function alert($message, $title, $class)
     {
+        if($this->getReturn())
+        {
+            return "$.notify(" . $message . ", {className:'" . $class . "', position:'top center'})";
+        }
         $options = array('message' => $message, 'class' => $class);
         // Show the alert
         $this->addCommand(array('cmd' => 'notify.alert'), $options);
@@ -78,7 +84,7 @@ jaxon.command.handler.register("notify.alert", function(args) {
     /**
      * Print a success message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -87,13 +93,13 @@ jaxon.command.handler.register("notify.alert", function(args) {
      */
     public function success($message, $title = null)
     {
-        $this->alert($message, $title, 'success');
+        return $this->alert($message, $title, 'success');
     }
 
     /**
      * Print an information message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -102,13 +108,13 @@ jaxon.command.handler.register("notify.alert", function(args) {
      */
     public function info($message, $title = null)
     {
-        $this->alert($message, $title, 'info');
+        return $this->alert($message, $title, 'info');
     }
 
     /**
      * Print a warning message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -117,13 +123,13 @@ jaxon.command.handler.register("notify.alert", function(args) {
      */
     public function warning($message, $title = null)
     {
-        $this->alert($message, $title, 'warn');
+        return $this->alert($message, $title, 'warn');
     }
 
     /**
      * Print an error message.
      * 
-     * It is a function of the Jaxon\Dialogs\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
      * 
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -132,6 +138,6 @@ jaxon.command.handler.register("notify.alert", function(args) {
      */
     public function error($message, $title = null)
     {
-        $this->alert($message, $title, 'error');
+        return $this->alert($message, $title, 'error');
     }
 }
