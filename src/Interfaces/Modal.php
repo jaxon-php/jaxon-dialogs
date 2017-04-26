@@ -12,7 +12,7 @@
 
 namespace Jaxon\Dialogs\Interfaces;
 
-Interface Modal
+interface Modal
 {
     /**
      * Show a modal dialog.

@@ -12,7 +12,7 @@
 
 namespace Jaxon\Dialogs\Interfaces;
 
-Interface Plugin
+interface Plugin
 {
     /**
      * Get the plugin name
