@@ -103,7 +103,7 @@ jaxon.command.handler.register("toastr.error", function(args) {
                 return "toastr." . $type . "(" . $message . ")";
             }
         }
-        $options = array('text' => $message, 'title' => $title);
+        $options = array('message' => $message, 'title' => $title);
         // Show the alert
         $this->addCommand(array('cmd' => 'toastr.' . $type), $options);
     }
