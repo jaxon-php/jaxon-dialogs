@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/ymzbox/latest/ymz_box.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/ymzbox/latest/ymz_box.min.js"></script>';
     }
 
     /**

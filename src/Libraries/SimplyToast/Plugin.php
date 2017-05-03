@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/simply-toast/latest/simply-toast.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/simply-toast/latest/simply-toast.min.js"></script>';
     }
 
     /**

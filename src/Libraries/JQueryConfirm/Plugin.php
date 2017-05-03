@@ -31,7 +31,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
     public function getJs()
     {
         return '
-<script type="text/javascript" src="https://lib.jaxon-php.org/jquery-confirm/3.0.1/jquery-confirm.min.js"></script>';
+<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/jquery-confirm/3.0.1/jquery-confirm.min.js"></script>';
     }
 
     /**

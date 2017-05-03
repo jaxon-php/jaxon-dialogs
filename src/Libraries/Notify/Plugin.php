@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/notify/0.4.2/notify.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/notify/0.4.2/notify.js"></script>';
     }
 
     /**

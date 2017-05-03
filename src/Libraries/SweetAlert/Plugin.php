@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/sweetalert/1.1.1/sweetalert.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/sweetalert/1.1.1/sweetalert.min.js"></script>';
     }
 
     /**

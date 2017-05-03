@@ -28,7 +28,7 @@ class Plugin extends Library implements Modal
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/pgwjs/modal/2.0.0/pgwmodal.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/pgwjs/modal/2.0.0/pgwmodal.min.js"></script>';
     }
 
     /**

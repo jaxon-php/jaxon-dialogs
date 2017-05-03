@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/jAlert/4.5.1/jAlert.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/jAlert/4.5.1/jAlert.min.js"></script>';
     }
 
     /**

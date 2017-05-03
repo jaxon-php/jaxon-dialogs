@@ -30,7 +30,7 @@ class Toast extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://lib.jaxon-php.org/izi-toast/1.1.1/iziToast.min.js"></script>';
+        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/izi-toast/1.1.1/iziToast.min.js"></script>';
     }
     
     /**

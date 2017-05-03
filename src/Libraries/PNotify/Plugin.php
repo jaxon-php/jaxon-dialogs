@@ -31,8 +31,8 @@ class Plugin extends Library implements Alert, Confirm
     public function getJs()
     {
         return '
-<script type="text/javascript" src="https://lib.jaxon-php.org/pnotify/latest/pnotify.js"></script>
-<script type="text/javascript" src="https://lib.jaxon-php.org/pnotify/latest/pnotify.confirm.js"></script>';
+<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/pnotify/latest/pnotify.js"></script>
+<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/pnotify/latest/pnotify.confirm.js"></script>';
     }
 
     /**
