@@ -6,7 +6,7 @@
         {"name": "Thierry Feuzeu"}
     ],
     "homepage": "https://github.com/jaxon-php/jaxon-dialogs",
-    "license": "BSD-2-Clause",
+    "license": "BSD-3-Clause",
     "keywords": ["Jaxon", "Xajax", "Ajax", "PHP", "Javascript", "Dialog", "Modal", "Alert", "Confirmation"],
     "support": {
         "issues": "https://github.com/jaxon-php/jaxon-dialogs/issues",
