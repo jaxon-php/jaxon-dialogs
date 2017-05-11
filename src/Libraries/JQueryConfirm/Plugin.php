@@ -30,8 +30,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return '
-<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/jquery-confirm/3.0.1/jquery-confirm.min.js"></script>';
+        return $this->getJsCode('/jquery-confirm/3.0.1/jquery-confirm.min.js');
     }
 
     /**
@@ -43,8 +42,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return '
-<link href="https://lib.jaxon-php.org/jquery-confirm/3.0.1/jquery-confirm.min.css" rel="stylesheet" type="text/css">
+        return $this->getCssCode('/jquery-confirm/3.0.1/jquery-confirm.min.css') . '
 <style type="text/css">
     .jconfirm .jconfirm-box div.jconfirm-content-pane {
         margin-top: 15px;

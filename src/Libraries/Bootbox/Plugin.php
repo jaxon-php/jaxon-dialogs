@@ -30,7 +30,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/bootbox/4.3.0/bootbox.min.js"></script>';
+        return $this->getJsCode('/bootbox/4.3.0/bootbox.min.js');
     }
 
     protected function getContainer()

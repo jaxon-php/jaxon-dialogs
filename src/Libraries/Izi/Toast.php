@@ -30,7 +30,7 @@ class Toast extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/izi-toast/1.1.1/iziToast.min.js"></script>';
+        return $this->getJsCode('/izi-toast/1.1.1/iziToast.min.js');
     }
     
     /**
@@ -42,7 +42,7 @@ class Toast extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/izi-toast/1.1.1/iziToast.min.css" />';
+        return $this->getCssCode('/izi-toast/1.1.1/iziToast.min.css');
     }
     
     /**

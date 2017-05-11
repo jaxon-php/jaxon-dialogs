@@ -30,7 +30,8 @@ Configuration
 This package defines 3 config options in the `default` section to set the default library to be used resp.
 for modal, alert and confirmation dialogs.
 The `libraries` config option allows to load additional libraries into the page.
-The `confirm` section contains options for the confirm dialog. 
+The `confirm` section defines options for the confirm dialog. 
+The `lib.uri` option defines the URI where to get the libraries files from. 
 
 Specific options can also be set for each library.
 
@@ -54,6 +55,9 @@ Specific options can also be set for each library.
                 'closeButton' => true,
                 'positionClass' => 'toast-top-center'
             ),
+        ),
+        'lib' => array(
+            'uri' => 'https://cdn.jaxon-php.org/libs',
         ),
     ),
 ```

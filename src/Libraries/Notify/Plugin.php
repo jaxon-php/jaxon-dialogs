@@ -30,19 +30,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/notify/0.4.2/notify.js"></script>';
-    }
-
-    /**
-     * Get the CSS header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
-     *
-     * @return string
-     */
-    public function getCss()
-    {
-        return '';
+        return $this->getJsCode('/notify/0.4.2/notify.js');
     }
 
     /**

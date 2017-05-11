@@ -30,7 +30,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/bootstrap-dialog/latest/bootstrap-dialog.min.js"></script>';
+        return $this->getJsCode('/bootstrap-dialog/1.35.3/bootstrap-dialog.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/bootstrap-dialog/latest/bootstrap-dialog.min.css" />';
+        return $this->getCssCode('/bootstrap-dialog/1.35.3/bootstrap-dialog.min.css');
     }
 
     /**

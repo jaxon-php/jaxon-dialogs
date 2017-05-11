@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/ymzbox/latest/ymz_box.min.js"></script>';
+        return $this->getJsCode('/ymzbox/latest/ymz_box.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/ymzbox/latest/ymz_box.css" />';
+        return $this->getCssCode('/ymzbox/latest/ymz_box.css');
     }
 
     /**

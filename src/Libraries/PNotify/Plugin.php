@@ -30,9 +30,8 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '
-<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/pnotify/latest/pnotify.js"></script>
-<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/pnotify/latest/pnotify.confirm.js"></script>';
+        return $this->getJsCode('/pnotify/3.0.0/pnotify.js') . "\n" .
+                $this->getJsCode('/pnotify/3.0.0/pnotify.confirm.js');
     }
 
     /**
@@ -44,7 +43,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/pnotify/latest/pnotify.css" />';
+        return $this->getCssCode('/pnotify/3.0.0/pnotify.css');
     }
 
     /**

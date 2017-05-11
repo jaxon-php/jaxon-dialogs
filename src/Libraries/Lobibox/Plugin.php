@@ -30,7 +30,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/lobibox/1.2.4/lobibox.min.js"></script>';
+        return $this->getJsCode('/lobibox/1.2.4/lobibox.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return '<link href="https://lib.jaxon-php.org/lobibox/1.2.4/lobibox.min.css" rel="stylesheet" type="text/css">';
+        return $this->getCssCode('/lobibox/1.2.4/lobibox.min.css');
     }
 
     /**

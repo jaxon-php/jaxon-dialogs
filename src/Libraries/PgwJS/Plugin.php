@@ -28,7 +28,7 @@ class Plugin extends Library implements Modal
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/pgwjs/modal/2.0.0/pgwmodal.min.js"></script>';
+        return $this->getJsCode('/pgwjs/modal/2.0.0/pgwmodal.min.js');
     }
 
     /**
@@ -40,7 +40,7 @@ class Plugin extends Library implements Modal
      */
     public function getCss()
     {
-        return '<link href="https://lib.jaxon-php.org/pgwjs/modal/2.0.0/pgwmodal.min.css" rel="stylesheet" type="text/css">';
+        return $this->getCssCode('/pgwjs/modal/2.0.0/pgwmodal.min.css');
     }
 
     /**

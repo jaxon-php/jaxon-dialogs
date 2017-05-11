@@ -246,4 +246,32 @@ class Library implements Plugin
     {
         return $this->xDialog->getOption('dialogs.confirm.no', 'No');
     }
+
+    /**
+     * Get the javascript HTML header code
+     *
+     * @param string            $sFile          The javascript file name
+     * @param string            $sUri           The URI where to get the file
+     *
+     * @return string
+     */
+    public function getJsCode($sFile, $sUri = 'https://cdn.jaxon-php.org/libs')
+    {
+        $sUri = rtrim($this->xDialog->getOption('dialogs.lib.uri', $sUri), '/');
+        return '<script type="text/javascript" src="' . $sUri . $sFile . '"></script>';
+    }
+
+    /**
+     * Get the CSS HTML header code
+     *
+     * @param string            $sFile          The CSS file name
+     * @param string            $sUri           The URI where to get the file
+     *
+     * @return string
+     */
+    public function getCssCode($sFile, $sUri = 'https://cdn.jaxon-php.org/libs')
+    {
+        $sUri = rtrim($this->xDialog->getOption('dialogs.lib.uri', $sUri), '/');
+        return '<link rel="stylesheet" href="' . $sUri . $sFile . '" />';
+    }
 }

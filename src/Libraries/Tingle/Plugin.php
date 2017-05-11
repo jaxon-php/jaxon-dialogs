@@ -28,7 +28,7 @@ class Plugin extends Library implements Modal
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/tingle/0.8.4/tingle.min.js"></script>';
+        return $this->getJsCode('/tingle/0.8.4/tingle.min.js');
     }
 
     /**
@@ -40,7 +40,7 @@ class Plugin extends Library implements Modal
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/tingle/0.8.4/tingle.min.css" />';
+        return $this->getCssCode('/tingle/0.8.4/tingle.min.css');
     }
 
     /**

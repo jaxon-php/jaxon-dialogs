@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/noty/latest/jquery.noty.packaged.min.js"></script>';
+        return $this->getJsCode('/noty/2.3.11/jquery.noty.packaged.min.js');
     }
 
     /**

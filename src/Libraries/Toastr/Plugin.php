@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>';
+        return $this->getJsCode('/toastr.js/2.1.3/toastr.min.js', 'https://cdnjs.cloudflare.com/ajax/libs');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Alert
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">';
+        return $this->getCssCode('/toastr.js/2.1.3/toastr.min.css', 'https://cdnjs.cloudflare.com/ajax/libs');
     }
 
     /**

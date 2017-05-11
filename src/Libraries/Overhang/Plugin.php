@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/overhang/latest/overhang.min.js"></script>';
+        return $this->getJsCode('/overhang/latest/overhang.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/overhang/latest/overhang.min.css" />';
+        return $this->getCssCode('/overhang/latest/overhang.min.css');
     }
 
     /**

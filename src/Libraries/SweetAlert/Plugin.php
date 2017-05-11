@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/sweetalert/1.1.1/sweetalert.min.js"></script>';
+        return $this->getJsCode('/sweetalert/1.1.1/sweetalert.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/sweetalert/latest/sweetalert.css" />';
+        return $this->getCssCode('/sweetalert/1.1.1/sweetalert.css');
     }
 
     /**

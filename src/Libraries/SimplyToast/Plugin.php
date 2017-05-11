@@ -30,7 +30,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return '<script type="text/javascript" src="https://cdn.jaxon-php.org/libs/simply-toast/latest/simply-toast.min.js"></script>';
+        return $this->getJsCode('/simply-toast/latest/simply-toast.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Alert
      */
     public function getCss()
     {
-        return '<link rel="stylesheet" href="https://lib.jaxon-php.org/simply-toast/latest/simply-toast.min.css" />';
+        return $this->getCssCode('/simply-toast/latest/simply-toast.min.css');
     }
 
     /**
