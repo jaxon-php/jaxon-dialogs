@@ -342,7 +342,7 @@ Interface Modal
 ```
 
 ```php
-namespace Jaxon\Dialogs\Interfaces;
+namespace Jaxon\Request\Interfaces;
 
 Interface Alert
 {
@@ -411,7 +411,7 @@ First, declare the class in the Dialogs plugin configuration.
     ),
 ```
 
-If you are not using the Module or a framework integration package, make sure to register the classes, after the configuration options are set.
+If you are not using Armada or a framework integration package, make sure to register the classes, after the configuration options are set.
 
 ```php
 $jaxon->plugin('dialog')->registerClasses();
