@@ -157,13 +157,9 @@ In the example below, the user has to choose a color, and the selected color is 
 Example with Jaxon selector.
 
 ```php
-use Jaxon\Request\Factory as rq
-```
-
-```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq::call('HelloWorld.setColor', rq::select('colorselect'))
-        ->confirm('Set color to {1}?', rq::select('colorselect')) ?>; return false;">
+    echo rq()->call('HelloWorld.setColor', rq()->select('colorselect'))
+        ->confirm('Set color to {1}?', rq()->select('colorselect')) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
     <option value="green">Green</option>
@@ -174,12 +170,8 @@ use Jaxon\Request\Factory as rq
 Example with jQuery selector.
 
 ```php
-use Jaxon\Request\Factory as rq
-```
-
-```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq::call('HelloWorld.setColor', jq('#colorselect')->val())
+    echo rq()->call('HelloWorld.setColor', jq('#colorselect')->val())
         ->confirm('Set color to {1}?', jq('#colorselect')->val()) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
