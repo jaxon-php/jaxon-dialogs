@@ -117,7 +117,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Get the hash value of the plugin.
-     * 
+     *
      * The version number is also the hash value.
      *
      * @return string
@@ -138,7 +138,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         $sName = (string)$sName;
         $sClass = (string)$sClass;
         // Register the library in the DI container
-        $this->di[$sName] = function($c) use ($sClass) {
+        $this->di[$sName] = function ($c) use ($sClass) {
             return new $sClass;
         };
     }
@@ -174,7 +174,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Get a library adapter by its name.
-     * 
+     *
      * @param string            $sName          The name of the library adapter
      *
      * @return Libraries\Library
@@ -196,7 +196,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Set the library adapter to use for modals.
-     * 
+     *
      * @param string            $sLibrary                   The name of the library adapter
      *
      * @return void
@@ -230,7 +230,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     
     /**
      * Set the library adapter to use for alerts.
-     * 
+     *
      * @param string            $sLibrary                   The name of the library adapter
      *
      * @return void
@@ -264,7 +264,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     
     /**
      * Set the library adapter to use for confirmation.
-     * 
+     *
      * @param string            $sLibrary                   The name of the library adapter
      *
      * @return void
@@ -276,7 +276,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Get the library adapter to use for confirmation.
-     * 
+     *
      * @param bool              $bReturnDefault             Return the default confirm if none is configured
      *
      * @return Libraries\Library|null
@@ -391,23 +391,23 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Show a modal dialog.
-     * 
+     *
      * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
-     * 
+     *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
      * @param array             $buttons                The buttons of the dialog
      * @param array             $options                The options of the dialog
-     * 
+     *
      * Each button is an array containin the following entries:
      * - title: the text to be printed in the button
      * - class: the CSS class of the button
      * - click: the javascript function to be called when the button is clicked
      * If the click value is set to "close", then the buttons closes the dialog.
-     * 
+     *
      * The content of the $options depends on the javascript library in use.
      * Check their specific documentation for more information.
-     * 
+     *
      * @return void
      */
     public function show($title, $content, array $buttons, array $options = array())
@@ -417,14 +417,14 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Show a modal dialog.
-     * 
+     *
      * It is another name for the show() function.
-     * 
+     *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
      * @param array             $buttons                The buttons of the dialog
      * @param array             $options                The options of the dialog
-     * 
+     *
      * @return void
      */
     public function modal($title, $content, array $buttons, array $options = array())
@@ -434,9 +434,9 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Hide the modal dialog.
-     * 
+     *
      * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
-     * 
+     *
      * @return void
      */
     public function hide()
@@ -448,7 +448,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      * Set the library to return the javascript code or run it in the browser.
      *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param boolean             $bReturn              Whether to return the code
      *
      * @return void
@@ -462,7 +462,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      * Check if the library should return the js code or run it in the browser.
      *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @return boolean
      */
     public function getReturn()
@@ -472,12 +472,12 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Print a success message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function success($message, $title = null)
@@ -487,12 +487,12 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Print an information message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function info($message, $title = null)
@@ -502,12 +502,12 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Print a warning message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function warning($message, $title = null)
@@ -517,12 +517,12 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Print an error message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function error($message, $title = null)
@@ -532,9 +532,9 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 
     /**
      * Get the script which makes a call only if the user answers yes to the given question.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Confirm interface.
-     * 
+     *
      * @return string
      */
     public function confirm($question, $yesScript, $noScript)

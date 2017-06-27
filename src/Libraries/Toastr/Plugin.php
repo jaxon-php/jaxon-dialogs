@@ -83,11 +83,11 @@ jaxon.command.handler.register("toastr.error", function(args) {
 
     /**
      * Print an alert message.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string              $title                The title of the message
      * @param string              $type                 The type of the message
-     * 
+     *
      * @return void
      */
     protected function alert($message, $title, $type)
@@ -178,5 +178,3 @@ jaxon.command.handler.register("toastr.error", function(args) {
         $this->response()->script('toastr.clear()');
     }
 }
-
-?>

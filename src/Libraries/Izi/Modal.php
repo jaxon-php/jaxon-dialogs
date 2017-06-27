@@ -76,14 +76,14 @@ jaxon.command.handler.register("izimodal.show", function(args) {
 
     /**
      * Show a modal dialog.
-     * 
+     *
      * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
-     * 
+     *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
      * @param array             $buttons                The buttons of the dialog
      * @param array             $options                The options of the dialog
-     * 
+     *
      * @return void
      */
     public function show($title, $content, array $buttons, array $options = array())
@@ -104,9 +104,9 @@ jaxon.command.handler.register("izimodal.show", function(args) {
 
     /**
      * Hide the modal dialog.
-     * 
+     *
      * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
-     * 
+     *
      * @return void
      */
     public function hide()
@@ -114,5 +114,3 @@ jaxon.command.handler.register("izimodal.show", function(args) {
         $this->addCommand(array('cmd' => 'izimodal.hide'), []);
     }
 }
-
-?>

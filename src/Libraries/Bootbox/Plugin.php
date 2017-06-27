@@ -80,14 +80,14 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Show a modal dialog.
-     * 
+     *
      * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
-     * 
+     *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
      * @param array             $buttons                The buttons of the dialog
      * @param array             $options                The options of the dialog
-     * 
+     *
      * @return void
      */
     public function show($title, $content, array $buttons, array $options = array())
@@ -140,9 +140,9 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Hide the modal dialog.
-     * 
+     *
      * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
-     * 
+     *
      * @return void
      */
     public function hide()
@@ -152,11 +152,11 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Print an alert message.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string              $title                The title of the message
      * @param string              $class                The type of the message
-     * 
+     *
      * @return void
      */
     protected function alert($message, $title, $class)
@@ -183,12 +183,12 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Print a success message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function success($message, $title = null)
@@ -198,12 +198,12 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Print an information message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function info($message, $title = null)
@@ -213,12 +213,12 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Print a warning message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function warning($message, $title = null)
@@ -228,12 +228,12 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Print an error message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function error($message, $title = null)
@@ -243,9 +243,9 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
     /**
      * Get the script which makes a call only if the user answers yes to the given question.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Confirm interface.
-     * 
+     *
      * @return string
      */
     public function confirm($question, $yesScript, $noScript)

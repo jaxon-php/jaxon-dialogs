@@ -121,7 +121,7 @@ class Library implements Plugin
      */
     final public function getOptionNames($sPrefix)
     {
-        // The options names are relative to the plugin in Dialogs configuration 
+        // The options names are relative to the plugin in Dialogs configuration
         return $this->xDialog->getOptionNames('dialogs.' . $this->getName() . '.' . $sPrefix);
     }
 
@@ -144,11 +144,11 @@ class Library implements Plugin
             {
                 $value = "'$value'";
             }
-            else if(is_bool($value))
+            elseif(is_bool($value))
             {
                 $value = ($value ? 'true' : 'false');
             }
-            else if(!is_numeric($value))
+            elseif(!is_numeric($value))
             {
                 $value = print_r($value, true);
             }
