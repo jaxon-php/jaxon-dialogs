@@ -63,10 +63,10 @@ jaxon.command.handler.register("simply.alert", function(args) {
 
     /**
      * Print an alert message.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string              $type                 The type of the message
-     * 
+     *
      * @return void
      */
     private function alert($message, $type)
@@ -80,12 +80,12 @@ jaxon.command.handler.register("simply.alert", function(args) {
 
     /**
      * Print a success message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function success($message, $title = null)
@@ -95,12 +95,12 @@ jaxon.command.handler.register("simply.alert", function(args) {
 
     /**
      * Print an information message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function info($message, $title = null)
@@ -110,12 +110,12 @@ jaxon.command.handler.register("simply.alert", function(args) {
 
     /**
      * Print a warning message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function warning($message, $title = null)
@@ -125,12 +125,12 @@ jaxon.command.handler.register("simply.alert", function(args) {
 
     /**
      * Print an error message.
-     * 
+     *
      * It is a function of the Jaxon\Request\Interfaces\Alert interface.
-     * 
+     *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
-     * 
+     *
      * @return void
      */
     public function error($message, $title = null)
