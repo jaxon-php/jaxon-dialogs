@@ -245,7 +245,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      *
      * @return Libraries\Library|null
      */
-    protected function getAlertLibrary()
+    protected function getAlertLibrary($bReturnDefault = false)
     {
         // Get the current alert library
         if(($this->sAlertLibrary) &&
@@ -253,13 +253,14 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         {
             return $library;
         }
-        // Get the default alert library
+        // Get the configured alert library
         if(($sName = $this->getOption('dialogs.default.alert', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof Alert))
         {
             return $library;
         }
-        return null;
+        // Get the default alert library
+        return ($bReturnDefault ? $this->getPluginManager()->getDefaultAlert() : null);
     }
     
     /**
@@ -289,12 +290,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         {
             return $library;
         }
-        // Get the default confirm library
+        // Get the configured confirm library
         if(($sName = $this->getOption('dialogs.default.confirm', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof Confirm))
         {
             return $library;
         }
+        // Get the default confirm library
         return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
     }
 
@@ -455,7 +457,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function setReturn($bReturn)
     {
-        $this->getAlertLibrary()->setReturn($bReturn);
+        $this->getAlertLibrary(true)->setReturn($bReturn);
     }
     
     /**
@@ -467,7 +469,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function getReturn()
     {
-        return $this->getAlertLibrary()->getReturn();
+        return $this->getAlertLibrary(true)->getReturn();
     }
 
     /**
@@ -482,7 +484,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function success($message, $title = null)
     {
-        return $this->getAlertLibrary()->success((string)$message, (string)$title);
+        return $this->getAlertLibrary(true)->success((string)$message, (string)$title);
     }
 
     /**
@@ -497,7 +499,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function info($message, $title = null)
     {
-        return $this->getAlertLibrary()->info((string)$message, (string)$title);
+        return $this->getAlertLibrary(true)->info((string)$message, (string)$title);
     }
 
     /**
@@ -512,7 +514,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function warning($message, $title = null)
     {
-        return $this->getAlertLibrary()->warning((string)$message, (string)$title);
+        return $this->getAlertLibrary(true)->warning((string)$message, (string)$title);
     }
 
     /**
@@ -527,7 +529,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function error($message, $title = null)
     {
-        return $this->getAlertLibrary()->error((string)$message, (string)$title);
+        return $this->getAlertLibrary(true)->error((string)$message, (string)$title);
     }
 
     /**
