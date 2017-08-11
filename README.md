@@ -29,9 +29,9 @@ Configuration
 
 This package defines 3 config options in the `default` section to set the default library to be used resp.
 for modal, alert and confirmation dialogs.
-The `libraries` config option allows to load additional libraries into the page.
+The `libraries` option allows to load additional libraries into the page.
 The `confirm` section defines options for the confirm dialog. 
-The `lib.uri` option defines the URI where to get the libraries files from. 
+The `lib.uri` option defines the URI where to download the libraries files from. 
 
 Specific options can also be set for each library.
 
@@ -81,15 +81,36 @@ public function show($title, $content, array $buttons, array $options = array())
 public function hide();
 ```
 
+The parameters of the `show()` methods are described as follow:
+
+- `$title`: is a one line text to be printed at the top of the dialog.
+- `$content`: the HTML content of the dialog.
+- `$buttons`: a list of buttons to be printed in the dialog. Each button is an array with the following entries:
+  - `title`: the text to be printed in the button.
+  - `class`: the CSS class or classes to be applied on the button.
+  - `click`: the javascript code to be executed on a click on this button. It can be defined using the [Request Factory](https://www.jaxon-php.org/docs/requests/factory.html), or it can be set to `close` to close the dialog.
+- `$options`: an array of config options that are specific to the javascript library in use.
+
 Example.
 
 ```php
     public function showDialog()
     {
-        $buttons = array(array('title' => 'Close', 'class' => 'btn', 'click' => 'close'));
+        // The dialog buttons
+        $buttons = array(
+            array(
+                'title' => 'Close',
+                'class' => 'btn',
+                'click' => 'close'
+            )
+        );
+        // The HTML content of the dialog
         $content = "This modal dialog depends on application settings!!";
+        // The dialog specific options
         $options = array('width' => 500);
+        // Show the dialog
         $this->response->dialog->show("Modal Dialog", $content, $buttons, $options);
+
         return $this->response;
     }
 ```
