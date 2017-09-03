@@ -30,7 +30,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/jquery-confirm/3.0.1/jquery-confirm.min.js');
+        return $this->getJsCode('/jquery-confirm/3.3.0/jquery-confirm.min.js');
     }
 
     /**
@@ -42,7 +42,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/jquery-confirm/3.0.1/jquery-confirm.min.css') . '
+        return $this->getCssCode('/jquery-confirm/3.3.0/jquery-confirm.min.css') . '
 <style type="text/css">
     .jconfirm .jconfirm-box div.jconfirm-content-pane {
         margin-top: 15px;
