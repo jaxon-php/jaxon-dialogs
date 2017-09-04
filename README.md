@@ -12,6 +12,8 @@ This package provides modal, alert and confirmation dialogs to Jaxon application
 
 The javascript library to use for each function is chosen by configuration, and the package takes care of loading the library files into the page and generating the javascript code.
 
+The URL and version number can be set individually for each javascript library.
+
 Installation
 ------------
 
@@ -39,10 +41,13 @@ Specific options can also be set for each library.
     'dialogs' => array(
         'default' => array(
             'modal' => 'bootstrap',  // Default library for modal dialogs
-            'alert' => 'noty',       // Default library for alerts
+            'alert' => 'jconfirm',   // Default library for alerts
             'confirm' => 'noty',     // Default library for confirmation
         ),
         'libraries' => array('pgwjs', 'toastr'), // Additional libraries
+        'lib' => array(
+            'uri' => 'https://cdn.jaxon-php.org/libs',
+        ),
         // Confirm options
         'confirm' => array(
             'title' => 'Question',   // The confirm dialog
@@ -56,8 +61,11 @@ Specific options can also be set for each library.
                 'positionClass' => 'toast-top-center'
             ),
         ),
-        'lib' => array(
-            'uri' => 'https://cdn.jaxon-php.org/libs',
+        // Load a different version of the JQuery Confirm library from a different CDN
+        'jconfirm' => array(
+            'uri' => 'https://cdnjs.cloudflare.com/ajax/libs',
+            'subdir' => 'jquery-confirm',
+            'version' => '3.3.2',
         ),
     ),
 ```
@@ -210,98 +218,98 @@ Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
 
 - Dialog id: bootstrap
 - Implements: Modal, Alert, Confirm
-- Options:
+- Versions: 1.35.3
 
 
 Bootbox: http://bootboxjs.com
 
 - Dialog id: bootbox
 - Implements: Modal, Alert, Confirm
-- Options:
+- Versions: 4.3.0
 
 jAlert: http://flwebsites.biz/jAlert/
 
 - Dialog id: jalert
 - Implements: Alert, Confirm
-- Options:
+- Versions: 4.5.1
 
 PgwJS: http://pgwjs.com/pgwmodal/
 
 - Dialog id: pgwjs
 - Implements: Modal
-- Options:
+- Versions: 2.0.0
 
 Toastr: https://codeseven.github.io/toastr/
 
 - Dialog id: toastr
 - Implements: Alert
-- Options:
+- Versions: 2.1.3
 
 Tingle: http://robinparisi.github.io/tingle/
 
 - Dialog id: tingle
 - Implements: Modal
-- Options:
+- Versions: 0.8.4
 
 Simply Toast: https://github.com/ericprieto/simply-toast
 
 - Dialog id: simply
 - Implements: Alert
-- Options:
+- Versions:
 
 Noty: http://ned.im/noty/
 
 - Dialog id: noty
 - Implements: Alert, Confirm
-- Options:
+- Versions: 2.3.11
 
 Notify: https://notifyjs.com
 
 - Dialog id: notify
 - Implements: Alert
-- Options:
+- Versions: 0.4.2
 
 Lobibox: http://lobianijs.com/site/lobibox
 
 - Dialog id: lobibox
 - Implements: Modal, Alert, Confirm
-- Options:
+- Versions: 1.2.4
 
 Overhang: http://paulkr.github.io/overhang.js/ (requires jQuery and jQuery UI)
 
 - Dialog id: overhang
 - Implements: Alert, Confirm
-- Options:
+- Versions:
 
 PNotify: http://sciactive.com/pnotify/ (requires jQuery and jQuery UI)
 
 - Dialog id: pnotify
 - Implements: Alert, Confirm
-- Options:
+- Versions: 3.0.0
 
 Sweet Alert: http://t4t5.github.io/sweetalert/
 
 - Dialog id: sweetalert
 - Implements: Alert, Confirm
-- Options:
+- Versions: 1.1.1
 
 JQuery-Confirm: https://craftpip.github.io/jquery-confirm/
 
 - Dialog id: jconfirm
 - Implements: Modal, Alert, Confirm
-- Options:
+- Versions: 3.0.1, 3.3.0, 3.3.1, 3.3.2
 
 IziToast: http://izitoast.marcelodolce.com
 
 - Dialog id: izi.toast
 - Implements: Alert, Confirm
-- Options:
+- Versions: 1.1.1
 
 YmzBox: https://github.com/returnphp/ymzbox
 
 - Dialog id: ymzbox
 - Implements: Alert, Confirm
-- Options:
+- Versions: 
 
 
 Adding a new library
@@ -310,6 +318,7 @@ Adding a new library
 In order to add a new javascript library to the Dialogs plugin, a new class needs to be defined and registered.
 
 The class must inherit from `Jaxon\Dialogs\Libraries\Library`, and implement a few functions and interfaces.
+Starting from release `1.1.0`, its constructor takes the default subdir and version number as parameters.
 
 ### Functions
 
