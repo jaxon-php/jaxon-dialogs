@@ -22,6 +22,14 @@ class Plugin extends Library implements Modal, Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('bootbox', '4.3.0');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/bootbox/4.3.0/bootbox.min.js');
+        return $this->getJsCode('bootbox.min.js');
     }
 
     protected function getContainer()

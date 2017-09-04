@@ -22,6 +22,14 @@ class Plugin extends Library implements Alert
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('simply-toast', 'latest');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return $this->getJsCode('/simply-toast/latest/simply-toast.min.js');
+        return $this->getJsCode('simply-toast.min.js');
     }
 
     /**
@@ -42,7 +50,7 @@ class Plugin extends Library implements Alert
      */
     public function getCss()
     {
-        return $this->getCssCode('/simply-toast/latest/simply-toast.min.css');
+        return $this->getCssCode('simply-toast.min.css');
     }
 
     /**

@@ -22,6 +22,14 @@ class Plugin extends Library implements Modal, Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('lobibox', '1.2.4');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/lobibox/1.2.4/lobibox.min.js');
+        return $this->getJsCode('lobibox.min.js');
     }
 
     /**
@@ -42,7 +50,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/lobibox/1.2.4/lobibox.min.css');
+        return $this->getCssCode('lobibox.min.css');
     }
 
     /**

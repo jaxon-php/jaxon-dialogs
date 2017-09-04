@@ -41,38 +41,38 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     protected $aLibraries = array(
         // Bootbox
-        'bootbox'       => \Jaxon\Dialogs\Libraries\Bootbox\Plugin::class,
+        'bootbox'       => Libraries\Bootbox\Plugin::class,
         // Bootstrap
-        'bootstrap'     => \Jaxon\Dialogs\Libraries\Bootstrap\Plugin::class,
+        'bootstrap'     => Libraries\Bootstrap\Plugin::class,
         // PgwJS
-        'pgwjs'         => \Jaxon\Dialogs\Libraries\PgwJS\Plugin::class,
+        'pgwjs'         => Libraries\PgwJS\Plugin::class,
         // Toastr
-        'toastr'        => \Jaxon\Dialogs\Libraries\Toastr\Plugin::class,
+        'toastr'        => Libraries\Toastr\Plugin::class,
         // JAlert
-        'jalert'        => \Jaxon\Dialogs\Libraries\JAlert\Plugin::class,
+        'jalert'        => Libraries\JAlert\Plugin::class,
         // Tingle
-        'tingle'        => \Jaxon\Dialogs\Libraries\Tingle\Plugin::class,
+        'tingle'        => Libraries\Tingle\Plugin::class,
         // SimplyToast
-        'simply'        => \Jaxon\Dialogs\Libraries\SimplyToast\Plugin::class,
+        'simply'        => Libraries\SimplyToast\Plugin::class,
         // Noty
-        'noty'          => \Jaxon\Dialogs\Libraries\Noty\Plugin::class,
+        'noty'          => Libraries\Noty\Plugin::class,
         // Notify
-        'notify'        => \Jaxon\Dialogs\Libraries\Notify\Plugin::class,
+        'notify'        => Libraries\Notify\Plugin::class,
         // Lobibox
-        'lobibox'       => \Jaxon\Dialogs\Libraries\Lobibox\Plugin::class,
+        'lobibox'       => Libraries\Lobibox\Plugin::class,
         // Overhang
-        'overhang'      => \Jaxon\Dialogs\Libraries\Overhang\Plugin::class,
+        'overhang'      => Libraries\Overhang\Plugin::class,
         // PNotify
-        'pnotify'       => \Jaxon\Dialogs\Libraries\PNotify\Plugin::class,
+        'pnotify'       => Libraries\PNotify\Plugin::class,
         // SweetAlert
-        'sweetalert'    => \Jaxon\Dialogs\Libraries\SweetAlert\Plugin::class,
+        'sweetalert'    => Libraries\SweetAlert\Plugin::class,
         // JQuery Confirm
-        'jconfirm'      => \Jaxon\Dialogs\Libraries\JQueryConfirm\Plugin::class,
+        'jconfirm'      => Libraries\JQueryConfirm\Plugin::class,
         // IziModal and IziToast
-        // 'izi.modal'     => \Jaxon\Dialogs\Libraries\Izi\Modal::class, // Not yet ready
-        'izi.toast'     => \Jaxon\Dialogs\Libraries\Izi\Toast::class,
+        // 'izi.modal'     => Libraries\Izi\Modal::class, // Not yet ready
+        'izi.toast'     => Libraries\Izi\Toast::class,
         // YmzBox
-        'ymzbox'        => \Jaxon\Dialogs\Libraries\YmzBox\Plugin::class,
+        'ymzbox'        => Libraries\YmzBox\Plugin::class,
     );
 
     /**
@@ -138,8 +138,10 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         $sName = (string)$sName;
         $sClass = (string)$sClass;
         // Register the library in the DI container
-        $this->di[$sName] = function ($c) use ($sClass) {
-            return new $sClass;
+        $this->di[$sName] = function ($c) use ($sName, $sClass) {
+            $xLibrary = new $sClass;
+            $xLibrary->init($sName, $this->di['dialog']);
+            return $xLibrary;
         };
     }
 
@@ -150,6 +152,8 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     protected function registerLibraries()
     {
+        // Register this instance of the plugin in the DI.
+        $this->di['dialog'] = $this;
         // Register supported libraries in the DI container
         foreach($this->aLibraries as $sName => $sClass)
         {
@@ -184,8 +188,6 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         try
         {
             $library = $this->di[$sName];
-            $library->setName($sName);
-            $library->setDialog($this);
         }
         catch(\Exception $e)
         {

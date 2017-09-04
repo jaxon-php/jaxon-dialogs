@@ -22,6 +22,14 @@ class Plugin extends Library implements Alert
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('toastr.js', '2.1.3');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return $this->getJsCode('/toastr.js/2.1.3/toastr.min.js', 'https://cdnjs.cloudflare.com/ajax/libs');
+        return $this->getJsCode('toastr.min.js');
     }
 
     /**
@@ -42,7 +50,7 @@ class Plugin extends Library implements Alert
      */
     public function getCss()
     {
-        return $this->getCssCode('/toastr.js/2.1.3/toastr.min.css', 'https://cdnjs.cloudflare.com/ajax/libs');
+        return $this->getCssCode('toastr.min.css');
     }
 
     /**

@@ -22,6 +22,14 @@ class Plugin extends Library implements Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('pnotify', '3.0.0');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,8 +38,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/pnotify/3.0.0/pnotify.js') . "\n" .
-                $this->getJsCode('/pnotify/3.0.0/pnotify.confirm.js');
+        return $this->getJsCode('pnotify.js') . "\n" . $this->getJsCode('pnotify.confirm.js');
     }
 
     /**
@@ -43,7 +50,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/pnotify/3.0.0/pnotify.css');
+        return $this->getCssCode('pnotify.css');
     }
 
     /**

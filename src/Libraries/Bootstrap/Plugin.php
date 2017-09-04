@@ -22,6 +22,14 @@ class Plugin extends Library implements Modal, Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('bootstrap-dialog', '1.35.3');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/bootstrap-dialog/1.35.3/bootstrap-dialog.min.js');
+        return $this->getJsCode('bootstrap-dialog.min.js');
     }
 
     /**
@@ -42,7 +50,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/bootstrap-dialog/1.35.3/bootstrap-dialog.min.css');
+        return $this->getCssCode('bootstrap-dialog.min.css');
     }
 
     /**

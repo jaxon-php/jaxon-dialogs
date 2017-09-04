@@ -22,6 +22,14 @@ class Toast extends Library implements Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('izi-toast', '1.1.1');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Toast extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/izi-toast/1.1.1/iziToast.min.js');
+        return $this->getJsCode('iziToast.min.js');
     }
     
     /**
@@ -42,7 +50,7 @@ class Toast extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/izi-toast/1.1.1/iziToast.min.css');
+        return $this->getCssCode('iziToast.min.css');
     }
     
     /**

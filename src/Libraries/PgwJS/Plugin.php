@@ -20,6 +20,14 @@ use Jaxon\Request\Interfaces\Confirm;
 class Plugin extends Library implements Modal
 {
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('pgwjs/modal', '2.0.0');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -28,7 +36,7 @@ class Plugin extends Library implements Modal
      */
     public function getJs()
     {
-        return $this->getJsCode('/pgwjs/modal/2.0.0/pgwmodal.min.js');
+        return $this->getJsCode('pgwmodal.min.js');
     }
 
     /**
@@ -40,7 +48,7 @@ class Plugin extends Library implements Modal
      */
     public function getCss()
     {
-        return $this->getCssCode('/pgwjs/modal/2.0.0/pgwmodal.min.css');
+        return $this->getCssCode('pgwmodal.min.css');
     }
 
     /**

@@ -22,6 +22,14 @@ class Plugin extends Library implements Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('jAlert', '');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/jAlert/4.5.1/jAlert.min.js');
+        return $this->getJsCode('jAlert.min.js');
     }
 
     /**
@@ -42,7 +50,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/jAlert/4.5.1/jAlert.css');
+        return $this->getCssCode('jAlert.css');
     }
 
     /**

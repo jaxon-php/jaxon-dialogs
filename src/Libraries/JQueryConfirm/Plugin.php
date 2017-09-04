@@ -22,6 +22,14 @@ class Plugin extends Library implements Modal, Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('jquery-confirm', '3.3.0');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/jquery-confirm/3.3.0/jquery-confirm.min.js');
+        return $this->getJsCode('jquery-confirm.min.js');
     }
 
     /**
@@ -42,7 +50,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getCss()
     {
-        return $this->getCssCode('/jquery-confirm/3.3.0/jquery-confirm.min.css') . '
+        return $this->getCssCode('jquery-confirm.min.css') . '
 <style type="text/css">
     .jconfirm .jconfirm-box div.jconfirm-content-pane {
         margin-top: 15px;

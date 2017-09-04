@@ -22,6 +22,14 @@ class Plugin extends Library implements Alert, Confirm
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('noty', '2.3.11');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getJs()
     {
-        return $this->getJsCode('/noty/2.3.11/jquery.noty.packaged.min.js');
+        return $this->getJsCode('jquery.noty.packaged.min.js');
     }
 
     /**

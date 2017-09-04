@@ -20,6 +20,14 @@ use Jaxon\Request\Interfaces\Confirm;
 class Plugin extends Library implements Modal
 {
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('tingle', '0.8.4');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -28,7 +36,7 @@ class Plugin extends Library implements Modal
      */
     public function getJs()
     {
-        return $this->getJsCode('/tingle/0.8.4/tingle.min.js');
+        return $this->getJsCode('tingle.min.js');
     }
 
     /**
@@ -40,7 +48,7 @@ class Plugin extends Library implements Modal
      */
     public function getCss()
     {
-        return $this->getCssCode('/tingle/0.8.4/tingle.min.css');
+        return $this->getCssCode('tingle.min.css');
     }
 
     /**

@@ -28,7 +28,28 @@ class Library implements Plugin
      *
      * @var string
      */
-    protected $sName = null;
+    protected $sName = '';
+
+    /**
+     * The subdir of the JS and CSS files in the CDN
+     *
+     * @var string
+     */
+    protected $sSubDir = '';
+
+    /**
+     * The default version of the plugin library
+     *
+     * @var string
+     */
+    protected $sVersion = '';
+
+    /**
+     * The default URI where to get the library files from
+     *
+     * @var string
+     */
+    protected $sUri = 'https://cdn.jaxon-php.org/libs';
 
     /**
      * The object used to build the response that will be sent to the client browser
@@ -36,6 +57,18 @@ class Library implements Plugin
      * @var \Jaxon\Response\Response
      */
     protected $xResponse;
+    
+    /**
+     * The constructor
+     *
+     * @param string             $sSubDir                The subdir of the JS and CSS files in the CDN
+     * @param string             $sVersion               The default version of the plugin library
+     */
+    protected function __construct($sSubDir, $sVersion)
+    {
+        $this->sSubDir = $sSubDir;
+        $this->sVersion = $sVersion;
+    }
     
     /**
      * Set the <Jaxon\Response\Response> object
@@ -73,16 +106,29 @@ class Library implements Plugin
     }
 
     /**
-     * Set the plugin instance
+     * Initialize the library class instance
      *
-     * @param Jaxon\Dialogs\Dialog      $xDialog        The plugin instance
+     * @param string                    $sName          The plugin name
+     * @param Jaxon\Dialogs\Dialog      $xDialog        The Dialog plugin instance
      *
      * @return void
      */
-    final public function setDialog($xDialog)
+    final public function init($sName, $xDialog)
     {
+        // Set the library name
+        $this->sName = $sName;
+        // Set the dialog
         $this->xDialog = $xDialog;
+        // Set the Response instance
         $this->setResponse($xDialog->response());
+        // Set the default URI.
+        $this->sUri = $this->xDialog->getOption('dialogs.lib.uri', $this->sUri);
+        // Set the library URI.
+        $this->sUri = rtrim($this->getOption('uri', $this->sUri), '/');
+        // Set the subdir
+        $this->sSubDir = trim($this->getOption('subdir', $this->sSubDir), '/');
+        // Set the version number
+        $this->sVersion = trim($this->getOption('version', $this->sVersion), '/');
     }
 
     /**
@@ -155,18 +201,6 @@ class Library implements Plugin
             $sScript .= "\n" . $sSpaces . $sVarPrefix . $sShortName . ' = ' . $value . ';';
         }
         return $sScript;
-    }
-
-    /**
-     * Set the plugin name
-     *
-     * @param string            $sName          The plugin name
-     *
-     * @return void
-     */
-    public function setName($sName)
-    {
-        $this->sName = $sName;
     }
 
     /**
@@ -255,10 +289,10 @@ class Library implements Plugin
      *
      * @return string
      */
-    public function getJsCode($sFile, $sUri = 'https://cdn.jaxon-php.org/libs')
+    public function getJsCode($sFile)
     {
-        $sUri = rtrim($this->xDialog->getOption('dialogs.lib.uri', $sUri), '/');
-        return '<script type="text/javascript" src="' . $sUri . $sFile . '"></script>';
+        return '<script type="text/javascript" src="' . $this->sUri . '/' .
+            $this->sSubDir . '/' . $this->sVersion . '/' . $sFile . '"></script>';
     }
 
     /**
@@ -269,9 +303,9 @@ class Library implements Plugin
      *
      * @return string
      */
-    public function getCssCode($sFile, $sUri = 'https://cdn.jaxon-php.org/libs')
+    public function getCssCode($sFile)
     {
-        $sUri = rtrim($this->xDialog->getOption('dialogs.lib.uri', $sUri), '/');
-        return '<link rel="stylesheet" href="' . $sUri . $sFile . '" />';
+        return '<link rel="stylesheet" href="' . $this->sUri . '/' .
+            $this->sSubDir . '/' . $this->sVersion . '/' . $sFile . '" />';
     }
 }

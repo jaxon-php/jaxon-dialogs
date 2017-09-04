@@ -22,6 +22,14 @@ class Plugin extends Library implements Alert
     use \Jaxon\Request\Traits\Alert;
 
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('notify', '0.4.2');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -30,7 +38,7 @@ class Plugin extends Library implements Alert
      */
     public function getJs()
     {
-        return $this->getJsCode('/notify/0.4.2/notify.js');
+        return $this->getJsCode('notify.js');
     }
 
     /**

@@ -20,6 +20,14 @@ use Jaxon\Request\Interfaces\Confirm;
 class Modal extends Library implements Modal
 {
     /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        parent::__construct('izi-modal', '1.4.2');
+    }
+    
+    /**
      * Get the javascript header code and file includes
      *
      * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
@@ -28,7 +36,7 @@ class Modal extends Library implements Modal
      */
     public function getJs()
     {
-        return $this->getJsCode('/izi-modal/1.4.2/iziModal.min.js');
+        return $this->getJsCode('iziModal.min.js');
     }
     
     /**
@@ -40,9 +48,14 @@ class Modal extends Library implements Modal
      */
     public function getCss()
     {
-        return $this->getCssCode('/izi-modal/1.4.2/iziModal.min.css');
+        return $this->getCssCode('iziModal.min.css');
     }
     
+    /**
+     * Get the modal container in the DOM
+     *
+     * @return string
+     */
     protected function getContainer()
     {
         $sContainer = 'izimodal-container';
