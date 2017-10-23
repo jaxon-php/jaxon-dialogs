@@ -62,61 +62,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getScript()
     {
-        return '
-Lobibox.notify.DEFAULTS = $.extend({}, Lobibox.notify.DEFAULTS, {sound: false, position: "top center", delayIndicator: false});
-Lobibox.window.DEFAULTS = $.extend({}, Lobibox.window.DEFAULTS, {width: 700, height: "auto"});
-var lobiboxWindowInstance = null;
-jaxon.command.handler.register("lobibox.show", function(args) {
-    // Add buttons
-    for(key in args.data.buttons)
-    {
-        button = args.data.buttons[key];
-        if(button.action == "close")
-        {
-            button.action = function(){return false;};
-            button.closeOnClick = true;
-        }
-        else
-        {
-            button.action = new Function(button.action);
-            button.closeOnClick = false;
-        }
-    }
-    args.data.callback = function(lobibox, type){
-        args.data.buttons[type].action();
-    };
-    if((lobiboxWindowInstance))
-    {
-        lobiboxWindowInstance.destroy();
-    }
-    lobiboxWindowInstance = Lobibox.window(args.data);
-});
-jaxon.command.handler.register("lobibox.hide", function(args) {
-    if((lobiboxWindowInstance))
-    {
-        lobiboxWindowInstance.destroy();
-    }
-    lobiboxWindowInstance = null;
-});
-jaxon.command.handler.register("lobibox.notify", function(args) {
-    Lobibox.notify(args.data.type, {title: args.data.title, msg: args.data.message});
-});
-jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
-    Lobibox.base.OPTIONS.buttons.yes.text = "' . $this->getYesButtonText() . '";
-    Lobibox.base.OPTIONS.buttons.no.text = "' . $this->getNoButtonText() . '";
-    if(noCallback == undefined) noCallback = function(){};
-    Lobibox.confirm({
-        title: title,
-        msg: question,
-        callback: function(lobibox, type){
-            if(type == "yes")
-                yesCallback();
-            else
-                noCallback();
-        }
-    });
-};
-';
+        return $this->render('lobibox/alert.js');
     }
 
     /**
@@ -255,11 +201,11 @@ jaxon.confirm.lobibox = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.lobibox('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.lobibox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.lobibox('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.lobibox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

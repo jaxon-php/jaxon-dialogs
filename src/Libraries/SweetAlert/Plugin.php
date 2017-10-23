@@ -62,36 +62,9 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-var sweetAlertOptions = {
-    allowEscapeKey: true,
-    allowOutsideClick: true
-};
-jaxon.command.handler.register("sweetalert.alert", function(args) {
-    // Set user and default options into data only when they are missing
-    for(key in sweetAlertOptions)
-    {
-        if(!(key in args.data))
-        {
-            args.data[key] = sweetAlertOptions[key];
-        }
-    }
-    swal(args.data);
-});
-jaxon.confirm.swal = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    swal({
-            type: "warning",
-            title: title,
-            confirmButtonText: "' . $this->getYesButtonText() . '",
-            cancelButtonText: "' . $this->getNoButtonText() . '",
-            showCancelButton: true,
-            text: question
-        },
-        function(res){if(res){yesCallback();}else{noCallback();}
-    });
-};
-';
+        return $this->render('sweetalert/alert.js', [
+            'options' =>  $this->getOptionScript('jaxon.dialogs.swal.options.', 'options.')
+        ]);
     }
 
     /**
@@ -190,11 +163,11 @@ jaxon.confirm.swal = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.swal('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.swal.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.swal('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.swal.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

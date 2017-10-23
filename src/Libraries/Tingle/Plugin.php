@@ -60,42 +60,7 @@ class Plugin extends Library implements Modal
      */
     public function getScript()
     {
-        return '
-var tingleModal = null;
-jaxon.command.handler.register("tingle.show", function(args) {
-    if(tingleModal != null)
-    {
-        tingleModal.close();
-    }
-    tingleModal = new tingle.modal(args.data.options);
-    // Set content
-    tingleModal.setContent(args.data.content);
-    // Add buttons
-    for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
-    {
-        button = args.data.buttons[ind];
-        if(button.click == "close")
-        {
-            button.click = function(){tingleModal.close();};
-        }
-        else
-        {
-            button.click = new Function(button.click);
-        }
-        tingleModal.addFooterBtn(button.title, button.class, button.click);
-    }
-    // Open modal
-    tingleModal.open();
-});
-jaxon.command.handler.register("tingle.hide", function(args) {
-    if(tingleModal != null)
-    {
-        // Close an destroy modal
-        tingleModal.close();
-        tingleModal.destroy();
-        tingleModal = null;
-    }
-});';
+        return $this->render('tingle/alert.js');
     }
 
     /**

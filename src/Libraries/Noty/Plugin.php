@@ -50,35 +50,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("noty.alert", function(args) {
-    noty({text: args.data.text, type: args.data.type, layout: "topCenter", timeout: 5000});
-});
-jaxon.confirm.noty = function(question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    noty({
-        text: question,
-        layout: "topCenter",
-        buttons: [
-            {
-                addClass: "btn btn-primary",
-                text: "' . $this->getYesButtonText() . '",
-                onClick: function($noty){
-                    $noty.close();
-                    yesCallback();
-                }
-            },{
-                addClass: "btn btn-danger",
-                text: "' . $this->getNoButtonText() . '",
-                onClick: function($noty){
-                    $noty.close();
-                    noCallback();
-                }
-            }
-        ]
-    });
-};
-';
+         return $this->render('noty/alert.js');
     }
 
     /**
@@ -173,11 +145,11 @@ jaxon.confirm.noty = function(question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.noty(" . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.noty.confirm(" . $question . ",'',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.noty(" . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.noty.confirm(" . $question . ",'',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

@@ -62,54 +62,7 @@ class Toast extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("izitoast.success", function(args) {
-    // Default options
-    args.data.position = "topCenter";
-    args.data.close = true;
-    iziToast.success(args.data);
-});
-jaxon.command.handler.register("izitoast.info", function(args) {
-    // Default options
-    args.data.position = "topCenter";
-    args.data.close = true;
-    iziToast.info(args.data);
-});
-jaxon.command.handler.register("izitoast.warning", function(args) {
-    // Default options
-    args.data.position = "topCenter";
-    args.data.close = true;
-    iziToast.warning(args.data);
-});
-jaxon.command.handler.register("izitoast.error", function(args) {
-    // Default options
-    args.data.position = "topCenter";
-    args.data.close = true;
-    iziToast.error(args.data);
-});
-jaxon.confirm.izi = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    iziToast.show({
-        close: false,
-        layout: 2,
-        icon: "icon-person",
-        position: "center",
-        timeout: 0,
-        title: title,
-        message: question,
-        buttons: [
-            ["<button>' . $this->getYesButtonText() . '</button>", function (instance, toast) {
-                instance.hide({transitionOut: "fadeOutUp"}, toast);
-                yesCallback();
-            }],
-            ["<button>' . $this->getNoButtonText() . '</button>", function (instance, toast) {
-                instance.hide({transitionOut: "fadeOutUp"}, toast);
-                noCallback();
-            }]
-        ],
-    });
-};
-';
+        return $this->render('izi/alert.js');
     }
 
     /**
@@ -200,11 +153,11 @@ jaxon.confirm.izi = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.izi('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.izi.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.izi('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.izi.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

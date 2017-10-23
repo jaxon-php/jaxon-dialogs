@@ -62,11 +62,9 @@ class Plugin extends Library implements Alert
      */
     public function getScript()
     {
-        $aOptions = $this->getOptionNames('options.');
-        return '
-jaxon.command.handler.register("simply.alert", function(args) {
-    $.simplyToast(args.data.message, args.data.type, ' . json_encode($aOptions) . ');
-});';
+        return $this->render('simplytoast/alert.js', [
+            'options' => json_encode($this->getOptionNames('options.'))
+        ]);
     }
 
     /**

@@ -62,22 +62,9 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("ymzbox.alert", function(args) {
-    ymz.jq_toast(args.data);
-});
-jaxon.confirm.ymzbox = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    ymz.jq_confirm({
-        title: title,
-        text: question,
-        no_fn: noCallback,
-        yes_fn: yesCallback,
-        no_btn: "' . $this->getNoButtonText() . '",
-        yes_btn: "' . $this->getYesButtonText() . '"
-    });
-};
-';
+        return $this->render('ymzbox/alert.js', [
+            'options' =>  $this->getOptionScript('jaxon.dialogs.ymzbox.', 'options.')
+        ]);
     }
 
     /**
@@ -171,11 +158,11 @@ jaxon.confirm.ymzbox = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.ymzbox('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.ymzbox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.ymzbox('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.ymzbox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

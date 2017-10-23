@@ -62,31 +62,9 @@ class Plugin extends Library implements Alert
      */
     public function getScript()
     {
-        return $this->getOptionScript('toastr.options.', 'options.') . '
-jaxon.command.handler.register("toastr.info", function(args) {
-    if((args.data.title))
-        toastr.info(args.data.message, args.data.title);
-    else
-        toastr.info(args.data.message);
-});
-jaxon.command.handler.register("toastr.success", function(args) {
-    if((args.data.title))
-        toastr.success(args.data.message, args.data.title);
-    else
-        toastr.success(args.data.message);
-});
-jaxon.command.handler.register("toastr.warning", function(args) {
-    if((args.data.title))
-        toastr.warning(args.data.message, args.data.title);
-    else
-        toastr.warning(args.data.message);
-});
-jaxon.command.handler.register("toastr.error", function(args) {
-    if((args.data.title))
-        toastr.error(args.data.message, args.data.title);
-    else
-        toastr.error(args.data.message);
-});';
+        return $this->render('toastr/alert.js', [
+            'options' =>  $this->getOptionScript('toastr.options.', 'options.')
+        ]);
     }
 
     /**

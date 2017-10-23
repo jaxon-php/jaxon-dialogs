@@ -308,4 +308,27 @@ class Library implements Plugin
         return '<link rel="stylesheet" href="' . $this->sUri . '/' .
             $this->sSubDir . '/' . $this->sVersion . '/' . $sFile . '" />';
     }
+
+    /**
+     * Render a template
+     *
+     * @param string        $sTemplate            The name of template to be rendered
+     * @param string        $aVars                The template vars
+     *
+     * @return string        The template content
+     */
+    protected function render($sTemplate, array $aVars = array())
+    {
+        // Is the library the default for alert messages?
+        $isDefaultForAlert = ($this->getName() == $this->xDialog->getOption('dialogs.default.alert'));
+        // Is the library the default for confirm questions?
+        $isDefaultForConfirm = ($this->getName() == $this->xDialog->getOption('dialogs.default.confirm'));
+        $aLocalVars = [
+            'yes' => $this->getYesButtonText(),
+            'no' => $this->getNoButtonText(),
+            'defaultForAlert' => $isDefaultForAlert,
+            'defaultForConfirm' => $isDefaultForConfirm
+        ];
+        return $this->xDialog->render('jaxon::dialogs::' . $sTemplate, array_merge($aLocalVars, $aVars));
+    }
 }

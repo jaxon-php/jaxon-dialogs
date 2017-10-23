@@ -62,40 +62,9 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-PNotify.prototype.options.delay = 5000;' . $this->getOptionScript('PNotify.prototype.options.', 'options.') . '
-jaxon.command.handler.register("pnotify.alert", function(args) {
-    jaxon.pnotify.alert(args.data);
-});
-jaxon.pnotify = {
-    confirm: function(title, question, yesCallback, noCallback){
-        PNotify.prototype.options.confirm.buttons[0].text = "' . $this->getYesButtonText() . '";
-        PNotify.prototype.options.confirm.buttons[1].text = "' . $this->getNoButtonText() . '";
-        if(noCallback == undefined) noCallback = function(){};
-        notice = new PNotify({
-            title: title,
-            text: question,
-            hide: false,
-            confirm:{
-                confirm: true
-            },
-            buttons:{
-                closer: false,
-                sticker: false,
-                labels: {
-                    
-                }
-            }
-        });
-        notice.get().on("pnotify.confirm", yesCallback);
-        notice.get().on("pnotify.cancel", noCallback);
-    },
-    alert: function(data) {
-        notice = new PNotify(data);
-        notice.get().click(function(){notice.remove();});
-    }
-};
-';
+        return $this->render('pnotify/alert.js', [
+            'options' => $this->getOptionScript('PNotify.prototype.options.', 'options.')
+        ]);
     }
 
     /**
@@ -111,7 +80,7 @@ jaxon.pnotify = {
     {
         if($this->getReturn())
         {
-            return "jaxon.pnotify.alert({text:" . $message . ", type:'" . $type . "', title:'" . $title . "'})";
+            return "jaxon.dialogs.pnotify.alert({text:" . $message . ", type:'" . $type . "', title:'" . $title . "'})";
         }
         $options = array('text' => $message, 'title' => $title, 'type' => $type);
         // Show the alert
@@ -190,11 +159,11 @@ jaxon.pnotify = {
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.pnotify.confirm('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.pnotify.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.pnotify.confirm('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.pnotify.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

@@ -26,7 +26,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function __construct()
     {
-        parent::__construct('jAlert', '');
+        parent::__construct('jAlert', '4.5.1');
     }
     
     /**
@@ -62,23 +62,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("jalert.alert", function(args) {
-    $.jAlert(args.data);
-});
-jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    $.jAlert({
-        title: title,
-        type: "confirm",
-        confirmQuestion: question,
-        confirmBtnText: "' . $this->getYesButtonText() . '",
-        denyBtnText: "' . $this->getNoButtonText() . '",
-        onConfirm: yesCallback,
-        onDeny: noCallback
-    });
-};
-';
+        return $this->render('jalert/alert.js');
     }
 
     /**
@@ -175,11 +159,11 @@ jaxon.confirm.jalert = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.jalert('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.jalert.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.jalert('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.jalert.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

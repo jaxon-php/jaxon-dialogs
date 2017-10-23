@@ -50,11 +50,7 @@ class Plugin extends Library implements Alert
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("notify.alert", function(args) {
-    $.notify(args.data.message, {className: args.data.class, position: "top center"});
-});
-';
+        return $this->render('notify/alert.js');
     }
 
     /**
@@ -72,7 +68,7 @@ jaxon.command.handler.register("notify.alert", function(args) {
         {
             return "$.notify(" . $message . ", {className:'" . $class . "', position:'top center'})";
         }
-        $options = array('message' => $message, 'class' => $class);
+        $options = array('message' => $message, 'className' => $class);
         // Show the alert
         $this->addCommand(array('cmd' => 'notify.alert'), $options);
     }

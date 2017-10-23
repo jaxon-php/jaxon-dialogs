@@ -62,26 +62,7 @@ class Plugin extends Library implements Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("overhang.alert", function(args) {
-    // Default options
-    args.data.duration = 5;
-    $("body").overhang(args.data);
-});
-jaxon.confirm.overhang = function(question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    $("body").overhang({
-        type: "confirm",
-        message: question,
-        callback: function(res){
-            if(res)
-                yesCallback();
-            else
-                noCallback();
-        }
-    });
-};
-';
+        return $this->render('overhang/alert.js');
     }
 
     /**
@@ -175,11 +156,11 @@ jaxon.confirm.overhang = function(question, yesCallback, noCallback){
     {
         if(!$noScript)
         {
-            return "jaxon.confirm.overhang(" . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.overhang.confirm(" . $question . ",function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.overhang(" . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.overhang.confirm(" . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

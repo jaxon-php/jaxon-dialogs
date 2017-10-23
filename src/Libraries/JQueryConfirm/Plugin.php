@@ -68,58 +68,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("jconfirm.show", function(args) {
-    // Add buttons
-    for(key in args.data.buttons)
-    {
-        button = args.data.buttons[key];
-        if(button.action == "close")
-        {
-            button.action = function(){jaxon.confirm.jconfirmDialog.close();};
-        }
-        else
-        {
-            button.action = new Function(button.action);
-        }
-    }
-    args.data.closeIcon = true;
-    if((jaxon.confirm.jconfirmDialog))
-    {
-        jaxon.confirm.jconfirmDialog.close();
-    }
-    jaxon.confirm.jconfirmDialog = $.confirm(args.data);
-});
-jaxon.command.handler.register("jconfirm.hide", function(args) {
-    if((jaxon.confirm.jconfirmDialog))
-    {
-        jaxon.confirm.jconfirmDialog.close();
-    }
-    jaxon.confirm.jconfirmDialog = null;
-});
-jaxon.command.handler.register("jconfirm.alert", function(args) {
-    $.alert(args.data);
-});
-jaxon.confirm.jconfirmDialog = null;
-jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    $.confirm({
-        title: title,
-        content: question,
-        buttons: {
-            yes: {
-                btnClass: "btn-blue",
-                text: "' . $this->getYesButtonText() . '",
-                action: yesCallback
-            },
-            no: {
-                text: "' . $this->getNoButtonText() . '",
-                action: noCallback
-            }
-        }
-    });
-};
-';
+        return $this->render('jqueryconfirm/alert.js');
     }
 
     /**
@@ -260,11 +209,11 @@ jaxon.confirm.jconfirm = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.jconfirm('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.jconfirm.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.jconfirm('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.jconfirm.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

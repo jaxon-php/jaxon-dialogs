@@ -62,54 +62,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
      */
     public function getScript()
     {
-        return '
-jaxon.command.handler.register("bootstrap.show", function(args) {
-    // Add buttons
-    for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
-    {
-        button = args.data.buttons[ind];
-        if(button.action == "close")
-        {
-            button.action = function(dialog){dialog.close();};
-        }
-        else
-        {
-            button.action = new Function(button.action);
-        }
-    }
-    // Open modal
-    BootstrapDialog.show(args.data);
-});
-jaxon.command.handler.register("bootstrap.hide", function(args) {
-    // Hide modal
-    BootstrapDialog.closeAll();
-});
-jaxon.command.handler.register("bootstrap.alert", function(args) {
-    var dataTypes = {
-        "success": BootstrapDialog.TYPE_SUCCESS,
-        "info": BootstrapDialog.TYPE_INFO,
-        "warning": BootstrapDialog.TYPE_WARNING,
-        "danger": BootstrapDialog.TYPE_DANGER
-    };
-    args.data.type = dataTypes[args.data.type];
-    BootstrapDialog.alert(args.data);
-});
-jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    BootstrapDialog.confirm({
-        title: title,
-        message: question,
-        btnOKLabel: "' . $this->getYesButtonText() . '",
-        btnCancelLabel: "' . $this->getNoButtonText() . '",
-        callback: function(res){
-            if(res)
-                yesCallback();
-            else
-                noCallback();
-        }
-    });
-};
-';
+        return $this->render('bootstrap/alert.js');
     }
 
     /**
@@ -270,11 +223,11 @@ jaxon.confirm.bootstrap = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.bootstrap('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.bootstrap.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.bootstrap('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.bootstrap.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }

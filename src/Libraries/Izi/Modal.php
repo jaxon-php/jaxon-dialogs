@@ -75,16 +75,7 @@ class Modal extends Library implements Modal
      */
     public function getScript()
     {
-        // Modal container
-        $sContainer = $this->getContainer();
-        return '
-if(!$("#' . $sContainer . '").length)
-{
-    $(\'body\').append(\'<div id="' . $sContainer . '"></div>\');
-}
-jaxon.command.handler.register("izimodal.show", function(args) {
-    $("' . $sContainer . '").iziModal(args.data);
-});';
+        return $this->render('izi/modal.js', ['container', $this->getContainer()]);
     }
 
     /**

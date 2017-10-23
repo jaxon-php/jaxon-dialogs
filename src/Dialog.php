@@ -23,6 +23,7 @@ use Jaxon\Utils\Interfaces\EventListener;
 
 class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 {
+    use \Jaxon\Utils\Traits\Template;
     use \Jaxon\Utils\Traits\Manager;
     use \Jaxon\Utils\Traits\Config;
     use \Jaxon\Utils\Traits\Event;
@@ -69,8 +70,8 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         // JQuery Confirm
         'jconfirm'      => Libraries\JQueryConfirm\Plugin::class,
         // IziModal and IziToast
-        // 'izi.modal'     => Libraries\Izi\Modal::class, // Not yet ready
-        'izi.toast'     => Libraries\Izi\Toast::class,
+        // 'izi-modal'     => Libraries\Izi\Modal::class, // Not yet ready
+        'izi-toast'     => Libraries\Izi\Toast::class,
         // YmzBox
         'ymzbox'        => Libraries\YmzBox\Plugin::class,
     );
@@ -183,7 +184,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      *
      * @return Libraries\Library
      */
-    protected function getLibrary($sName)
+    public function getLibrary($sName)
     {
         try
         {
@@ -385,7 +386,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     public function getScript()
     {
         $libraries = $this->getLibrariesInUse();
-        $code = '';
+        $code = "jaxon.dialogs = {};\n";
         foreach($libraries as $library)
         {
             $code .= $library->getScript() . "\n";

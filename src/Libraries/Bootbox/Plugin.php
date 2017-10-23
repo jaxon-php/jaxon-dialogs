@@ -63,27 +63,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
         // Modal container
         $sContainer = $this->getContainer();
 
-        return '
-if(!$(\'#' . $sContainer . '\').length)
-{
-    $(\'body\').append(\'<div id="' . $sContainer . '"></div>\');
-}
-jaxon.command.handler.register("bootbox", function(args) {
-    bootbox.alert(args.data.content);
-});
-jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
-    if(noCallback == undefined) noCallback = function(){};
-    bootbox.confirm({
-        title: title,
-        message: question,
-        buttons: {
-            cancel: {label: "' . $this->getNoButtonText() . '"},
-            confirm: {label: "' . $this->getYesButtonText() . '"}
-        },
-        callback: function(res){if(res){yesCallback();}else{noCallback();}}
-    });
-};
-';
+        return $this->render('bootbox/alert.js', ['container' => $sContainer]);
     }
 
     /**
@@ -105,9 +85,10 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
 
         // Set the value of the max width, if there is no value defined
         $width = array_key_exists('width', $options) ? $options['width'] : 600;
+        $html = $this->render('bootbox/dialog.html', compact('title', 'content', 'buttons'));
 
         // Buttons
-        $buttonsHtml = '
+        /*$buttonsHtml = '
 ';
         foreach($buttons as $button)
         {
@@ -139,9 +120,9 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-';
+';*/
         // Assign dialog content
-        $this->response()->assign($sContainer, 'innerHTML', $dialogHtml);
+        $this->response()->assign($sContainer, 'innerHTML', $html);
         $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
         $this->response()->script("$('#styledModal').modal('show')");
     }
@@ -161,32 +142,19 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
+     * @param string              $content              The text of the message
      * @param string              $title                The title of the message
-     * @param string              $class                The type of the message
+     * @param string              $type                 The type of the message
      *
      * @return void
      */
-    protected function alert($message, $title, $class)
+    protected function alert($content, $title, $type)
     {
         if($this->getReturn())
         {
-            return "bootbox.alert(" . $message . ")";
+            return "jaxon.dialogs.bootbox.alert('" . $type . "'," . $content . ",'" . $title . "')";
         }
-        $content = '
-        <div class="alert alert-' . $class . '" style="margin-top:15px;margin-bottom:-15px;">
-';
-        if(($title))
-        {
-            $content .= '
-            <strong>' . $title . '</strong><br/>
-';
-        }
-        $content .= '
-            ' . $message . '
-        </div>
-';
-        $this->addCommand(array('cmd' => 'bootbox'), array('content' => $content));
+        $this->addCommand(array('cmd' => 'bootbox'), compact('type', 'content', 'title'));
     }
 
     /**
@@ -261,11 +229,13 @@ jaxon.confirm.bootbox = function(title, question, yesCallback, noCallback){
         $title = $this->getConfirmTitle();
         if(!$noScript)
         {
-            return "jaxon.confirm.bootbox('" . $title . "'," . $question . ",function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.bootbox.confirm(" . $question . ",'" .
+                $title . "',function(){" . $yesScript . ";})";
         }
         else
         {
-            return "jaxon.confirm.bootbox('" . $title . "'," . $question . ",function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.bootbox.confirm(" . $question . ",'" .
+                $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
         }
     }
 }
