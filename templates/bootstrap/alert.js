@@ -15,8 +15,8 @@ jaxon.dialogs.bootstrap = {
         BootstrapDialog.confirm({
             title: title,
             message: question,
-            btnOKLabel: "<?php echo $this->no ?>",
-            btnCancelLabel: "<?php echo $this->yes ?>",
+            btnOKLabel: "<?php echo $this->yes ?>",
+            btnCancelLabel: "<?php echo $this->no ?>",
             callback: function(res){
                 if(res)
                     yesCallback();

@@ -22,8 +22,8 @@ jaxon.dialogs.jalert = {
             title: title,
             type: "confirm",
             confirmQuestion: question,
-            confirmBtnText: "<?php echo $this->no ?>",
-            denyBtnText: "<?php echo $this->yes ?>",
+            confirmBtnText: "<?php echo $this->yes ?>",
+            denyBtnText: "<?php echo $this->no ?>",
             onConfirm: yesCallback,
             onDeny: noCallback
         });
