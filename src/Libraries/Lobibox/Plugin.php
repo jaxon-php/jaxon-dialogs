@@ -86,10 +86,20 @@ class Plugin extends Library implements Modal, Alert, Confirm
         $ind = 0;
         foreach($buttons as $button)
         {
-            $options['buttons']['btn' . $ind] = array(
+            $_button = [
                 'text' => $button['title'],
                 'action' => $button['click'],
-            );
+                'class' => $button['class'],
+            ];
+            // Optional attributes
+            foreach($button as $attr => $value)
+            {
+                if(!in_array($attr, ['title', 'class', 'click']))
+                {
+                    $_button[$attr] = $value;
+                }
+            }
+            $options['buttons']['btn' . $ind] = $_button;
             $ind++;
         }
         // Show the modal dialog

@@ -96,11 +96,20 @@ class Plugin extends Library implements Modal, Alert, Confirm
         $ind = 0;
         foreach($buttons as $button)
         {
-            $options['buttons']['btn' . $ind++] = array(
+            $_button = [
                 'text' => $button['title'],
                 'btnClass' => $button['class'],
                 'action' => $button['click'],
-            );
+            ];
+            // Optional attributes
+            foreach($button as $attr => $value)
+            {
+                if(!in_array($attr, ['title', 'class', 'click']))
+                {
+                    $_button[$attr] = $value;
+                }
+            }
+            $options['buttons']['btn' . $ind++] = $_button;
         }
         // Show dialog
         $this->addCommand(array('cmd' => 'jconfirm.show'), $options);

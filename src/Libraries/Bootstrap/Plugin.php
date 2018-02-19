@@ -85,11 +85,20 @@ class Plugin extends Library implements Modal, Alert, Confirm
         $options['buttons'] = array();
         foreach($buttons as $button)
         {
-            $options['buttons'][] = array(
+            $_button = [
                 'label' => $button['title'],
                 'cssClass' => $button['class'],
                 'action' => $button['click'],
-            );
+            ];
+            // Optional attributes
+            foreach($button as $attr => $value)
+            {
+                if(!in_array($attr, ['title', 'class', 'click']))
+                {
+                    $_button[$attr] = $value;
+                }
+            }
+            $options['buttons'][] = $_button;
         }
         // Turn the value of the nl2br option to false, because it alters form rendering.
         if(!array_key_exists('nl2br', $options))

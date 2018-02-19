@@ -87,40 +87,6 @@ class Plugin extends Library implements Modal, Alert, Confirm
         $width = array_key_exists('width', $options) ? $options['width'] : 600;
         $html = $this->render('bootbox/dialog.html', compact('title', 'content', 'buttons'));
 
-        // Buttons
-        /*$buttonsHtml = '
-';
-        foreach($buttons as $button)
-        {
-            if($button['click'] == 'close')
-            {
-                $buttonsHtml .= '
-            <button type="button" class="' . $button['class'] . '" data-dismiss="modal">' . $button['title'] . '</button>';
-            }
-            else
-            {
-                $buttonsHtml .= '
-            <button type="button" class="' . $button['class'] . '" onclick="' . $button['click'] . '">' . $button['title'] . '</button>';
-            }
-        }
-        // Dialog
-        $dialogHtml = '
-    <div id="styledModal" class="modal modal-styled">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title">' . $title . '</h3>
-                </div>
-                <div class="modal-body">
-' . $content . '
-                </div>
-                <div class="modal-footer">' . $buttonsHtml . '
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-';*/
         // Assign dialog content
         $this->response()->assign($sContainer, 'innerHTML', $html);
         $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
