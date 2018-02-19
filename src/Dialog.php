@@ -126,7 +126,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     public function generateHash()
     {
         // The version number is used as hash
-        return '1.2.0';
+        return '1.2.1';
     }
 
     /**
