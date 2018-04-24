@@ -40,11 +40,11 @@ jaxon.dialogs.swal = {
 
 jaxon.command.handler.register("sweetalert.alert", function(args) {
     // Set user and default options into data only when they are missing
-    for(key in jaxon.dialogs.sweetalert.options)
+    for(key in jaxon.dialogs.swal.options)
     {
         if(!(key in args.data))
         {
-            args.data[key] = jaxon.dialogs.sweetalert.options[key];
+            args.data[key] = jaxon.dialogs.swal.options[key];
         }
     }
     swal(args.data);
