@@ -12,7 +12,7 @@
 
 namespace Jaxon\Dialogs\Libraries;
 
-use Jaxon\Dialogs\Interfaces\Plugin;
+use Jaxon\Dialogs\Contracts\Plugin;
 
 class Library implements Plugin
 {
@@ -57,7 +57,7 @@ class Library implements Plugin
      * @var \Jaxon\Response\Response
      */
     protected $xResponse;
-    
+
     /**
      * The constructor
      *
@@ -69,7 +69,7 @@ class Library implements Plugin
         $this->sSubDir = $sSubDir;
         $this->sVersion = $sVersion;
     }
-    
+
     /**
      * Set the <Jaxon\Response\Response> object
      *
@@ -81,7 +81,7 @@ class Library implements Plugin
     {
         $this->xResponse = $xResponse;
     }
-    
+
     /**
      * Get the <Jaxon\Response\Response> object
      *
@@ -91,7 +91,7 @@ class Library implements Plugin
     {
         return $this->xResponse;
     }
-    
+
     /**
      * Add a client side plugin command to the response object
      *
@@ -144,7 +144,7 @@ class Library implements Plugin
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
         return $this->xDialog->getOption($sName, $xDefault);
     }
-    
+
     /**
      * Check the presence of a config option
      *
@@ -157,7 +157,7 @@ class Library implements Plugin
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
         return $this->xDialog->hasOption($sName);
     }
-    
+
     /**
      * Get the names of the options matching a given prefix
      *
@@ -206,7 +206,7 @@ class Library implements Plugin
     /**
      * Get the plugin name
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -218,7 +218,7 @@ class Library implements Plugin
     /**
      * Get the javascript header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -230,7 +230,7 @@ class Library implements Plugin
     /**
      * Get the CSS header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -242,7 +242,7 @@ class Library implements Plugin
     /**
      * Get the javascript code to be printed into the page
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
