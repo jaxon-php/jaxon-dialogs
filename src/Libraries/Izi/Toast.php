@@ -17,7 +17,7 @@ use Jaxon\Dialogs\Contracts\Modal;
 use Jaxon\Contracts\Dialogs\Alert;
 use Jaxon\Contracts\Dialogs\Confirm;
 
-class IziToast extends Library implements Alert, Confirm
+class Toast extends Library implements Alert, Confirm
 {
     use \Jaxon\Features\Dialogs\Alert;
 
