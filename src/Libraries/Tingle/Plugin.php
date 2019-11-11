@@ -13,9 +13,9 @@
 namespace Jaxon\Dialogs\Libraries\Tingle;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Request\Interfaces\Alert;
-use Jaxon\Request\Interfaces\Confirm;
+use Jaxon\Dialogs\Contracts\Modal;
+use Jaxon\Contracts\Dialogs\Alert;
+use Jaxon\Contracts\Dialogs\Confirm;
 
 class Plugin extends Library implements Modal
 {
@@ -26,11 +26,11 @@ class Plugin extends Library implements Modal
     {
         parent::__construct('tingle', '0.8.4');
     }
-    
+
     /**
      * Get the javascript header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class Plugin extends Library implements Modal
     /**
      * Get the CSS header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -54,7 +54,7 @@ class Plugin extends Library implements Modal
     /**
      * Get the javascript code to be printed into the page
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -66,7 +66,7 @@ class Plugin extends Library implements Modal
     /**
      * Show a modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
@@ -87,7 +87,7 @@ class Plugin extends Library implements Modal
     /**
      * Hide the modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
      * @return void
      */

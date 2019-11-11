@@ -13,11 +13,11 @@
 namespace Jaxon\Dialogs\Libraries\Izi;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Request\Interfaces\Alert;
-use Jaxon\Request\Interfaces\Confirm;
+use Jaxon\Dialogs\Contracts\Modal;
+use Jaxon\Contracts\Dialogs\Alert;
+use Jaxon\Contracts\Dialogs\Confirm;
 
-class Modal extends Library implements Modal
+class IziModal extends Library implements Modal
 {
     /**
      * The constructor
@@ -26,11 +26,11 @@ class Modal extends Library implements Modal
     {
         parent::__construct('izi-modal', '1.4.2');
     }
-    
+
     /**
      * Get the javascript header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -38,11 +38,11 @@ class Modal extends Library implements Modal
     {
         return $this->getJsCode('iziModal.min.js');
     }
-    
+
     /**
      * Get the CSS header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -50,7 +50,7 @@ class Modal extends Library implements Modal
     {
         return $this->getCssCode('iziModal.min.css');
     }
-    
+
     /**
      * Get the modal container in the DOM
      *
@@ -69,7 +69,7 @@ class Modal extends Library implements Modal
     /**
      * Get the javascript code to be printed into the page
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -81,7 +81,7 @@ class Modal extends Library implements Modal
     /**
      * Show a modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
@@ -109,7 +109,7 @@ class Modal extends Library implements Modal
     /**
      * Hide the modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
      * @return void
      */

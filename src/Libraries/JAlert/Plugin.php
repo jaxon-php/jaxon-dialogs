@@ -13,13 +13,13 @@
 namespace Jaxon\Dialogs\Libraries\Jalert;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Request\Interfaces\Alert;
-use Jaxon\Request\Interfaces\Confirm;
+use Jaxon\Dialogs\Contracts\Modal;
+use Jaxon\Contracts\Dialogs\Alert;
+use Jaxon\Contracts\Dialogs\Confirm;
 
 class Plugin extends Library implements Alert, Confirm
 {
-    use \Jaxon\Request\Traits\Alert;
+    use \Jaxon\Features\Dialogs\Alert;
 
     /**
      * The constructor
@@ -28,11 +28,11 @@ class Plugin extends Library implements Alert, Confirm
     {
         parent::__construct('jAlert', '4.5.1');
     }
-    
+
     /**
      * Get the javascript header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -44,7 +44,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Get the CSS header code and file includes
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -56,7 +56,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Get the javascript code to be printed into the page
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Plugin interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
      *
      * @return string
      */
@@ -90,7 +90,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Print a success message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -105,7 +105,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Print an information message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -120,7 +120,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Print a warning message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -135,7 +135,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Print an error message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -150,7 +150,7 @@ class Plugin extends Library implements Alert, Confirm
     /**
      * Get the script which makes a call only if the user answers yes to the given question.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Confirm interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Confirm interface.
      *
      * @return string
      */

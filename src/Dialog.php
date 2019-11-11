@@ -16,17 +16,16 @@
 namespace Jaxon\Dialogs;
 
 use Jaxon\Plugin\Response;
-use Jaxon\Dialogs\Interfaces\Modal;
-use Jaxon\Request\Interfaces\Alert;
-use Jaxon\Request\Interfaces\Confirm;
-use Jaxon\Utils\Interfaces\EventListener;
+use Jaxon\Dialogs\Contracts\Modal;
+use Jaxon\Contracts\Dialogs\Alert;
+use Jaxon\Contracts\Dialogs\Confirm;
+use Jaxon\Contracts\Event\Listener as EventListener;
 
 class Dialog extends Response implements Modal, Alert, Confirm, EventListener
 {
-    use \Jaxon\Utils\Traits\Template;
-    use \Jaxon\Utils\Traits\Manager;
-    use \Jaxon\Utils\Traits\Config;
-    use \Jaxon\Utils\Traits\Event;
+    use \Jaxon\Features\Template;
+    use \Jaxon\Features\Config;
+    use \Jaxon\Features\Event;
 
     /**
      * Dependency Injection manager
@@ -188,13 +187,12 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     {
         try
         {
-            $library = $this->di[$sName];
+            return $this->di[$sName];
         }
         catch(\Exception $e)
         {
-            $library = null;
+            return null;
         }
-        return $library;
     }
 
     /**
@@ -230,7 +228,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         }
         return null;
     }
-    
+
     /**
      * Set the library adapter to use for alerts.
      *
@@ -263,9 +261,9 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
             return $library;
         }
         // Get the default alert library
-        return ($bReturnDefault ? $this->getPluginManager()->getDefaultAlert() : null);
+        return ($bReturnDefault ? jaxon()->dialog()->getDefaultAlert() : null);
     }
-    
+
     /**
      * Set the library adapter to use for confirmation.
      *
@@ -300,7 +298,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
             return $library;
         }
         // Get the default confirm library
-        return ($bReturnDefault ? $this->getPluginManager()->getDefaultConfirm() : null);
+        return ($bReturnDefault ? jaxon()->dialog()->getDefaultConfirm() : null);
     }
 
     /**
@@ -397,7 +395,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Show a modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
      * @param string            $title                  The title of the dialog
      * @param string            $content                The content of the dialog
@@ -440,7 +438,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Hide the modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Interfaces\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
      * @return void
      */
@@ -452,7 +450,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Set the library to return the javascript code or run it in the browser.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param boolean             $bReturn              Whether to return the code
      *
@@ -462,11 +460,11 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     {
         $this->getAlertLibrary(true)->setReturn($bReturn);
     }
-    
+
     /**
      * Check if the library should return the js code or run it in the browser.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @return boolean
      */
@@ -478,7 +476,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Print a success message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -493,7 +491,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Print an information message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -508,7 +506,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Print a warning message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -523,7 +521,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Print an error message.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -538,7 +536,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Get the script which makes a call only if the user answers yes to the given question.
      *
-     * It is a function of the Jaxon\Request\Interfaces\Confirm interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Confirm interface.
      *
      * @return string
      */

@@ -10,7 +10,7 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Interfaces;
+namespace Jaxon\Dialogs\Contracts;
 
 interface Plugin
 {

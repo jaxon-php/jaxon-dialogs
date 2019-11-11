@@ -21,8 +21,8 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 
 ```json
 "require": {
-    "jaxon-php/jaxon-core": "~2.0",
-    "jaxon-php/jaxon-dialogs": "~1.0"
+    "jaxon-php/jaxon-core": "~3.0",
+    "jaxon-php/jaxon-dialogs": "~3.0"
 }
 ```
 
@@ -32,42 +32,42 @@ Configuration
 This package defines 3 config options in the `default` section to set the default library to be used resp.
 for modal, alert and confirmation dialogs.
 The `libraries` option allows to load additional libraries into the page.
-The `confirm` section defines options for the confirm dialog. 
-The `lib.uri` option defines the URI where to download the libraries files from. 
+The `confirm` section defines options for the confirm dialog.
+The `lib.uri` option defines the URI where to download the libraries files from.
 
 Specific options can also be set for each library.
 
 ```php
-    'dialogs' => array(
-        'default' => array(
+    'dialogs' => [
+        'default' => [
             'modal' => 'bootstrap',  // Default library for modal dialogs
             'alert' => 'jconfirm',   // Default library for alerts
             'confirm' => 'noty',     // Default library for confirmation
-        ),
-        'libraries' => array('pgwjs', 'toastr'), // Additional libraries
-        'lib' => array(
+        ],
+        'libraries' => ['pgwjs', 'toastr'], // Additional libraries
+        'lib' => [
             'uri' => 'https://cdn.jaxon-php.org/libs',
-        ),
+        ],
         // Confirm options
-        'confirm' => array(
+        'confirm' => [
             'title' => 'Question',   // The confirm dialog
             'yes' => 'Oh Yes',       // The text of the Yes button
             'no' => 'No way',        // The text of the No button
-        ),
+        ],
         // Options for the Toastr library
-        'toastr' => array(
-            'options' => array(
+        'toastr' => [
+            'options' => [
                 'closeButton' => true,
                 'positionClass' => 'toast-top-center'
-            ),
-        ),
+            ],
+        ],
         // Load a different version of the JQuery Confirm library from a different CDN
-        'jconfirm' => array(
+        'jconfirm' => [
             'uri' => 'https://cdnjs.cloudflare.com/ajax/libs',
             'subdir' => 'jquery-confirm',
             'version' => '3.3.2',
-        ),
-    ),
+        ],
+    ],
 ```
 
 Usage
@@ -81,7 +81,7 @@ This plugin provides functions to show and hide modal dialogs, with a title, a c
 /**
  * Show a modal dialog.
  */
-public function show($title, $content, array $buttons, array $options = array());
+public function show($title, $content, array $buttons, array $options = []);
 
 /**
  * Hide the modal dialog.
@@ -105,17 +105,17 @@ Example.
     public function showDialog()
     {
         // The dialog buttons
-        $buttons = array(
-            array(
+        $buttons = [
+            [
                 'title' => 'Close',
                 'class' => 'btn',
                 'click' => 'close'
-            )
-        );
+            ]
+        ];
         // The HTML content of the dialog
         $content = "This modal dialog depends on application settings!!";
         // The dialog specific options
-        $options = array('width' => 500);
+        $options = ['width' => 500];
         // Show the dialog
         $this->response->dialog->show("Modal Dialog", $content, $buttons, $options);
 
@@ -309,7 +309,7 @@ YmzBox: https://github.com/returnphp/ymzbox
 
 - Dialog id: ymzbox
 - Implements: Alert, Confirm
-- Versions: 
+- Versions:
 
 
 Adding a new library
@@ -362,7 +362,7 @@ Interface Modal
     /**
      * Show a modal dialog.
      */
-    public function show($title, $content, array $buttons, array $options = array());
+    public function show($title, $content, array $buttons, array $options = []);
 
     /**
      * Hide the modal dialog.
@@ -424,21 +424,21 @@ After it is defined, the library class needs to be configured and registered bef
 First, declare the class in the Dialogs plugin configuration.
 
 ```php
-    'dialogs' => array(
-        'default' => array(
+    'dialogs' => [
+        'default' => [
             'modal' => 'myplugin',   // Default library for modal dialogs
             'alert' => 'myplugin',   // Default library for alerts
             'confirm' => 'myplugin', // Default library for confirmation
-        ),
-        'classes' => array(
+        ],
+        'classes' => [
             'myplugin' => \Path\To\My\Plugin::class,
-        ),
-        'myplugin' => array(         // Plugin config options
-            'options' => array(
+        ],
+        'myplugin' => [         // Plugin config options
+            'options' => [
                'position' => 'center',
-            ),
-        ),
-    ),
+            ],
+        ],
+    ],
 ```
 
 If you are not using Armada or a framework integration package, make sure to register the classes, after the configuration options are set.
