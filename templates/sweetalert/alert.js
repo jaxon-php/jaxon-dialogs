@@ -36,26 +36,29 @@ jaxon.dialogs.swal = {
         });
     }
 };
+
+jaxon.dom.ready(function() {
 <?php echo $this->options ?>
 
-jaxon.command.handler.register("sweetalert.alert", function(args) {
-    // Set user and default options into data only when they are missing
-    for(key in jaxon.dialogs.swal.options)
-    {
-        if(!(key in args.data))
+    jaxon.command.handler.register("sweetalert.alert", function(args) {
+        // Set user and default options into data only when they are missing
+        for(key in jaxon.dialogs.swal.options)
         {
-            args.data[key] = jaxon.dialogs.swal.options[key];
+            if(!(key in args.data))
+            {
+                args.data[key] = jaxon.dialogs.swal.options[key];
+            }
         }
-    }
-    swal(args.data);
-});
+        swal(args.data);
+    });
 
 <?php if(($this->defaultForAlert)): ?>
-jaxon.ajax.message.success = jaxon.dialogs.swal.success;
-jaxon.ajax.message.info = jaxon.dialogs.swal.info;
-jaxon.ajax.message.warning = jaxon.dialogs.swal.warning;
-jaxon.ajax.message.error = jaxon.dialogs.swal.error;
+    jaxon.ajax.message.success = jaxon.dialogs.swal.success;
+    jaxon.ajax.message.info = jaxon.dialogs.swal.info;
+    jaxon.ajax.message.warning = jaxon.dialogs.swal.warning;
+    jaxon.ajax.message.error = jaxon.dialogs.swal.error;
 <?php endif ?>
 <?php if(($this->defaultForConfirm)): ?>
-jaxon.ajax.message.confirm = jaxon.dialogs.swal.confirm;
+    jaxon.ajax.message.confirm = jaxon.dialogs.swal.confirm;
 <?php endif ?>
+});

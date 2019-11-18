@@ -25,18 +25,20 @@ jaxon.dialogs.overhang = {
     }
 };
 
-jaxon.command.handler.register("overhang.alert", function(args) {
-    // Default options
-    args.data.duration = 5;
-    $("body").overhang(args.data);
-});
+jaxon.dom.ready(function() {
+    jaxon.command.handler.register("overhang.alert", function(args) {
+        // Default options
+        args.data.duration = 5;
+        $("body").overhang(args.data);
+    });
 
 <?php if(($this->defaultForAlert)): ?>
-jaxon.ajax.message.success = jaxon.dialogs.overhang.success;
-jaxon.ajax.message.info = jaxon.dialogs.overhang.info;
-jaxon.ajax.message.warning = jaxon.dialogs.overhang.warning;
-jaxon.ajax.message.error = jaxon.dialogs.overhang.error;
+    jaxon.ajax.message.success = jaxon.dialogs.overhang.success;
+    jaxon.ajax.message.info = jaxon.dialogs.overhang.info;
+    jaxon.ajax.message.warning = jaxon.dialogs.overhang.warning;
+    jaxon.ajax.message.error = jaxon.dialogs.overhang.error;
 <?php endif ?>
 <?php if(($this->defaultForConfirm)): ?>
-jaxon.ajax.message.confirm = jaxon.dialogs.overhang.confirm;
+    jaxon.ajax.message.confirm = jaxon.dialogs.overhang.confirm;
 <?php endif ?>
+});

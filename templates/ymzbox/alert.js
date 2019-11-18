@@ -25,18 +25,21 @@ jaxon.dialogs.ymzbox = {
         });
     }
 };
+
+jaxon.dom.ready(function() {
 <?php echo $this->options ?>
 
-jaxon.command.handler.register("ymzbox.alert", function(args) {
-    ymz.jq_toast(args.data);
-});
+    jaxon.command.handler.register("ymzbox.alert", function(args) {
+        ymz.jq_toast(args.data);
+    });
 
 <?php if(($this->defaultForAlert)): ?>
-jaxon.ajax.message.success = jaxon.dialogs.ymzbox.success;
-jaxon.ajax.message.info = jaxon.dialogs.ymzbox.info;
-jaxon.ajax.message.warning = jaxon.dialogs.ymzbox.warning;
-jaxon.ajax.message.error = jaxon.dialogs.ymzbox.error;
+    jaxon.ajax.message.success = jaxon.dialogs.ymzbox.success;
+    jaxon.ajax.message.info = jaxon.dialogs.ymzbox.info;
+    jaxon.ajax.message.warning = jaxon.dialogs.ymzbox.warning;
+    jaxon.ajax.message.error = jaxon.dialogs.ymzbox.error;
 <?php endif ?>
 <?php if(($this->defaultForConfirm)): ?>
-jaxon.ajax.message.confirm = jaxon.dialogs.ymzbox.confirm;
+    jaxon.ajax.message.confirm = jaxon.dialogs.ymzbox.confirm;
 <?php endif ?>
+});

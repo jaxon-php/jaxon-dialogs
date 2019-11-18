@@ -1,4 +1,35 @@
 jaxon.dialogs.bootstrap = {
+    show: function(args) {
+        // Add buttons
+        for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
+        {
+            button = args.data.buttons[ind];
+            if(button.action == "close")
+            {
+                button.action = function(dialog){dialog.close();};
+            }
+            else
+            {
+                button.action = new Function(button.action);
+            }
+        }
+        // Open modal
+        BootstrapDialog.show(args.data);
+    },
+    hide: function(args) {
+        // Hide modal
+        BootstrapDialog.closeAll();
+    },
+    alert: function(args) {
+        var dataTypes = {
+            success: BootstrapDialog.TYPE_SUCCESS,
+            info: BootstrapDialog.TYPE_INFO,
+            warning: BootstrapDialog.TYPE_WARNING,
+            danger: BootstrapDialog.TYPE_DANGER
+        };
+        args.data.type = dataTypes[args.data.type];
+        BootstrapDialog.alert(args.data);
+    },
     success: function(content, title) {
         BootstrapDialog.alert({type: BootstrapDialog.TYPE_SUCCESS, message: content, title: title});
     },
@@ -27,44 +58,18 @@ jaxon.dialogs.bootstrap = {
     }
 };
 
-jaxon.command.handler.register("bootstrap.show", function(args) {
-    // Add buttons
-    for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
-    {
-        button = args.data.buttons[ind];
-        if(button.action == "close")
-        {
-            button.action = function(dialog){dialog.close();};
-        }
-        else
-        {
-            button.action = new Function(button.action);
-        }
-    }
-    // Open modal
-    BootstrapDialog.show(args.data);
-});
-jaxon.command.handler.register("bootstrap.hide", function(args) {
-    // Hide modal
-    BootstrapDialog.closeAll();
-});
-jaxon.command.handler.register("bootstrap.alert", function(args) {
-    var dataTypes = {
-        success: BootstrapDialog.TYPE_SUCCESS,
-        info: BootstrapDialog.TYPE_INFO,
-        warning: BootstrapDialog.TYPE_WARNING,
-        danger: BootstrapDialog.TYPE_DANGER
-    };
-    args.data.type = dataTypes[args.data.type];
-    BootstrapDialog.alert(args.data);
-});
+jaxon.dom.ready(function() {
+    jaxon.command.handler.register("bootstrap.show", jaxon.dialogs.bootstrap.show);
+    jaxon.command.handler.register("bootstrap.hide", jaxon.dialogs.bootstrap.hide);
+    jaxon.command.handler.register("bootstrap.alert", jaxon.dialogs.bootstrap.alert);
 
 <?php if(($this->defaultForAlert)): ?>
-jaxon.ajax.message.success = jaxon.dialogs.bootstrap.success;
-jaxon.ajax.message.info = jaxon.dialogs.bootstrap.info;
-jaxon.ajax.message.warning = jaxon.dialogs.bootstrap.warning;
-jaxon.ajax.message.error = jaxon.dialogs.bootstrap.error;
+    jaxon.ajax.message.success = jaxon.dialogs.bootstrap.success;
+    jaxon.ajax.message.info = jaxon.dialogs.bootstrap.info;
+    jaxon.ajax.message.warning = jaxon.dialogs.bootstrap.warning;
+    jaxon.ajax.message.error = jaxon.dialogs.bootstrap.error;
 <?php endif ?>
 <?php if(($this->defaultForConfirm)): ?>
-jaxon.ajax.message.confirm = jaxon.dialogs.bootstrap.confirm;
+    jaxon.ajax.message.confirm = jaxon.dialogs.bootstrap.confirm;
 <?php endif ?>
+});

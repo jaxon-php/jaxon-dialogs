@@ -178,7 +178,7 @@ class Library implements Plugin
      *
      * @return array        The options matching the prefix
      */
-    final public function getOptionScript($sVarPrefix, $sKeyPrefix, $nSpaces = 0)
+    final public function getOptionScript($sVarPrefix, $sKeyPrefix, $nSpaces = 4)
     {
         $aOptions = $this->getOptionNames($sKeyPrefix);
         $sSpaces = str_repeat(' ', $nSpaces);
