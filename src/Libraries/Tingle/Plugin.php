@@ -14,8 +14,8 @@ namespace Jaxon\Dialogs\Libraries\Tingle;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Alert;
-use Jaxon\Contracts\Dialogs\Confirm;
+use Jaxon\Contracts\Dialogs\Message;
+use Jaxon\Contracts\Dialogs\Question;
 
 class Plugin extends Library implements Modal
 {

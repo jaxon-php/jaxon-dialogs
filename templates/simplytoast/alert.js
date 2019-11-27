@@ -18,7 +18,7 @@ jaxon.dom.ready(function() {
         $.simplyToast(args.data.message, args.data.type, <?php echo $this->options ?>);
     });
 
-<?php if(($this->defaultForAlert)): ?>
+<?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.simplytoast.success;
     jaxon.ajax.message.info = jaxon.dialogs.simplytoast.info;
     jaxon.ajax.message.warning = jaxon.dialogs.simplytoast.warning;

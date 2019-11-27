@@ -70,13 +70,13 @@ jaxon.dom.ready(function() {
         Lobibox.notify(args.data.type, {title: args.data.title, msg: args.data.message});
     });
 
-<?php if(($this->defaultForAlert)): ?>
+<?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.lobibox.success;
     jaxon.ajax.message.info = jaxon.dialogs.lobibox.info;
     jaxon.ajax.message.warning = jaxon.dialogs.lobibox.warning;
     jaxon.ajax.message.error = jaxon.dialogs.lobibox.error;
 <?php endif ?>
-<?php if(($this->defaultForConfirm)): ?>
+<?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.lobibox.confirm;
 <?php endif ?>
 });

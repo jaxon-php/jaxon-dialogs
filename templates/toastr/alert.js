@@ -41,7 +41,7 @@ jaxon.dom.ready(function() {
         jaxon.dialogs.toastr.error(args.data.message, args.data.title);
     });
 
-<?php if(($this->defaultForAlert)): ?>
+<?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.toastr.success;
     jaxon.ajax.message.info = jaxon.dialogs.toastr.info;
     jaxon.ajax.message.warning = jaxon.dialogs.toastr.warning;

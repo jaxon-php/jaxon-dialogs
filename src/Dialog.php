@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Dialog.php - Modal, Alert and confirmation dialogs for Jaxon.
+ * Dialog.php - Modal, message and question dialogs for Jaxon.
  *
- * Show modal, alert and confirmation dialogs with various javascript libraries
+ * Show modal, message and question dialogs with various javascript libraries
  * based on user settings.
  *
  * @package jaxon-dialogs
@@ -17,11 +17,11 @@ namespace Jaxon\Dialogs;
 
 use Jaxon\Plugin\Response;
 use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Alert;
-use Jaxon\Contracts\Dialogs\Confirm;
+use Jaxon\Contracts\Dialogs\Message;
+use Jaxon\Contracts\Dialogs\Question;
 use Jaxon\Contracts\Event\Listener as EventListener;
 
-class Dialog extends Response implements Modal, Alert, Confirm, EventListener
+class Dialog extends Response implements Modal, Message, Question, EventListener
 {
     use \Jaxon\Features\Template;
     use \Jaxon\Features\Config;
@@ -83,18 +83,18 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     protected $sModalLibrary = null;
 
     /**
-     * The name of the library to use for alerts
+     * The name of the library to use for messages
      *
      * @var string
      */
-    protected $sAlertLibrary = null;
+    protected $sMessageLibrary = null;
 
     /**
-     * The name of the library to use for confirmation
+     * The name of the library to use for question
      *
      * @var string
      */
-    protected $sConfirmLibrary = null;
+    protected $sQuestionLibrary = null;
 
     /**
      * The constructor
@@ -125,7 +125,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     public function generateHash()
     {
         // The version number is used as hash
-        return '1.2.2';
+        return '3.0.0';
     }
 
     /**
@@ -230,75 +230,75 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     }
 
     /**
-     * Set the library adapter to use for alerts.
+     * Set the library adapter to use for messages.
      *
      * @param string            $sLibrary                   The name of the library adapter
      *
      * @return void
      */
-    public function setAlertLibrary($sLibrary)
+    public function setMessageLibrary($sLibrary)
     {
-        $this->sAlertLibrary = $sLibrary;
+        $this->sMessageLibrary = $sLibrary;
     }
 
     /**
-     * Get the library adapter to use for alerts.
+     * Get the library adapter to use for messages.
      *
      * @return Libraries\Library|null
      */
-    protected function getAlertLibrary($bReturnDefault = false)
+    protected function getMessageLibrary($bReturnDefault = false)
     {
-        // Get the current alert library
-        if(($this->sAlertLibrary) &&
-            ($library = $this->getLibrary($this->sAlertLibrary)) && ($library instanceof Alert))
+        // Get the current message library
+        if(($this->sMessageLibrary) &&
+            ($library = $this->getLibrary($this->sMessageLibrary)) && ($library instanceof Message))
         {
             return $library;
         }
-        // Get the configured alert library
-        if(($sName = $this->getOption('dialogs.default.alert', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof Alert))
+        // Get the configured message library
+        if(($sName = $this->getOption('dialogs.default.message', '')) &&
+            ($library = $this->getLibrary($sName)) && ($library instanceof Message))
         {
             return $library;
         }
-        // Get the default alert library
-        return ($bReturnDefault ? jaxon()->dialog()->getDefaultAlert() : null);
+        // Get the default message library
+        return ($bReturnDefault ? jaxon()->dialog()->getDefaultMessage() : null);
     }
 
     /**
-     * Set the library adapter to use for confirmation.
+     * Set the library adapter to use for question.
      *
      * @param string            $sLibrary                   The name of the library adapter
      *
      * @return void
      */
-    public function setConfirmLibrary($sLibrary)
+    public function setQuestionLibrary($sLibrary)
     {
-        $this->sConfirmLibrary = $sLibrary;
+        $this->sQuestionLibrary = $sLibrary;
     }
 
     /**
-     * Get the library adapter to use for confirmation.
+     * Get the library adapter to use for question.
      *
      * @param bool              $bReturnDefault             Return the default confirm if none is configured
      *
      * @return Libraries\Library|null
      */
-    protected function getConfirmLibrary($bReturnDefault = false)
+    protected function getQuestionLibrary($bReturnDefault = false)
     {
         // Get the current confirm library
-        if(($this->sConfirmLibrary) &&
-            ($library = $this->getLibrary($this->sConfirmLibrary)) && ($library instanceof Confirm))
+        if(($this->sQuestionLibrary) &&
+            ($library = $this->getLibrary($this->sQuestionLibrary)) && ($library instanceof Question))
         {
             return $library;
         }
         // Get the configured confirm library
-        if(($sName = $this->getOption('dialogs.default.confirm', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof Confirm))
+        if(($sName = $this->getOption('dialogs.default.question', '')) &&
+            ($library = $this->getLibrary($sName)) && ($library instanceof Question))
         {
             return $library;
         }
         // Get the default confirm library
-        return ($bReturnDefault ? jaxon()->dialog()->getDefaultConfirm() : null);
+        return ($bReturnDefault ? jaxon()->dialog()->getDefaultQuestion() : null);
     }
 
     /**
@@ -325,11 +325,11 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
         {
             $libraries[$library->getName()] = $library;
         }
-        if(($library = $this->getAlertLibrary()))
+        if(($library = $this->getMessageLibrary()))
         {
             $libraries[$library->getName()] = $library;
         }
-        if(($library = $this->getConfirmLibrary()))
+        if(($library = $this->getQuestionLibrary()))
         {
             $libraries[$library->getName()] = $library;
         }
@@ -450,7 +450,7 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
     /**
      * Set the library to return the javascript code or run it in the browser.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param boolean             $bReturn              Whether to return the code
      *
@@ -458,25 +458,25 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function setReturn($bReturn)
     {
-        $this->getAlertLibrary(true)->setReturn($bReturn);
+        $this->getMessageLibrary(true)->setReturn($bReturn);
     }
 
     /**
      * Check if the library should return the js code or run it in the browser.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @return boolean
      */
     public function getReturn()
     {
-        return $this->getAlertLibrary(true)->getReturn();
+        return $this->getMessageLibrary(true)->getReturn();
     }
 
     /**
      * Print a success message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -485,13 +485,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function success($message, $title = null)
     {
-        return $this->getAlertLibrary(true)->success((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->success((string)$message, (string)$title);
     }
 
     /**
      * Print an information message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -500,13 +500,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function info($message, $title = null)
     {
-        return $this->getAlertLibrary(true)->info((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->info((string)$message, (string)$title);
     }
 
     /**
      * Print a warning message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -515,13 +515,13 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function warning($message, $title = null)
     {
-        return $this->getAlertLibrary(true)->warning((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->warning((string)$message, (string)$title);
     }
 
     /**
      * Print an error message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -530,19 +530,19 @@ class Dialog extends Response implements Modal, Alert, Confirm, EventListener
      */
     public function error($message, $title = null)
     {
-        return $this->getAlertLibrary(true)->error((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->error((string)$message, (string)$title);
     }
 
     /**
      * Get the script which makes a call only if the user answers yes to the given question.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Confirm interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Question interface.
      *
      * @return string
      */
     public function confirm($question, $yesScript, $noScript)
     {
-        return $this->getConfirmLibrary(true)->confirm($question, $yesScript, $noScript);
+        return $this->getQuestionLibrary(true)->confirm($question, $yesScript, $noScript);
     }
 
     /**

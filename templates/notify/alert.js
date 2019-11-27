@@ -18,7 +18,7 @@ jaxon.dom.ready(function() {
         $.notify(args.data.message, {className: args.data.className, position: "top center"});
     });
 
-<?php if(($this->defaultForAlert)): ?>
+<?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.notify.success;
     jaxon.ajax.message.info = jaxon.dialogs.notify.info;
     jaxon.ajax.message.warning = jaxon.dialogs.notify.warning;

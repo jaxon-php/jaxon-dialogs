@@ -52,13 +52,13 @@ jaxon.dom.ready(function() {
         swal(args.data);
     });
 
-<?php if(($this->defaultForAlert)): ?>
+<?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.swal.success;
     jaxon.ajax.message.info = jaxon.dialogs.swal.info;
     jaxon.ajax.message.warning = jaxon.dialogs.swal.warning;
     jaxon.ajax.message.error = jaxon.dialogs.swal.error;
 <?php endif ?>
-<?php if(($this->defaultForConfirm)): ?>
+<?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.swal.confirm;
 <?php endif ?>
 });

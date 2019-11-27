@@ -256,9 +256,9 @@ class Library implements Plugin
      *
      * @return string
      */
-    public function getConfirmTitle()
+    public function getQuestionTitle()
     {
-        return $this->xDialog->getOption('dialogs.confirm.title', '');
+        return $this->xDialog->getOption('dialogs.question.title', '');
     }
 
     /**
@@ -268,7 +268,7 @@ class Library implements Plugin
      */
     public function getYesButtonText()
     {
-        return $this->xDialog->getOption('dialogs.confirm.yes', 'Yes');
+        return $this->xDialog->getOption('dialogs.question.yes', 'Yes');
     }
 
     /**
@@ -278,7 +278,7 @@ class Library implements Plugin
      */
     public function getNoButtonText()
     {
-        return $this->xDialog->getOption('dialogs.confirm.no', 'No');
+        return $this->xDialog->getOption('dialogs.question.no', 'No');
     }
 
     /**
@@ -320,14 +320,14 @@ class Library implements Plugin
     protected function render($sTemplate, array $aVars = array())
     {
         // Is the library the default for alert messages?
-        $isDefaultForAlert = ($this->getName() == $this->xDialog->getOption('dialogs.default.alert'));
+        $isDefaultForMessage = ($this->getName() == $this->xDialog->getOption('dialogs.default.message'));
         // Is the library the default for confirm questions?
-        $isDefaultForConfirm = ($this->getName() == $this->xDialog->getOption('dialogs.default.confirm'));
+        $isDefaultForQuestion = ($this->getName() == $this->xDialog->getOption('dialogs.default.question'));
         $aLocalVars = [
             'yes' => $this->getYesButtonText(),
             'no' => $this->getNoButtonText(),
-            'defaultForAlert' => $isDefaultForAlert,
-            'defaultForConfirm' => $isDefaultForConfirm
+            'defaultForMessage' => $isDefaultForMessage,
+            'defaultForQuestion' => $isDefaultForQuestion
         ];
         return $this->xDialog->render('jaxon::dialogs::' . $sTemplate, array_merge($aLocalVars, $aVars));
     }

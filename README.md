@@ -32,7 +32,7 @@ Configuration
 This package defines 3 config options in the `default` section to set the default library to be used resp.
 for modal, alert and confirmation dialogs.
 The `libraries` option allows to load additional libraries into the page.
-The `confirm` section defines options for the confirm dialog.
+The `question` section defines options for the question dialog.
 The `lib.uri` option defines the URI where to download the libraries files from.
 
 Specific options can also be set for each library.
@@ -41,16 +41,16 @@ Specific options can also be set for each library.
     'dialogs' => [
         'default' => [
             'modal' => 'bootstrap',  // Default library for modal dialogs
-            'alert' => 'jconfirm',   // Default library for alerts
-            'confirm' => 'noty',     // Default library for confirmation
+            'message' => 'jconfirm', // Default library for messages
+            'question' => 'noty',    // Default library for questions
         ],
         'libraries' => ['pgwjs', 'toastr'], // Additional libraries
         'lib' => [
             'uri' => 'https://cdn.jaxon-php.org/libs',
         ],
         // Confirm options
-        'confirm' => [
-            'title' => 'Question',   // The confirm dialog
+        'question' => [
+            'title' => 'Question',   // The question dialog
             'yes' => 'Oh Yes',       // The text of the Yes button
             'no' => 'No way',        // The text of the No button
         ],
@@ -187,8 +187,8 @@ Example with Jaxon selector.
 
 ```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq()->call('HelloWorld.setColor', rq()->select('colorselect'))
-        ->confirm('Set color to {1}?', rq()->select('colorselect')) ?>; return false;">
+    echo rq('HelloWorld')->call('setColor', pr()->select('colorselect'))
+        ->confirm('Set color to {1}?', pr()->select('colorselect')) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
     <option value="green">Green</option>
@@ -200,7 +200,7 @@ Example with jQuery selector.
 
 ```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq()->call('HelloWorld.setColor', jq('#colorselect')->val())
+    echo rq('HelloWorld')->call('setColor', jq('#colorselect')->val())
         ->confirm('Set color to {1}?', jq('#colorselect')->val()) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
@@ -355,7 +355,7 @@ The `getScript()` method returns the javascript code to be executed after the pa
 Depending on the javascript library features, the class must implement one or more of the following three interfaces.
 
 ```php
-namespace Jaxon\Dialogs\Interfaces;
+namespace Jaxon\Dialogs\Contracts;
 
 Interface Modal
 {
@@ -372,9 +372,9 @@ Interface Modal
 ```
 
 ```php
-namespace Jaxon\Request\Interfaces;
+namespace Jaxon\Contracts\Dialogs;
 
-Interface Alert
+Interface Message
 {
     /**
      * Print a success message.
@@ -399,9 +399,9 @@ Interface Alert
 ```
 
 ```php
-namespace Jaxon\Request\Interfaces;
+namespace Jaxon\Contracts\Dialogs;
 
-interface Confirm
+interface Question
 {
     /**
      * Return a script which makes a call only if the user answers yes to the given question
@@ -426,9 +426,9 @@ First, declare the class in the Dialogs plugin configuration.
 ```php
     'dialogs' => [
         'default' => [
-            'modal' => 'myplugin',   // Default library for modal dialogs
-            'alert' => 'myplugin',   // Default library for alerts
-            'confirm' => 'myplugin', // Default library for confirmation
+            'modal' => 'myplugin',    // Default library for modal dialogs
+            'message' => 'myplugin',  // Default library for messages
+            'question' => 'myplugin', // Default library for questions
         ],
         'classes' => [
             'myplugin' => \Path\To\My\Plugin::class,
@@ -439,12 +439,6 @@ First, declare the class in the Dialogs plugin configuration.
             ],
         ],
     ],
-```
-
-If you are not using Armada or a framework integration package, make sure to register the classes, after the configuration options are set.
-
-```php
-$jaxon->plugin('dialog')->registerClasses();
 ```
 
 Contribute

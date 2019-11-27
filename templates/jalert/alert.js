@@ -35,13 +35,13 @@ jaxon.dom.ready(function() {
         $.jAlert(args.data);
     });
 
-<?php if(($this->defaultForAlert)): ?>
+<?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.jalert.success;
     jaxon.ajax.message.info = jaxon.dialogs.jalert.info;
     jaxon.ajax.message.warning = jaxon.dialogs.jalert.warning;
     jaxon.ajax.message.error = jaxon.dialogs.jalert.error;
 <?php endif ?>
-<?php if(($this->defaultForConfirm)): ?>
+<?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.jalert.confirm;
 <?php endif ?>
 });

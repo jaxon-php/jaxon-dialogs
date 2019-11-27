@@ -14,12 +14,12 @@ namespace Jaxon\Dialogs\Libraries\Toastr;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Alert;
-use Jaxon\Contracts\Dialogs\Confirm;
+use Jaxon\Contracts\Dialogs\Message;
+use Jaxon\Contracts\Dialogs\Question;
 
-class Plugin extends Library implements Alert
+class Plugin extends Library implements Message
 {
-    use \Jaxon\Features\Dialogs\Alert;
+    use \Jaxon\Features\Dialogs\Message;
 
     /**
      * The constructor
@@ -97,7 +97,7 @@ class Plugin extends Library implements Alert
     /**
      * Print a success message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -112,7 +112,7 @@ class Plugin extends Library implements Alert
     /**
      * Print an information message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -127,7 +127,7 @@ class Plugin extends Library implements Alert
     /**
      * Print a warning message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message
@@ -142,7 +142,7 @@ class Plugin extends Library implements Alert
     /**
      * Print an error message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $message              The text of the message
      * @param string|null         $title                The title of the message

@@ -14,8 +14,6 @@ namespace Jaxon\Dialogs\Libraries\PgwJS;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Alert;
-use Jaxon\Contracts\Dialogs\Confirm;
 
 class Plugin extends Library implements Modal
 {

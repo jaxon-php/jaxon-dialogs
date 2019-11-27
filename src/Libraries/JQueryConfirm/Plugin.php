@@ -14,12 +14,12 @@ namespace Jaxon\Dialogs\Libraries\JQueryConfirm;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Alert;
-use Jaxon\Contracts\Dialogs\Confirm;
+use Jaxon\Contracts\Dialogs\Message;
+use Jaxon\Contracts\Dialogs\Question;
 
-class Plugin extends Library implements Modal, Alert, Confirm
+class Plugin extends Library implements Modal, Message, Question
 {
-    use \Jaxon\Features\Dialogs\Alert;
+    use \Jaxon\Features\Dialogs\Message;
 
     /**
      * The constructor
@@ -149,7 +149,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
     /**
      * Print a success message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -164,7 +164,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
     /**
      * Print an information message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -179,7 +179,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
     /**
      * Print a warning message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -194,7 +194,7 @@ class Plugin extends Library implements Modal, Alert, Confirm
     /**
      * Print an error message.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Alert interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
      * @param string              $content              The text of the message
      * @param string|null         $title                The title of the message
@@ -209,13 +209,13 @@ class Plugin extends Library implements Modal, Alert, Confirm
     /**
      * Get the script which makes a call only if the user answers yes to the given question.
      *
-     * It is a function of the Jaxon\Contracts\Dialogs\Confirm interface.
+     * It is a function of the Jaxon\Contracts\Dialogs\Question interface.
      *
      * @return string
      */
     public function confirm($question, $yesScript, $noScript)
     {
-        $title = $this->getConfirmTitle();
+        $title = $this->getQuestionTitle();
         if(!$noScript)
         {
             return "jaxon.dialogs.jconfirm.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
