@@ -386,6 +386,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     public function getReadyScript()
     {
         $libraries = $this->getLibrariesInUse();
+        $code = "";
         foreach($libraries as $library)
         {
             $code .= $library->getReadyScript() . "\n";
