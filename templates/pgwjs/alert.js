@@ -20,9 +20,3 @@ jaxon.dialogs.pgwjs = {
         $.pgwModal(args.data);
     }
 };
-
-jaxon.dom.ready(function() {
-<?php echo $this->options ?>
-
-    jaxon.command.handler.register("pgw.modal", jaxon.dialogs.pgwjs.show);
-});

@@ -30,11 +30,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Get the javascript header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJs()
     {
@@ -42,11 +38,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Get the CSS header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getCss()
     {
@@ -54,15 +46,19 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Get the javascript code to be printed into the page
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
     {
         return $this->render('jalert/alert.js');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReadyScript()
+    {
+        return $this->render('jalert/ready.js.php');
     }
 
     /**
@@ -88,14 +84,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Print a success message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function success($message, $title = null)
     {
@@ -103,14 +92,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Print an information message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function info($message, $title = null)
     {
@@ -118,14 +100,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Print a warning message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function warning($message, $title = null)
     {
@@ -133,14 +108,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Print an error message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function error($message, $title = null)
     {
@@ -148,11 +116,7 @@ class Plugin extends Library implements Message, Question
     }
 
     /**
-     * Get the script which makes a call only if the user answers yes to the given question.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Question interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function confirm($question, $yesScript, $noScript)
     {

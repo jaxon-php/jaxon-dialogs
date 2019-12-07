@@ -28,11 +28,7 @@ class Plugin extends Library implements Modal
     }
 
     /**
-     * Get the javascript header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJs()
     {
@@ -40,11 +36,7 @@ class Plugin extends Library implements Modal
     }
 
     /**
-     * Get the CSS header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getCss()
     {
@@ -52,11 +44,7 @@ class Plugin extends Library implements Modal
     }
 
     /**
-     * Get the javascript code to be printed into the page
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
     {
@@ -64,16 +52,15 @@ class Plugin extends Library implements Modal
     }
 
     /**
-     * Show a modal dialog.
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
-     *
-     * @param string            $title                  The title of the dialog
-     * @param string            $content                The content of the dialog
-     * @param array             $buttons                The buttons of the dialog
-     * @param array             $options                The options of the dialog
-     *
-     * @return void
+     * @inheritDoc
+     */
+    public function getReadyScript()
+    {
+        return $this->render('tingle/ready.js');
+    }
+
+    /**
+     * @inheritDoc
      */
     public function show($title, $content, array $buttons, array $options = array())
     {
@@ -85,11 +72,7 @@ class Plugin extends Library implements Modal
     }
 
     /**
-     * Hide the modal dialog.
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function hide()
     {

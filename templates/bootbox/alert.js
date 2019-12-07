@@ -1,3 +1,6 @@
+/*
+ * Bootbox dialogs plugin
+ */
 jaxon.dialogs.bootbox = {
     alert: function(type, content, title) {
         var html = '<div class="alert alert-' + type + '" style="margin-top:15px;margin-bottom:-15px;">';
@@ -35,22 +38,3 @@ jaxon.dialogs.bootbox = {
         });
     }
 };
-
-jaxon.dom.ready(function() {
-    if(!$('#<?php echo $this->container ?>').length)
-    {
-        $('body').append('<div id="<?php echo $this->container ?>"></div>');
-    }
-    jaxon.command.handler.register("bootbox", function(args) {
-        bootbox.alert(args.data.type, args.data.content, args.data.title);
-    });
-<?php if(($this->defaultForMessage)): ?>
-    jaxon.ajax.message.success = jaxon.dialogs.bootbox.success;
-    jaxon.ajax.message.info = jaxon.dialogs.bootbox.info;
-    jaxon.ajax.message.warning = jaxon.dialogs.bootbox.warning;
-    jaxon.ajax.message.error = jaxon.dialogs.bootbox.error;
-<?php endif ?>
-<?php if(($this->defaultForQuestion)): ?>
-    jaxon.ajax.message.confirm = jaxon.dialogs.bootbox.confirm;
-<?php endif ?>
-});

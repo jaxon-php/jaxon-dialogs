@@ -30,11 +30,7 @@ class Plugin extends Library implements Message
     }
 
     /**
-     * Get the javascript header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJs()
     {
@@ -42,15 +38,19 @@ class Plugin extends Library implements Message
     }
 
     /**
-     * Get the javascript code to be printed into the page
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
     {
         return $this->render('notify/alert.js');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReadyScript()
+    {
+        return $this->render('notify/ready.js.php');
     }
 
     /**
@@ -74,14 +74,7 @@ class Plugin extends Library implements Message
     }
 
     /**
-     * Print a success message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function success($message, $title = null)
     {
@@ -89,14 +82,7 @@ class Plugin extends Library implements Message
     }
 
     /**
-     * Print an information message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function info($message, $title = null)
     {
@@ -104,14 +90,7 @@ class Plugin extends Library implements Message
     }
 
     /**
-     * Print a warning message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function warning($message, $title = null)
     {
@@ -119,14 +98,7 @@ class Plugin extends Library implements Message
     }
 
     /**
-     * Print an error message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function error($message, $title = null)
     {

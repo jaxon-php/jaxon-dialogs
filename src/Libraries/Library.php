@@ -204,11 +204,7 @@ class Library implements Plugin
     }
 
     /**
-     * Get the plugin name
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName()
     {
@@ -216,11 +212,7 @@ class Library implements Plugin
     }
 
     /**
-     * Get the javascript header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJs()
     {
@@ -228,11 +220,7 @@ class Library implements Plugin
     }
 
     /**
-     * Get the CSS header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getCss()
     {
@@ -240,13 +228,17 @@ class Library implements Plugin
     }
 
     /**
-     * Get the javascript code to be printed into the page
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReadyScript()
     {
         return '';
     }

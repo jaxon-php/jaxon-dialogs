@@ -30,11 +30,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Get the javascript header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJs()
     {
@@ -42,11 +38,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Get the CSS header code and file includes
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getCss()
     {
@@ -60,11 +52,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Get the javascript code to be printed into the page
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Plugin interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
     {
@@ -72,16 +60,15 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Show a modal dialog.
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
-     *
-     * @param string            $title                  The title of the dialog
-     * @param string            $content                The content of the dialog
-     * @param array             $buttons                The buttons of the dialog
-     * @param array             $options                The options of the dialog
-     *
-     * @return void
+     * @inheritDoc
+     */
+    public function getReadyScript()
+    {
+        return $this->render('jqueryconfirm/ready.js.php');
+    }
+
+    /**
+     * @inheritDoc
      */
     public function show($title, $content, array $buttons, array $options = array())
     {
@@ -116,11 +103,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Hide the modal dialog.
-     *
-     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function hide()
     {
@@ -147,14 +130,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Print a success message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $content              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function success($content, $title = null)
     {
@@ -162,14 +138,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Print an information message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $content              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function info($content, $title = null)
     {
@@ -177,14 +146,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Print a warning message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $content              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function warning($content, $title = null)
     {
@@ -192,14 +154,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Print an error message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $content              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function error($content, $title = null)
     {
@@ -207,11 +162,7 @@ class Plugin extends Library implements Modal, Message, Question
     }
 
     /**
-     * Get the script which makes a call only if the user answers yes to the given question.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Question interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function confirm($question, $yesScript, $noScript)
     {

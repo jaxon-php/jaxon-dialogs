@@ -106,9 +106,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Get the name of the plugin.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName()
     {
@@ -116,13 +114,9 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Get the hash value of the plugin.
-     *
-     * The version number is also the hash value.
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function generateHash()
+    public function getHash()
     {
         // The version number is used as hash
         return '3.0.3';
@@ -337,9 +331,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Return the javascript header code and file includes
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJs()
     {
@@ -357,9 +349,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Return the CSS header code and file includes
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getCss()
     {
@@ -377,9 +367,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Returns the Jaxon Javascript header and wrapper code to be printed into the page
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
     {
@@ -388,6 +376,19 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
         foreach($libraries as $library)
         {
             $code .= $library->getScript() . "\n";
+        }
+        return $code;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReadyScript()
+    {
+        $libraries = $this->getLibrariesInUse();
+        foreach($libraries as $library)
+        {
+            $code .= $library->getReadyScript() . "\n";
         }
         return $code;
     }
@@ -474,14 +475,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Print a success message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function success($message, $title = null)
     {
@@ -489,14 +483,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Print an information message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function info($message, $title = null)
     {
@@ -504,14 +491,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Print a warning message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function warning($message, $title = null)
     {
@@ -519,14 +499,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Print an error message.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param string              $message              The text of the message
-     * @param string|null         $title                The title of the message
-     *
-     * @return void
+     * @inheritDoc
      */
     public function error($message, $title = null)
     {
@@ -534,11 +507,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Get the script which makes a call only if the user answers yes to the given question.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Question interface.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function confirm($question, $yesScript, $noScript)
     {
@@ -546,13 +515,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     }
 
     /**
-     * Return an array of events to listen to.
-     *
-     * The array keys are event names and the value is the method name to call.
-     * For instance:
-     *  ['eventType' => 'methodName']
-     *
-     * @return array The event names to listen to
+     * @inheritDoc
      */
     public function getEvents()
     {
