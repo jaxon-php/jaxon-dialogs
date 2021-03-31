@@ -13,11 +13,11 @@
 namespace Jaxon\Dialogs\Libraries\Izi;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Contracts\Modal;
+use Jaxon\Dialogs\Contracts\Modal as ModalContract;
 use Jaxon\Contracts\Dialogs\Message;
 use Jaxon\Contracts\Dialogs\Question;
 
-class IziModal extends Library implements Modal
+class Modal extends Library implements ModalContract
 {
     /**
      * The constructor
