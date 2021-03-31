@@ -181,7 +181,10 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     {
         try
         {
-            return $this->di[$sName];
+            $library = $this->di[$sName];
+            // Set the Response instance
+            $library->setResponse($this->response());
+            return $library;
         }
         catch(\Exception $e)
         {
