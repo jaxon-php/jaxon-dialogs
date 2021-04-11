@@ -418,7 +418,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function show($title, $content, array $buttons, array $options = array())
+    public function show($title, $content, array $buttons = array(), array $options = array())
     {
         $this->getModalLibrary()->show($title, $content, $buttons, $options);
     }
@@ -435,7 +435,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function modal($title, $content, array $buttons, array $options = array())
+    public function modal($title, $content, array $buttons = array(), array $options = array())
     {
         $this->show($title, $content, $buttons, $options);
     }
