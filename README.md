@@ -1,3 +1,12 @@
+[![Build Status](https://travis-ci.org/jaxon-php/jaxon-dialogs.svg?branch=master)](https://travis-ci.org/jaxon-php/jaxon-dialogs)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jaxon-php/jaxon-dialogs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jaxon-php/jaxon-dialogs/?branch=master)
+[![StyleCI](https://styleci.io/repos/60390067/shield?branch=master)](https://styleci.io/repos/60390067)
+
+[![Latest Stable Version](https://poser.pugx.org/jaxon-php/jaxon-dialogs/v/stable)](https://packagist.org/packages/jaxon-php/jaxon-dialogs)
+[![Total Downloads](https://poser.pugx.org/jaxon-php/jaxon-dialogs/downloads)](https://packagist.org/packages/jaxon-php/jaxon-dialogs)
+[![Latest Unstable Version](https://poser.pugx.org/jaxon-php/jaxon-dialogs/v/unstable)](https://packagist.org/packages/jaxon-php/jaxon-dialogs)
+[![License](https://poser.pugx.org/jaxon-php/jaxon-dialogs/license)](https://packagist.org/packages/jaxon-php/jaxon-dialogs)
+
 Dialogs for Jaxon
 =================
 
