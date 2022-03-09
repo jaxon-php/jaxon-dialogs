@@ -196,8 +196,8 @@ Example with Jaxon selector.
 
 ```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq('HelloWorld')->call('setColor', pr()->select('colorselect'))
-        ->confirm('Set color to {1}?', pr()->select('colorselect')) ?>; return false;">
+    echo rq('HelloWorld')->call('setColor', pm()->select('colorselect'))
+        ->confirm('Set color to {1}?', pm()->select('colorselect')) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
     <option value="green">Green</option>

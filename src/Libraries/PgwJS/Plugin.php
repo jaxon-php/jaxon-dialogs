@@ -28,7 +28,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('pgwmodal.min.js');
     }
@@ -36,7 +36,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('pgwmodal.min.css');
     }
@@ -44,7 +44,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('pgwjs/alert.js');
     }
@@ -52,7 +52,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('pgwjs/ready.js.php', [
             'options' =>  $this->getOptionScript('jaxon.dialogs.pgwjs.options.', 'options.modal.')
@@ -62,13 +62,14 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function show($title, $content, array $buttons, array $options = array())
+    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
         // Set the value of the max width, if there is no value defined
-        $options['title'] = (string)$title;
-        $options['content'] = $this->render('pgwjs/dialog.html', compact('content', 'buttons'));
+        $aOptions['title'] = (string)$sTitle;
+        $aOptions['content'] = $this->render('pgwjs/dialog.html',
+            ['content' => $sContent, 'buttons' => $aButtons]);
         // Affectations du contenu de la fenêtre
-        $this->addCommand(array('cmd'=>'pgw.modal'), $options);
+        $this->addCommand(array('cmd'=>'pgw.modal'), $aOptions);
     }
 
     /**

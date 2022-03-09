@@ -32,7 +32,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('lobibox.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('lobibox.min.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('lobibox/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('lobibox/ready.js.php');
     }
@@ -64,14 +64,14 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function show($title, $content, array $buttons, array $options = array())
+    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
         // Fill the options array with the parameters
-        $options['title'] = (string)$title;
-        $options['content'] = (string)$content;
-        $options['buttons'] = array();
+        $aOptions['title'] = (string)$sTitle;
+        $aOptions['content'] = (string)$sContent;
+        $aOptions['buttons'] = [];
         $ind = 0;
-        foreach($buttons as $button)
+        foreach($aButtons as $button)
         {
             $_button = [
                 'text' => $button['title'],
@@ -86,11 +86,11 @@ class Plugin extends Library implements Modal, Message, Question
                     $_button[$attr] = $value;
                 }
             }
-            $options['buttons']['btn' . $ind] = $_button;
+            $aOptions['buttons']['btn' . $ind] = $_button;
             $ind++;
         }
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'lobibox.show'), $options);
+        $this->addCommand(array('cmd' => 'lobibox.show'), $aOptions);
     }
 
     /**
@@ -105,68 +105,68 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $title                The title of the message
-     * @param string              $type                 The type of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sTitle                The title of the message
+     * @param string              $sType                 The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function notify($message, $title, $type)
+    protected function notify(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->getReturn())
         {
-            return "Lobibox.notify('" . $type . "', {title:'" . $title . "', msg:" . $message . "})";
+            return "Lobibox.notify('" . $sType . "', {title:'" . $sTitle . "', msg:" . $sMessage . "})";
         }
-        $options = array('message' => $message, 'type' => $type, 'title' => (($title) ?: false));
+        $aOptions = array('message' => $sMessage, 'type' => $sType, 'title' => (($sTitle) ?: false));
         // Show the alert
-        $this->addCommand(array('cmd' => 'lobibox.notify'), $options);
+        $this->addCommand(array('cmd' => 'lobibox.notify'), $aOptions);
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->notify($message, $title, 'success');
+        return $this->notify($sMessage, $sTitle, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->notify($message, $title, 'info');
+        return $this->notify($sMessage, $sTitle, 'info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->notify($message, $title, 'warning');
+        return $this->notify($sMessage, $sTitle, 'warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->notify($message, $title, 'error');
+        return $this->notify($sMessage, $sTitle, 'error');
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $title = $this->getQuestionTitle();
-        if(!$noScript)
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
         {
-            return "jaxon.dialogs.lobibox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .
+                $sTitle . "',function(){" . $sYesScript . ";})";
         }
-        else
-        {
-            return "jaxon.dialogs.lobibox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
-        }
+        return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .
+            $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
     }
 }

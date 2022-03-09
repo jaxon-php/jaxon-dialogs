@@ -32,7 +32,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('toastr.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('toastr.min.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('toastr/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('toastr/ready.js.php', [
             'options' =>  $this->getOptionScript('toastr.options.', 'options.')
@@ -66,60 +66,61 @@ class Plugin extends Library implements Message
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $title                The title of the message
-     * @param string              $type                 The type of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sTitle                The title of the message
+     * @param string              $sType                 The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert($message, $title, $type)
+    protected function alert(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->getReturn())
         {
-            if(($title))
+            if(($sTitle))
             {
-                return "toastr." . $type . "(" . $message . ", '" . $title . "')";
+                return "toastr." . $sType . "(" . $sMessage . ", '" . $sTitle . "')";
             }
             else
             {
-                return "toastr." . $type . "(" . $message . ")";
+                return "toastr." . $sType . "(" . $sMessage . ")";
             }
         }
-        $options = array('message' => $message, 'title' => $title);
+        $aOptions = array('message' => $sMessage, 'title' => $sTitle);
         // Show the alert
-        $this->addCommand(array('cmd' => 'toastr.' . $type), $options);
+        $this->addCommand(array('cmd' => 'toastr.' . $sType), $aOptions);
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'success');
+        return $this->alert($sMessage, $sTitle, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'info');
+        return $this->alert($sMessage, $sTitle, 'info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'error');
+        return $this->alert($sMessage, $sTitle, 'error');
     }
 
     public function remove()

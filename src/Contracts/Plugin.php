@@ -19,33 +19,33 @@ interface Plugin
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Get the CSS header code and file includes
      *
      * @return string
      */
-    public function getCss();
+    public function getCss(): string;
 
     /**
      * Get the javascript header code and file includes
      *
      * @return string
      */
-    public function getJs();
+    public function getJs(): string;
 
     /**
      * Get the javascript code to be printed into the page
      *
      * @return string
      */
-    public function getScript();
+    public function getScript(): string;
 
     /**
      * Get the javascript code to be executed on page load
      *
      * @return string
      */
-    public function getReadyScript();
+    public function getReadyScript(): string;
 }

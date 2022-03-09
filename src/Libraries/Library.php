@@ -12,14 +12,23 @@
 
 namespace Jaxon\Dialogs\Libraries;
 
+use Jaxon\Dialogs\Dialog;
 use Jaxon\Dialogs\Contracts\Plugin;
+use Jaxon\Response\Response;
+
+use function trim;
+use function str_repeat;
+use function is_string;
+use function is_bool;
+use function is_numeric;
+use function print_r;
 
 class Library implements Plugin
 {
     /**
      * The plugin instance
      *
-     * @var object
+     * @var Dialog
      */
     protected $xDialog = null;
 
@@ -54,40 +63,28 @@ class Library implements Plugin
     /**
      * The object used to build the response that will be sent to the client browser
      *
-     * @var \Jaxon\Response\Response
+     * @var Response
      */
     protected $xResponse;
 
     /**
      * The constructor
      *
-     * @param string             $sSubDir                The subdir of the JS and CSS files in the CDN
-     * @param string             $sVersion               The default version of the plugin library
+     * @param string $sSubDir                The subdir of the JS and CSS files in the CDN
+     * @param string $sVersion               The default version of the plugin library
      */
-    protected function __construct($sSubDir, $sVersion)
+    protected function __construct(string $sSubDir, string $sVersion)
     {
         $this->sSubDir = $sSubDir;
         $this->sVersion = $sVersion;
     }
 
     /**
-     * Set the <Jaxon\Response\Response> object
-     *
-     * @param array             $xResponse              The response
-     *
-     * @return void
-     */
-    final public function setResponse($xResponse)
-    {
-        $this->xResponse = $xResponse;
-    }
-
-    /**
      * Get the <Jaxon\Response\Response> object
      *
-     * @return object
+     * @return Response
      */
-    final public function response()
+    final public function response(): Response
     {
         return $this->xResponse;
     }
@@ -96,39 +93,39 @@ class Library implements Plugin
      * Add a client side plugin command to the response object
      *
      * @param array             $aAttributes            The attributes of the command
-     * @param string            $sData                  The data to be added to the command
+     * @param mixed             $xData                  The data to be added to the command
      *
      * @return void
      */
-    final public function addCommand($aAttributes, $sData)
+    final public function addCommand(array $aAttributes, $xData)
     {
-        $this->xResponse->addPluginCommand($this, $aAttributes, $sData);
+        $this->xResponse->addPluginCommand($this->xDialog, $aAttributes, $xData);
     }
 
     /**
      * Initialize the library class instance
      *
-     * @param string                    $sName          The plugin name
-     * @param Jaxon\Dialogs\Dialog      $xDialog        The Dialog plugin instance
+     * @param string $sName          The plugin name
+     * @param Dialog $xDialog        The Dialog plugin instance
      *
      * @return void
      */
-    final public function init($sName, $xDialog)
+    final public function init(string $sName, Dialog $xDialog)
     {
         // Set the library name
         $this->sName = $sName;
         // Set the dialog
         $this->xDialog = $xDialog;
-        // Set the Response instance
-        $this->setResponse($xDialog->response());
         // Set the default URI.
-        $this->sUri = $this->xDialog->getOption('dialogs.lib.uri', $this->sUri);
+        $this->sUri = $xDialog->getOption('dialogs.lib.uri', $this->sUri);
         // Set the library URI.
         $this->sUri = rtrim($this->getOption('uri', $this->sUri), '/');
         // Set the subdir
         $this->sSubDir = trim($this->getOption('subdir', $this->sSubDir), '/');
         // Set the version number
         $this->sVersion = trim($this->getOption('version', $this->sVersion), '/');
+        // Set the Response instance
+        $this->xResponse = $xDialog->response();
     }
 
     /**
@@ -137,9 +134,9 @@ class Library implements Plugin
      * @param string        $sName            The option name
      * @param mixed         $xDefault         The default value, to be returned if the option is not defined
      *
-     * @return mixed        The option value, or its default value
+     * @return mixed
      */
-    final public function getOption($sName, $xDefault = null)
+    final public function getOption(string $sName, $xDefault = null)
     {
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
         return $this->xDialog->getOption($sName, $xDefault);
@@ -150,9 +147,9 @@ class Library implements Plugin
      *
      * @param string        $sName            The option name
      *
-     * @return bool        True if the option exists, and false if not
+     * @return bool
      */
-    final public function hasOption($sName)
+    final public function hasOption(string $sName): bool
     {
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
         return $this->xDialog->hasOption($sName);
@@ -161,11 +158,11 @@ class Library implements Plugin
     /**
      * Get the names of the options matching a given prefix
      *
-     * @param string        $sPrefix            The prefix to match
+     * @param string $sPrefix            The prefix to match
      *
-     * @return array        The options matching the prefix
+     * @return array
      */
-    final public function getOptionNames($sPrefix)
+    final public function getOptionNames(string $sPrefix): array
     {
         // The options names are relative to the plugin in Dialogs configuration
         return $this->xDialog->getOptionNames('dialogs.' . $this->getName() . '.' . $sPrefix);
@@ -174,11 +171,13 @@ class Library implements Plugin
     /**
      * Get the names of the options matching a given prefix
      *
-     * @param string        $sPrefix            The prefix to match
+     * @param string $sVarPrefix
+     * @param string $sKeyPrefix
+     * @param int $nSpaces
      *
-     * @return array        The options matching the prefix
+     * @return string
      */
-    final public function getOptionScript($sVarPrefix, $sKeyPrefix, $nSpaces = 4)
+    final public function getOptionScript(string $sVarPrefix, string $sKeyPrefix, int $nSpaces = 4): string
     {
         $aOptions = $this->getOptionNames($sKeyPrefix);
         $sSpaces = str_repeat(' ', $nSpaces);
@@ -206,7 +205,7 @@ class Library implements Plugin
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->sName;
     }
@@ -214,7 +213,7 @@ class Library implements Plugin
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return '';
     }
@@ -222,7 +221,7 @@ class Library implements Plugin
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return '';
     }
@@ -230,7 +229,7 @@ class Library implements Plugin
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return '';
     }
@@ -238,7 +237,7 @@ class Library implements Plugin
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return '';
     }
@@ -248,7 +247,7 @@ class Library implements Plugin
      *
      * @return string
      */
-    public function getQuestionTitle()
+    public function getQuestionTitle(): string
     {
         return $this->xDialog->getOption('dialogs.question.title', '');
     }
@@ -258,7 +257,7 @@ class Library implements Plugin
      *
      * @return string
      */
-    public function getYesButtonText()
+    public function getYesButtonText(): string
     {
         return $this->xDialog->getOption('dialogs.question.yes', 'Yes');
     }
@@ -268,7 +267,7 @@ class Library implements Plugin
      *
      * @return string
      */
-    public function getNoButtonText()
+    public function getNoButtonText(): string
     {
         return $this->xDialog->getOption('dialogs.question.no', 'No');
     }
@@ -276,12 +275,11 @@ class Library implements Plugin
     /**
      * Get the javascript HTML header code
      *
-     * @param string            $sFile          The javascript file name
-     * @param string            $sUri           The URI where to get the file
+     * @param string $sFile          The javascript file name
      *
      * @return string
      */
-    public function getJsCode($sFile)
+    public function getJsCode(string $sFile): string
     {
         return '<script type="text/javascript" src="' . $this->sUri . '/' .
             $this->sSubDir . '/' . $this->sVersion . '/' . $sFile . '"></script>';
@@ -290,12 +288,11 @@ class Library implements Plugin
     /**
      * Get the CSS HTML header code
      *
-     * @param string            $sFile          The CSS file name
-     * @param string            $sUri           The URI where to get the file
+     * @param string $sFile          The CSS file name
      *
      * @return string
      */
-    public function getCssCode($sFile)
+    public function getCssCode(string $sFile): string
     {
         return '<link rel="stylesheet" href="' . $this->sUri . '/' .
             $this->sSubDir . '/' . $this->sVersion . '/' . $sFile . '" />';
@@ -304,12 +301,12 @@ class Library implements Plugin
     /**
      * Render a template
      *
-     * @param string        $sTemplate            The name of template to be rendered
-     * @param string        $aVars                The template vars
+     * @param string $sTemplate            The name of template to be rendered
+     * @param array $aVars                 The template vars
      *
-     * @return string        The template content
+     * @return string
      */
-    protected function render($sTemplate, array $aVars = array())
+    protected function render(string $sTemplate, array $aVars = []): string
     {
         // Is the library the default for alert messages?
         $isDefaultForMessage = ($this->getName() == $this->xDialog->getOption('dialogs.default.message'));

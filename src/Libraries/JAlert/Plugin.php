@@ -32,7 +32,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('jAlert.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('jAlert.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('jalert/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('jalert/ready.js.php');
     }
@@ -64,70 +64,71 @@ class Plugin extends Library implements Message, Question
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $title                The title of the message
-     * @param string              $theme                The type of the message
+     * @param string              $sContent              The text of the message
+     * @param string              $sTitle                The title of the message
+     * @param string              $sTheme                The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert($content, $title, $theme)
+    protected function alert(string $sContent, string $sTitle, string $sTheme): string
     {
-        if(!$title)
+        if(!$sTitle)
         {
-            $title = '&nbsp;';
+            $sTitle = '&nbsp;';
         }
         if($this->getReturn())
         {
-            return "$.jAlert({content:" . $content . ", title:'" . $title . "', theme:'" . $theme . "'})";
+            return "$.jAlert({content:" . $sContent . ", title:'" . $sTitle . "', theme:'" . $sTheme . "'})";
         }
-        $this->addCommand(array('cmd' => 'jalert.alert'), array('content' => $content, 'title' => $title, 'theme' => $theme));
+        $this->addCommand(array('cmd' => 'jalert.alert'), array('content' => $sContent, 'title' => $sTitle, 'theme' => $sTheme));
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'green');
+        return $this->alert($sMessage, $sTitle, 'green');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'blue');
+        return $this->alert($sMessage, $sTitle, 'blue');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'yellow');
+        return $this->alert($sMessage, $sTitle, 'yellow');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'red');
+        return $this->alert($sMessage, $sTitle, 'red');
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $title = $this->getQuestionTitle();
-        if(!$noScript)
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
         {
-            return "jaxon.dialogs.jalert.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";
         }
         else
         {
-            return "jaxon.dialogs.jalert.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
         }
     }
 }

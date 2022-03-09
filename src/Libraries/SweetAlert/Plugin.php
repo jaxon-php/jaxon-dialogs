@@ -32,7 +32,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('sweetalert.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('sweetalert.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('sweetalert/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('sweetalert/ready.js.php', [
             'options' =>  $this->getOptionScript('jaxon.dialogs.swal.options.', 'options.')
@@ -66,66 +66,66 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    protected function alert($message, $title, $type)
+    protected function alert(string $sMessage, string $sTitle, string $sType)
     {
         if($this->getReturn())
         {
-            return "swal({text:" . $message . ", title:'" . $title . "', type:'" . $type . "'})";
+            return "swal({text:" . $sMessage . ", title:'" . $sTitle . "', type:'" . $sType . "'})";
         }
-        $options = array('text' => $message, 'title' => '', 'type' => $type);
-        if(($title))
+        $aOptions = array('text' => $sMessage, 'title' => '', 'type' => $sType);
+        if(($sTitle))
         {
-            $options['title'] = $title;
+            $aOptions['title'] = $sTitle;
         }
         // Show the alert
-        $this->addCommand(array('cmd' => 'sweetalert.alert'), $options);
+        $this->addCommand(array('cmd' => 'sweetalert.alert'), $aOptions);
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'success');
+        return $this->alert($sMessage, $sTitle, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'info');
+        return $this->alert($sMessage, $sTitle, 'info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'error');
+        return $this->alert($sMessage, $sTitle, 'error');
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $title = $this->getQuestionTitle();
-        if(!$noScript)
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
         {
-            return "jaxon.dialogs.swal.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.swal.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";
         }
         else
         {
-            return "jaxon.dialogs.swal.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
+            return "jaxon.dialogs.swal.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
         }
     }
 }

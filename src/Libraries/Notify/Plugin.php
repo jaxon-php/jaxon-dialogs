@@ -32,7 +32,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('notify.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('notify/alert.js');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('notify/ready.js.php');
     }
@@ -56,52 +56,53 @@ class Plugin extends Library implements Message
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $title                The title of the message
-     * @param string              $class                The type of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sTitle                The title of the message
+     * @param string              $sClass                The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert($message, $title, $class)
+    protected function alert(string $sMessage, string $sTitle, string $sClass): string
     {
         if($this->getReturn())
         {
-            return "$.notify(" . $message . ", {className:'" . $class . "', position:'top center'})";
+            return "$.notify(" . $sMessage . ", {className:'" . $sClass . "', position:'top center'})";
         }
-        $options = array('message' => $message, 'className' => $class);
+        $aOptions = array('message' => $sMessage, 'className' => $sClass);
         // Show the alert
-        $this->addCommand(array('cmd' => 'notify.alert'), $options);
+        $this->addCommand(array('cmd' => 'notify.alert'), $aOptions);
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'success');
+        return $this->alert($sMessage, $sTitle, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'info');
+        return $this->alert($sMessage, $sTitle, 'info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'warn');
+        return $this->alert($sMessage, $sTitle, 'warn');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'error');
+        return $this->alert($sMessage, $sTitle, 'error');
     }
 }

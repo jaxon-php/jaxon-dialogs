@@ -32,7 +32,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('jquery-confirm.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('jquery-confirm.min.css') . '
 <style type="text/css">
@@ -54,7 +54,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('jqueryconfirm/alert.js');
     }
@@ -62,7 +62,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('jqueryconfirm/ready.js.php');
     }
@@ -70,18 +70,18 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function show($title, $content, array $buttons, array $options = array())
+    public function show(string $sTitle, string $sMessage, array $aButtons, array $aOptions = [])
     {
-        $options['title'] = (string)$title;
-        $options['content'] = (string)$content;
-        $options['buttons'] = array();
-        if(!array_key_exists('boxWidth', $options))
+        $aOptions['title'] = (string)$sTitle;
+        $aOptions['content'] = (string)$sMessage;
+        $aOptions['buttons'] = [];
+        if(!array_key_exists('boxWidth', $aOptions))
         {
-            $options['useBootstrap'] = false;
-            $options['boxWidth'] = '600';
+            $aOptions['useBootstrap'] = false;
+            $aOptions['boxWidth'] = '600';
         }
         $ind = 0;
-        foreach($buttons as $button)
+        foreach($aButtons as $button)
         {
             $_button = [
                 'text' => $button['title'],
@@ -96,10 +96,10 @@ class Plugin extends Library implements Modal, Message, Question
                     $_button[$attr] = $value;
                 }
             }
-            $options['buttons']['btn' . $ind++] = $_button;
+            $aOptions['buttons']['btn' . $ind++] = $_button;
         }
         // Show dialog
-        $this->addCommand(array('cmd' => 'jconfirm.show'), $options);
+        $this->addCommand(array('cmd' => 'jconfirm.show'), $aOptions);
     }
 
     /**
@@ -114,66 +114,69 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * Print an alert message.
      *
-     * @param string              $content              The text of the message
-     * @param string              $title                The title of the message
-     * @param string              $class                The type of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sTitle                The title of the message
+     * @param string              $sType                 The type of the message
+     * @param string              $sIcon                 The icon of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert($content, $title, $type, $icon)
+    protected function alert(string $sMessage, string $sTitle, string $sType, string $sIcon): string
     {
         if($this->getReturn())
         {
-            return "$.alert({content:" . $content . ", title:'" . $title . "', type:'" . $type . "', icon:'" . $icon . "'})";
+            return "$.alert({content:" . $sMessage . ", title:'" . $sTitle .
+                "', type:'" . $sType . "', icon:'" . $sIcon . "'})";
         }
-        $this->addCommand(array('cmd' => 'jconfirm.alert'), compact('content', 'title', 'type', 'icon'));
+        $this->addCommand(array('cmd' => 'jconfirm.alert'),
+            ['content' => $sMessage, 'title' => $sTitle, 'type' => $sType, 'icon' => $sIcon]);
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($content, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($content, $title, 'green', 'fa fa-success');
+        return $this->alert($sMessage, $sTitle, 'green', 'fa fa-success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($content, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($content, $title, 'blue', 'fa fa-info');
+        return $this->alert($sMessage, $sTitle, 'blue', 'fa fa-info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($content, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($content, $title, 'orange', 'fa fa-warning');
+        return $this->alert($sMessage, $sTitle, 'orange', 'fa fa-warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($content, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($content, $title, 'red', 'fa fa-error');
+        return $this->alert($sMessage, $sTitle, 'red', 'fa fa-error');
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $title = $this->getQuestionTitle();
-        if(!$noScript)
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
         {
-            return "jaxon.dialogs.jconfirm.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" .
+                $sTitle . "',function(){" . $sYesScript . ";})";
         }
-        else
-        {
-            return "jaxon.dialogs.jconfirm.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
-        }
+        return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" . $sTitle .
+            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
     }
 }

@@ -32,7 +32,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('ymz_box.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('ymz_box.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('ymzbox/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Message, Question
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('ymzbox/ready.js.php', [
             'options' =>  $this->getOptionScript('jaxon.dialogs.ymzbox.', 'options.')
@@ -66,67 +66,67 @@ class Plugin extends Library implements Message, Question
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $title                The title of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sTitle                The title of the message
      * @param string              $theme                The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert($text, $title, $type)
+    protected function alert($text, $sTitle, $sType): string
     {
         $duration = $this->getOption('options.duration', 3);
         if($this->getReturn())
         {
-            return "ymz.jq_toast({text:" . $text . ", type:'" . $type . "', sec:'" . $duration . "'})";
+            return "ymz.jq_toast({text:" . $text . ", type:'" . $sType . "', sec:'" . $duration . "'})";
         }
-        $this->addCommand(array('cmd' => 'ymzbox.alert'), array('text' => $text, 'type' => $type, 'sec' => $duration));
+        $this->addCommand(array('cmd' => 'ymzbox.alert'), array('text' => $text, 'type' => $sType, 'sec' => $duration));
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'success');
+        return $this->alert($sMessage, $sTitle, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'notice');
+        return $this->alert($sMessage, $sTitle, 'notice');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'error');
+        return $this->alert($sMessage, $sTitle, 'error');
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $title = $this->getQuestionTitle();
-        if(!$noScript)
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
         {
-            return "jaxon.dialogs.ymzbox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.ymzbox.confirm(" . $sQuestion . ",'" . $sTitle .
+                "',function(){" . $sYesScript . ";})";
         }
-        else
-        {
-            return "jaxon.dialogs.ymzbox.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
-        }
+        return "jaxon.dialogs.ymzbox.confirm(" . $sQuestion . ",'" . $sTitle .
+            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
     }
 }

@@ -19,20 +19,30 @@ use Jaxon\Plugin\Response;
 use Jaxon\Dialogs\Contracts\Modal;
 use Jaxon\Contracts\Dialogs\Message;
 use Jaxon\Contracts\Dialogs\Question;
-use Jaxon\Contracts\Event\Listener as EventListener;
+use Jaxon\Utils\Config\Config;
+use Jaxon\Utils\Template\Engine as TemplateEngine;
+use Exception;
 
-class Dialog extends Response implements Modal, Message, Question, EventListener
+class Dialog extends Response implements Modal, Message, Question
 {
-    use \Jaxon\Features\Template;
-    use \Jaxon\Features\Config;
-    use \Jaxon\Features\Event;
-
     /**
      * Dependency Injection manager
      *
      * @var object
      */
     protected $di;
+
+    /**
+     * @var Config
+     */
+    protected $xConfig;
+
+    /**
+     * The Jaxon template engine
+     *
+     * @var TemplateEngine
+     */
+    protected $xTemplateEngine;
 
     /**
      * Javascript dialog library adapters
@@ -68,9 +78,6 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
         'sweetalert'    => Libraries\SweetAlert\Plugin::class,
         // JQuery Confirm
         'jconfirm'      => Libraries\JQueryConfirm\Plugin::class,
-        // IziModal and IziToast
-        // 'izi-modal'     => Libraries\Izi\Modal::class, // Not yet ready
-        'izi-toast'     => Libraries\Izi\Toast::class,
         // YmzBox
         'ymzbox'        => Libraries\YmzBox\Plugin::class,
     );
@@ -98,17 +105,74 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
 
     /**
      * The constructor
+     *
+     * @param Config $xConfig
+     * @param TemplateEngine $xTemplateEngine      The template engine
      */
-    public function __construct()
+    public function __construct(Config $xConfig, TemplateEngine $xTemplateEngine)
     {
         $this->di = new \Pimple\Container();
+        $this->xConfig = $xConfig;
+        $this->xTemplateEngine = $xTemplateEngine;
+
         $this->registerLibraries();
+        $this->registerClasses();
+    }
+
+    /**
+     * Get the value of a config option
+     *
+     * @param string $sName The option name
+     * @param mixed $xDefault The default value, to be returned if the option is not defined
+     *
+     * @return mixed
+     */
+    public function getOption(string $sName, $xDefault = null)
+    {
+        return $this->xConfig->getOption($sName, $xDefault);
+    }
+
+    /**
+     * Check the presence of a config option
+     *
+     * @param string $sName The option name
+     *
+     * @return bool
+     */
+    public function hasOption(string $sName): bool
+    {
+        return $this->xConfig->hasOption($sName);
+    }
+
+    /**
+     * Get the names of the options matching a given prefix
+     *
+     * @param string $sPrefix The prefix to match
+     *
+     * @return array
+     */
+    public function getOptionNames(string $sPrefix): array
+    {
+        return $this->xConfig->getOptionNames($sPrefix);
+    }
+
+    /**
+     * Render a template
+     *
+     * @param string        $sTemplate            The name of template to be rendered
+     * @param array         $aVars                The template vars
+     *
+     * @return string
+     */
+    public function render(string $sTemplate, array $aVars = []): string
+    {
+        return $this->xTemplateEngine->render($sTemplate, $aVars);
     }
 
     /**
      * @inheritDoc
      */
-    public function getName()
+    public function getName(): string
     {
         return 'dialog';
     }
@@ -116,7 +180,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * @inheritDoc
      */
-    public function getHash()
+    public function getHash(): string
     {
         // The version number is used as hash
         return '3.1.0';
@@ -125,16 +189,17 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * Register the javascript libraries adapters in the DI container.
      *
+     * @param string $sName
+     * @param string $sClass
+     *
      * @return void
      */
-    protected function registerLibrary($sName, $sClass)
+    protected function registerLibrary(string $sName, string $sClass)
     {
-        $sName = (string)$sName;
-        $sClass = (string)$sClass;
         // Register the library in the DI container
-        $this->di[$sName] = function ($c) use ($sName, $sClass) {
+        $this->di[$sName] = function($di) use($sName, $sClass) {
             $xLibrary = new $sClass;
-            $xLibrary->init($sName, $this->di['dialog']);
+            $xLibrary->init($sName, $this);
             return $xLibrary;
         };
     }
@@ -146,8 +211,6 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      */
     protected function registerLibraries()
     {
-        // Register this instance of the plugin in the DI.
-        $this->di['dialog'] = $this;
         // Register supported libraries in the DI container
         foreach($this->aLibraries as $sName => $sClass)
         {
@@ -160,13 +223,13 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function registerClasses()
+    protected function registerClasses()
     {
         // Register user defined libraries in the DI container
-        $aLibraries = $this->getOptionNames('dialogs.classes');
+        $aLibraries = $this->xConfig->getOptionNames('dialogs.classes');
         foreach($aLibraries as $sShortName => $sFullName)
         {
-            $this->registerLibrary($sShortName, $this->getOption($sFullName));
+            $this->registerLibrary($sShortName, $this->xConfig->getOption($sFullName));
         }
     }
 
@@ -175,18 +238,15 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @param string            $sName          The name of the library adapter
      *
-     * @return Libraries\Library
+     * @return Modal|Message|Question
      */
-    public function getLibrary($sName)
+    public function getLibrary(string $sName)
     {
         try
         {
-            $library = $this->di[$sName];
-            // Set the Response instance
-            $library->setResponse($this->response());
-            return $library;
+            return $this->di[$sName];
         }
-        catch(\Exception $e)
+        catch(Exception $e)
         {
             return null;
         }
@@ -199,7 +259,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function setModalLibrary($sLibrary)
+    public function setModalLibrary(string $sLibrary)
     {
         $this->sModalLibrary = $sLibrary;
     }
@@ -207,9 +267,9 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * Get the library adapter to use for modals.
      *
-     * @return Libraries\Library|null
+     * @return Modal|null
      */
-    protected function getModalLibrary()
+    protected function getModalLibrary(): ?Modal
     {
         // Get the current modal library
         if(($this->sModalLibrary) &&
@@ -218,7 +278,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
             return $library;
         }
         // Get the default modal library
-        if(($sName = $this->getOption('dialogs.default.modal', '')) &&
+        if(($sName = $this->xConfig->getOption('dialogs.default.modal', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof Modal))
         {
             return $library;
@@ -233,7 +293,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function setMessageLibrary($sLibrary)
+    public function setMessageLibrary(string $sLibrary)
     {
         $this->sMessageLibrary = $sLibrary;
     }
@@ -241,9 +301,11 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * Get the library adapter to use for messages.
      *
-     * @return Libraries\Library|null
+     * @param bool $bReturnDefault
+     *
+     * @return Message|null
      */
-    protected function getMessageLibrary($bReturnDefault = false)
+    protected function getMessageLibrary(bool $bReturnDefault = false): ?Message
     {
         // Get the current message library
         if(($this->sMessageLibrary) &&
@@ -252,7 +314,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
             return $library;
         }
         // Get the configured message library
-        if(($sName = $this->getOption('dialogs.default.message', '')) &&
+        if(($sName = $this->xConfig->getOption('dialogs.default.message', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof Message))
         {
             return $library;
@@ -268,7 +330,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function setQuestionLibrary($sLibrary)
+    public function setQuestionLibrary(string $sLibrary)
     {
         $this->sQuestionLibrary = $sLibrary;
     }
@@ -278,9 +340,9 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @param bool              $bReturnDefault             Return the default confirm if none is configured
      *
-     * @return Libraries\Library|null
+     * @return Question|null
      */
-    protected function getQuestionLibrary($bReturnDefault = false)
+    protected function getQuestionLibrary(bool $bReturnDefault = false): ?Question
     {
         // Get the current confirm library
         if(($this->sQuestionLibrary) &&
@@ -289,7 +351,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
             return $library;
         }
         // Get the configured confirm library
-        if(($sName = $this->getOption('dialogs.default.question', '')) &&
+        if(($sName = $this->xConfig->getOption('dialogs.default.question', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof Question))
         {
             return $library;
@@ -303,14 +365,14 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return array
      */
-    protected function getLibrariesInUse()
+    protected function getLibrariesInUse(): array
     {
-        $aNames = $this->getOption('dialogs.libraries', array());
+        $aNames = $this->xConfig->getOption('dialogs.libraries', []);
         if(!is_array($aNames))
         {
-            $aNames = array();
+            $aNames = [];
         }
-        $libraries = array();
+        $libraries = [];
         foreach($aNames as $sName)
         {
             if(($library = $this->getLibrary($sName)))
@@ -336,12 +398,8 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
-        if(!$this->includeAssets())
-        {
-            return '';
-        }
         $libraries = $this->getLibrariesInUse();
         $code = '';
         foreach($libraries as $library)
@@ -354,12 +412,8 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
-        if(!$this->includeAssets())
-        {
-            return '';
-        }
         $libraries = $this->getLibrariesInUse();
         $code = '';
         foreach($libraries as $library)
@@ -372,7 +426,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         $libraries = $this->getLibrariesInUse();
         $code = "jaxon.dialogs = {};\n";
@@ -386,7 +440,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         $libraries = $this->getLibrariesInUse();
         $code = "";
@@ -402,10 +456,10 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
      *
-     * @param string            $title                  The title of the dialog
-     * @param string            $content                The content of the dialog
-     * @param array             $buttons                The buttons of the dialog
-     * @param array             $options                The options of the dialog
+     * @param string            $sTitle                  The title of the dialog
+     * @param string            $sContent                The content of the dialog
+     * @param array             $aButtons                The buttons of the dialog
+     * @param array             $aOptions                The options of the dialog
      *
      * Each button is an array containin the following entries:
      * - title: the text to be printed in the button
@@ -413,14 +467,14 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      * - click: the javascript function to be called when the button is clicked
      * If the click value is set to "close", then the buttons closes the dialog.
      *
-     * The content of the $options depends on the javascript library in use.
+     * The content of the $aOptions depends on the javascript library in use.
      * Check their specific documentation for more information.
      *
      * @return void
      */
-    public function show($title, $content, array $buttons = array(), array $options = array())
+    public function show(string $sTitle, string $sContent, array $aButtons = [], array $aOptions = [])
     {
-        $this->getModalLibrary()->show($title, $content, $buttons, $options);
+        $this->getModalLibrary()->show($sTitle, $sContent, $aButtons, $aOptions);
     }
 
     /**
@@ -428,16 +482,16 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * It is another name for the show() function.
      *
-     * @param string            $title                  The title of the dialog
-     * @param string            $content                The content of the dialog
-     * @param array             $buttons                The buttons of the dialog
-     * @param array             $options                The options of the dialog
+     * @param string            $sTitle                  The title of the dialog
+     * @param string            $sContent                The content of the dialog
+     * @param array             $aButtons                The buttons of the dialog
+     * @param array             $aOptions                The options of the dialog
      *
      * @return void
      */
-    public function modal($title, $content, array $buttons = array(), array $options = array())
+    public function modal(string $sTitle, string $sContent, array $aButtons = [], array $aOptions = [])
     {
-        $this->show($title, $content, $buttons, $options);
+        $this->show($sTitle, $sContent, $aButtons, $aOptions);
     }
 
     /**
@@ -461,7 +515,7 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * @return void
      */
-    public function setReturn($bReturn)
+    public function setReturn(bool $bReturn)
     {
         $this->getMessageLibrary(true)->setReturn($bReturn);
     }
@@ -471,9 +525,9 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
      *
      * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getReturn()
+    public function getReturn(): bool
     {
         return $this->getMessageLibrary(true)->getReturn();
     }
@@ -481,50 +535,40 @@ class Dialog extends Response implements Modal, Message, Question, EventListener
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->success((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->success($sMessage, $sTitle);
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->info((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->info($sMessage, $sTitle);
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->warning((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->warning($sMessage, $sTitle);
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->error((string)$message, (string)$title);
+        return $this->getMessageLibrary(true)->error($sMessage, $sTitle);
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        return $this->getQuestionLibrary(true)->confirm($question, $yesScript, $noScript);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getEvents()
-    {
-        // The registerClasses() method needs to read the 'dialog.classes' option value.
-        // So it must be called after the config is set.
-        return ['post.config' => 'registerClasses'];
+        return $this->getQuestionLibrary(true)->confirm($sQuestion, $sYesScript, $sNoScript);
     }
 }

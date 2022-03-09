@@ -30,7 +30,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('tingle.min.js');
     }
@@ -38,7 +38,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('tingle.min.css');
     }
@@ -46,7 +46,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('tingle/alert.js');
     }
@@ -54,7 +54,7 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('tingle/ready.js');
     }
@@ -62,13 +62,13 @@ class Plugin extends Library implements Modal
     /**
      * @inheritDoc
      */
-    public function show($title, $content, array $buttons, array $options = array())
+    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
         // Show the footer only if there is a button to display.
-        $options['footer'] = (count($buttons) > 0);
+        $aOptions['footer'] = (count($aButtons) > 0);
         // Show the modal dialog
         $this->addCommand(array('cmd' => 'tingle.show'),
-            array('content' => '<h2>' . $title . '</h2>' . $content, 'buttons' => $buttons, 'options' => $options));
+            array('content' => '<h2>' . $sTitle . '</h2>' . $sContent, 'buttons' => $aButtons, 'options' => $aOptions));
     }
 
     /**

@@ -32,7 +32,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('simply-toast.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('simply-toast.min.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('simplytoast/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Message
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('simplytoast/ready.js.php', [
             'options' => json_encode($this->getOptionNames('options.'))
@@ -66,49 +66,49 @@ class Plugin extends Library implements Message
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $type                 The type of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sType                 The type of the message
      *
      * @return void
      */
-    private function alert($message, $type)
+    private function alert($sMessage, $sType)
     {
         if($this->getReturn())
         {
-            return "$.simplyToast(" . $message . ", '" . $type . "')";
+            return "$.simplyToast(" . $sMessage . ", '" . $sType . "')";
         }
-        $this->addCommand(array('cmd' => 'simply.alert'), array('message' => $message, 'type' => $type));
+        $this->addCommand(array('cmd' => 'simply.alert'), array('message' => $sMessage, 'type' => $sType));
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, 'success');
+        return $this->alert($sMessage, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, 'info');
+        return $this->alert($sMessage, 'info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, 'warning');
+        return $this->alert($sMessage, 'warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, 'danger');
+        return $this->alert($sMessage, 'danger');
     }
 }

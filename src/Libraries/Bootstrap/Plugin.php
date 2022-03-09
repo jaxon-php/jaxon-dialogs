@@ -32,7 +32,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getJs()
+    public function getJs(): string
     {
         return $this->getJsCode('bootstrap-dialog.min.js');
     }
@@ -40,7 +40,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getCss()
+    public function getCss(): string
     {
         return $this->getCssCode('bootstrap-dialog.min.css');
     }
@@ -48,7 +48,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->render('bootstrap/alert.js');
     }
@@ -56,7 +56,7 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function getReadyScript()
+    public function getReadyScript(): string
     {
         return $this->render('bootstrap/ready.js.php');
     }
@@ -64,13 +64,13 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * @inheritDoc
      */
-    public function show($title, $content, array $buttons, array $options = array())
+    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
         // Fill the options array with the parameters
-        $options['title'] = (string)$title;
-        $options['message'] = (string)$content;
-        $options['buttons'] = array();
-        foreach($buttons as $button)
+        $aOptions['title'] = (string)$sTitle;
+        $aOptions['message'] = (string)$sContent;
+        $aOptions['buttons'] = [];
+        foreach($aButtons as $button)
         {
             $_button = [
                 'label' => $button['title'],
@@ -85,15 +85,15 @@ class Plugin extends Library implements Modal, Message, Question
                     $_button[$attr] = $value;
                 }
             }
-            $options['buttons'][] = $_button;
+            $aOptions['buttons'][] = $_button;
         }
         // Turn the value of the nl2br option to false, because it alters form rendering.
-        if(!array_key_exists('nl2br', $options))
+        if(!array_key_exists('nl2br', $aOptions))
         {
-            $options['nl2br'] = false;
+            $aOptions['nl2br'] = false;
         }
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.show'), $options);
+        $this->addCommand(array('cmd' => 'bootstrap.show'), $aOptions);
     }
 
     /**
@@ -108,13 +108,13 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * Print an alert message.
      *
-     * @param string              $message              The text of the message
-     * @param string              $title                The title of the message
-     * @param string              $type                 The type of the message
+     * @param string              $sMessage              The text of the message
+     * @param string              $sTitle                The title of the message
+     * @param string              $sType                 The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert($message, $title, $type)
+    protected function alert(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->getReturn())
         {
@@ -124,70 +124,70 @@ class Plugin extends Library implements Modal, Message, Question
                 'warning' => 'BootstrapDialog.TYPE_WARNING',
                 'danger' => 'BootstrapDialog.TYPE_DANGER',
             ];
-            $type = $aDataTypes[$type];
-            if(($title))
+            $sType = $aDataTypes[$sType];
+            if(($sTitle))
             {
-                return "BootstrapDialog.alert({message:" . $message . ", title:'" . $title . "', type:" . $type . "})";
+                return "BootstrapDialog.alert({message:" . $sMessage . ", title:'" . $sTitle . "', type:" . $sType . "})";
             }
             else
             {
-                return "BootstrapDialog.alert({message:" . $message . ", type:" . $type . "})";
+                return "BootstrapDialog.alert({message:" . $sMessage . ", type:" . $sType . "})";
             }
         }
-        $options = array('message' => $message, 'type' => $type);
-        if(($title))
+        $aOptions = array('message' => $sMessage, 'type' => $sType);
+        if(($sTitle))
         {
-            $options['title'] = $title;
+            $aOptions['title'] = $sTitle;
         }
         // Show the alert
-        $this->addCommand(array('cmd' => 'bootstrap.alert'), $options);
+        $this->addCommand(array('cmd' => 'bootstrap.alert'), $aOptions);
+        return '';
     }
 
     /**
      * @inheritDoc
      */
-    public function success($message, $title = null)
+    public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'success');
+        return $this->alert($sMessage, $sTitle, 'success');
     }
 
     /**
      * @inheritDoc
      */
-    public function info($message, $title = null)
+    public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'info');
+        return $this->alert($sMessage, $sTitle, 'info');
     }
 
     /**
      * @inheritDoc
      */
-    public function warning($message, $title = null)
+    public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
      * @inheritDoc
      */
-    public function error($message, $title = null)
+    public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($message, $title, 'danger');
+        return $this->alert($sMessage, $sTitle, 'danger');
     }
 
     /**
      * @inheritDoc
      */
-    public function confirm($question, $yesScript, $noScript)
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $title = $this->getQuestionTitle();
-        if(!$noScript)
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
         {
-            return "jaxon.dialogs.bootstrap.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";})";
+            return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" .
+                $sTitle . "',function(){" . $sYesScript . ";})";
         }
-        else
-        {
-            return "jaxon.dialogs.bootstrap.confirm(" . $question . ",'" . $title . "',function(){" . $yesScript . ";},function(){" . $noScript . ";})";
-        }
+        return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" . $sTitle .
+            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
     }
 }
