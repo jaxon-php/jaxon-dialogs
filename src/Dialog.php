@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dialog.php - Modal, message and question dialogs for Jaxon.
+ * Dialog.php - ModalInterface, message and question dialogs for Jaxon.
  *
  * Show modal, message and question dialogs with various javascript libraries
  * based on user settings.
@@ -15,15 +15,15 @@
 
 namespace Jaxon\Dialogs;
 
-use Jaxon\Plugin\Response;
-use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Message;
-use Jaxon\Contracts\Dialogs\Question;
+use Jaxon\Plugin\ResponsePlugin;
+use Jaxon\Ui\Dialogs\MessageInterface;
+use Jaxon\Ui\Dialogs\QuestionInterface;
 use Jaxon\Utils\Config\Config;
 use Jaxon\Utils\Template\Engine as TemplateEngine;
+
 use Exception;
 
-class Dialog extends Response implements Modal, Message, Question
+class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
      * Dependency Injection manager
@@ -107,13 +107,16 @@ class Dialog extends Response implements Modal, Message, Question
      * The constructor
      *
      * @param Config $xConfig
-     * @param TemplateEngine $xTemplateEngine      The template engine
+     * @param TemplateEngine $xTemplateEngine The template engine
      */
     public function __construct(Config $xConfig, TemplateEngine $xTemplateEngine)
     {
         $this->di = new \Pimple\Container();
         $this->xConfig = $xConfig;
         $this->xTemplateEngine = $xTemplateEngine;
+
+        // Register the template dir into the template renderer
+        $xTemplateEngine->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/templates');
 
         $this->registerLibraries();
         $this->registerClasses();
@@ -159,8 +162,8 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Render a template
      *
-     * @param string        $sTemplate            The name of template to be rendered
-     * @param array         $aVars                The template vars
+     * @param string $sTemplate The name of template to be rendered
+     * @param array $aVars The template vars
      *
      * @return string
      */
@@ -236,9 +239,9 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Get a library adapter by its name.
      *
-     * @param string            $sName          The name of the library adapter
+     * @param string $sName The name of the library adapter
      *
-     * @return Modal|Message|Question
+     * @return ModalInterface|MessageInterface|QuestionInterface
      */
     public function getLibrary(string $sName)
     {
@@ -255,7 +258,7 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Set the library adapter to use for modals.
      *
-     * @param string            $sLibrary                   The name of the library adapter
+     * @param string $sLibrary The name of the library adapter
      *
      * @return void
      */
@@ -267,19 +270,19 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Get the library adapter to use for modals.
      *
-     * @return Modal|null
+     * @return ModalInterface|null
      */
-    protected function getModalLibrary(): ?Modal
+    protected function getModalLibrary(): ?ModalInterface
     {
         // Get the current modal library
         if(($this->sModalLibrary) &&
-            ($library = $this->getLibrary($this->sModalLibrary)) && ($library instanceof Modal))
+            ($library = $this->getLibrary($this->sModalLibrary)) && ($library instanceof ModalInterface))
         {
             return $library;
         }
         // Get the default modal library
         if(($sName = $this->xConfig->getOption('dialogs.default.modal', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof Modal))
+            ($library = $this->getLibrary($sName)) && ($library instanceof ModalInterface))
         {
             return $library;
         }
@@ -289,7 +292,7 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Set the library adapter to use for messages.
      *
-     * @param string            $sLibrary                   The name of the library adapter
+     * @param string $sLibrary The name of the library adapter
      *
      * @return void
      */
@@ -303,19 +306,20 @@ class Dialog extends Response implements Modal, Message, Question
      *
      * @param bool $bReturnDefault
      *
-     * @return Message|null
+     * @return MessageInterface|null
      */
-    protected function getMessageLibrary(bool $bReturnDefault = false): ?Message
+    protected function getMessageLibrary(bool $bReturnDefault = false): ?MessageInterface
     {
         // Get the current message library
         if(($this->sMessageLibrary) &&
-            ($library = $this->getLibrary($this->sMessageLibrary)) && ($library instanceof Message))
+            ($library = $this->getLibrary($this->sMessageLibrary)) &&
+            ($library instanceof MessageInterface))
         {
             return $library;
         }
         // Get the configured message library
         if(($sName = $this->xConfig->getOption('dialogs.default.message', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof Message))
+            ($library = $this->getLibrary($sName)) && ($library instanceof MessageInterface))
         {
             return $library;
         }
@@ -326,7 +330,7 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Set the library adapter to use for question.
      *
-     * @param string            $sLibrary                   The name of the library adapter
+     * @param string $sLibrary The name of the library adapter
      *
      * @return void
      */
@@ -338,21 +342,22 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Get the library adapter to use for question.
      *
-     * @param bool              $bReturnDefault             Return the default confirm if none is configured
+     * @param bool $bReturnDefault Return the default confirm if none is configured
      *
-     * @return Question|null
+     * @return QuestionInterface|null
      */
-    protected function getQuestionLibrary(bool $bReturnDefault = false): ?Question
+    protected function getQuestionLibrary(bool $bReturnDefault = false): ?QuestionInterface
     {
         // Get the current confirm library
         if(($this->sQuestionLibrary) &&
-            ($library = $this->getLibrary($this->sQuestionLibrary)) && ($library instanceof Question))
+            ($library = $this->getLibrary($this->sQuestionLibrary)) &&
+            ($library instanceof QuestionInterface))
         {
             return $library;
         }
         // Get the configured confirm library
         if(($sName = $this->xConfig->getOption('dialogs.default.question', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof Question))
+            ($library = $this->getLibrary($sName)) && ($library instanceof QuestionInterface))
         {
             return $library;
         }
@@ -454,12 +459,12 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Show a modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\ModalInterface interface.
      *
-     * @param string            $sTitle                  The title of the dialog
-     * @param string            $sContent                The content of the dialog
-     * @param array             $aButtons                The buttons of the dialog
-     * @param array             $aOptions                The options of the dialog
+     * @param string $sTitle The title of the dialog
+     * @param string $sContent The content of the dialog
+     * @param array $aButtons The buttons of the dialog
+     * @param array $aOptions The options of the dialog
      *
      * Each button is an array containin the following entries:
      * - title: the text to be printed in the button
@@ -482,10 +487,10 @@ class Dialog extends Response implements Modal, Message, Question
      *
      * It is another name for the show() function.
      *
-     * @param string            $sTitle                  The title of the dialog
-     * @param string            $sContent                The content of the dialog
-     * @param array             $aButtons                The buttons of the dialog
-     * @param array             $aOptions                The options of the dialog
+     * @param string $sTitle The title of the dialog
+     * @param string $sContent The content of the dialog
+     * @param array $aButtons The buttons of the dialog
+     * @param array $aOptions The options of the dialog
      *
      * @return void
      */
@@ -497,7 +502,7 @@ class Dialog extends Response implements Modal, Message, Question
     /**
      * Hide the modal dialog.
      *
-     * It is a function of the Jaxon\Dialogs\Contracts\Modal interface.
+     * It is a function of the Jaxon\Dialogs\Contracts\ModalInterface interface.
      *
      * @return void
      */
@@ -511,7 +516,7 @@ class Dialog extends Response implements Modal, Message, Question
      *
      * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
      *
-     * @param boolean             $bReturn              Whether to return the code
+     * @param boolean $bReturn Whether to return the code
      *
      * @return void
      */

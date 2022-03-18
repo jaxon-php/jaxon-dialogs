@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin.php - Adapter for the PgwJS Modal library.
+ * PluginInterface.php - Adapter for the PgwJS ModalInterface library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,9 +13,9 @@
 namespace Jaxon\Dialogs\Libraries\PgwJS;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Contracts\Modal;
+use Jaxon\Dialogs\ModalInterface;
 
-class Plugin extends Library implements Modal
+class Plugin extends Library implements ModalInterface
 {
     /**
      * The constructor

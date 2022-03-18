@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin.php - Interface for javascript library adapters.
+ * PluginInterface.php - Interface for javascript library adapters.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,9 +10,9 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Contracts;
+namespace Jaxon\Dialogs;
 
-interface Plugin
+interface PluginInterface
 {
     /**
      * Get the plugin name

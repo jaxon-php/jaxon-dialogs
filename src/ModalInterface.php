@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Modal.php - Interface for modal dialogs.
+ * ModalInterface.php - Interface for modal dialogs.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,17 +10,17 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Contracts;
+namespace Jaxon\Dialogs;
 
-interface Modal
+interface ModalInterface
 {
     /**
      * Show a modal dialog.
      *
-     * @param string            $sTitle                  The title of the dialog
-     * @param string            $sContent                The content of the dialog
-     * @param array             $aButtons                The buttons of the dialog
-     * @param array             $aOptions                The options of the dialog
+     * @param string $sTitle The title of the dialog
+     * @param string $sContent The content of the dialog
+     * @param array $aButtons The buttons of the dialog
+     * @param array $aOptions The options of the dialog
      *
      * Each button is an array with the following entries:
      * - title: the text to be printed in the button

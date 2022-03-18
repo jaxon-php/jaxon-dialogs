@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin.php - Adapter for the SimplyToast library.
+ * PluginInterface.php - Adapter for the SimplyToast library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,13 +13,12 @@
 namespace Jaxon\Dialogs\Libraries\SimplyToast;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Message;
-use Jaxon\Contracts\Dialogs\Question;
+use Jaxon\Ui\Dialogs\MessageInterface;
+use Jaxon\Ui\Dialogs\MessageTrait;
 
-class Plugin extends Library implements Message
+class Plugin extends Library implements MessageInterface
 {
-    use \Jaxon\Features\Dialogs\Message;
+    use MessageTrait;
 
     /**
      * The constructor
@@ -66,8 +65,8 @@ class Plugin extends Library implements Message
     /**
      * Print an alert message.
      *
-     * @param string              $sMessage              The text of the message
-     * @param string              $sType                 The type of the message
+     * @param string $sMessage The text of the message
+     * @param string $sType The type of the message
      *
      * @return void
      */

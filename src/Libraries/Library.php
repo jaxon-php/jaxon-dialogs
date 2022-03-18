@@ -13,7 +13,7 @@
 namespace Jaxon\Dialogs\Libraries;
 
 use Jaxon\Dialogs\Dialog;
-use Jaxon\Dialogs\Contracts\Plugin;
+use Jaxon\Dialogs\PluginInterface;
 use Jaxon\Response\Response;
 
 use function trim;
@@ -23,7 +23,7 @@ use function is_bool;
 use function is_numeric;
 use function print_r;
 
-class Library implements Plugin
+class Library implements PluginInterface
 {
     /**
      * The plugin instance
@@ -70,8 +70,8 @@ class Library implements Plugin
     /**
      * The constructor
      *
-     * @param string $sSubDir                The subdir of the JS and CSS files in the CDN
-     * @param string $sVersion               The default version of the plugin library
+     * @param string $sSubDir The subdir of the JS and CSS files in the CDN
+     * @param string $sVersion The default version of the plugin library
      */
     protected function __construct(string $sSubDir, string $sVersion)
     {
@@ -92,8 +92,8 @@ class Library implements Plugin
     /**
      * Add a client side plugin command to the response object
      *
-     * @param array             $aAttributes            The attributes of the command
-     * @param mixed             $xData                  The data to be added to the command
+     * @param array $aAttributes The attributes of the command
+     * @param mixed $xData The data to be added to the command
      *
      * @return void
      */
@@ -105,8 +105,8 @@ class Library implements Plugin
     /**
      * Initialize the library class instance
      *
-     * @param string $sName          The plugin name
-     * @param Dialog $xDialog        The Dialog plugin instance
+     * @param string $sName The plugin name
+     * @param Dialog $xDialog The Dialog plugin instance
      *
      * @return void
      */
@@ -131,8 +131,8 @@ class Library implements Plugin
     /**
      * Get the value of a config option
      *
-     * @param string        $sName            The option name
-     * @param mixed         $xDefault         The default value, to be returned if the option is not defined
+     * @param string $sName The option name
+     * @param mixed $xDefault The default value, to be returned if the option is not defined
      *
      * @return mixed
      */
@@ -145,7 +145,7 @@ class Library implements Plugin
     /**
      * Check the presence of a config option
      *
-     * @param string        $sName            The option name
+     * @param string $sName The option name
      *
      * @return bool
      */
@@ -158,7 +158,7 @@ class Library implements Plugin
     /**
      * Get the names of the options matching a given prefix
      *
-     * @param string $sPrefix            The prefix to match
+     * @param string $sPrefix The prefix to match
      *
      * @return array
      */
@@ -275,7 +275,7 @@ class Library implements Plugin
     /**
      * Get the javascript HTML header code
      *
-     * @param string $sFile          The javascript file name
+     * @param string $sFile The javascript file name
      *
      * @return string
      */
@@ -288,7 +288,7 @@ class Library implements Plugin
     /**
      * Get the CSS HTML header code
      *
-     * @param string $sFile          The CSS file name
+     * @param string $sFile The CSS file name
      *
      * @return string
      */
@@ -301,8 +301,8 @@ class Library implements Plugin
     /**
      * Render a template
      *
-     * @param string $sTemplate            The name of template to be rendered
-     * @param array $aVars                 The template vars
+     * @param string $sTemplate The name of template to be rendered
+     * @param array $aVars The template vars
      *
      * @return string
      */

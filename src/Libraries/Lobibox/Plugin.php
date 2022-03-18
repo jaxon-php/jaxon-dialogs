@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin.php - Adapter for the Lobibox library.
+ * PluginInterface.php - Adapter for the Lobibox library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,13 +13,14 @@
 namespace Jaxon\Dialogs\Libraries\Lobibox;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\Contracts\Modal;
-use Jaxon\Contracts\Dialogs\Message;
-use Jaxon\Contracts\Dialogs\Question;
+use Jaxon\Dialogs\ModalInterface;
+use Jaxon\Ui\Dialogs\MessageInterface;
+use Jaxon\Ui\Dialogs\MessageTrait;
+use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements Modal, Message, Question
+class Plugin extends Library implements ModalInterface, MessageInterface, QuestionInterface
 {
-    use \Jaxon\Features\Dialogs\Message;
+    use MessageTrait;
 
     /**
      * The constructor
@@ -105,9 +106,9 @@ class Plugin extends Library implements Modal, Message, Question
     /**
      * Print an alert message.
      *
-     * @param string              $sMessage              The text of the message
-     * @param string              $sTitle                The title of the message
-     * @param string              $sType                 The type of the message
+     * @param string $sMessage The text of the message
+     * @param string $sTitle The title of the message
+     * @param string $sType The type of the message
      *
      * @return string
      */
