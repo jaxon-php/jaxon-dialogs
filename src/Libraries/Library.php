@@ -12,7 +12,7 @@
 
 namespace Jaxon\Dialogs\Libraries;
 
-use Jaxon\Dialogs\Dialog;
+use Jaxon\Dialogs\DialogPlugin;
 use Jaxon\Dialogs\PluginInterface;
 use Jaxon\Response\Response;
 
@@ -21,16 +21,16 @@ use function str_repeat;
 use function is_string;
 use function is_bool;
 use function is_numeric;
-use function print_r;
+use function json_encode;
 
 class Library implements PluginInterface
 {
     /**
      * The plugin instance
      *
-     * @var Dialog
+     * @var DialogPlugin
      */
-    protected $xDialog = null;
+    protected $xDialogPlugin = null;
 
     /**
      * The name of the plugin
@@ -99,25 +99,25 @@ class Library implements PluginInterface
      */
     final public function addCommand(array $aAttributes, $xData)
     {
-        $this->xResponse->addPluginCommand($this->xDialog, $aAttributes, $xData);
+        $this->xResponse->addPluginCommand($this->xDialogPlugin, $aAttributes, $xData);
     }
 
     /**
      * Initialize the library class instance
      *
      * @param string $sName The plugin name
-     * @param Dialog $xDialog The Dialog plugin instance
+     * @param DialogPlugin $xDialogPlugin The DialogPlugin plugin instance
      *
      * @return void
      */
-    final public function init(string $sName, Dialog $xDialog)
+    final public function init(string $sName, DialogPlugin $xDialogPlugin)
     {
         // Set the library name
         $this->sName = $sName;
-        // Set the dialog
-        $this->xDialog = $xDialog;
+        // Set the dialog plugin
+        $this->xDialogPlugin = $xDialogPlugin;
         // Set the default URI.
-        $this->sUri = $xDialog->getOption('dialogs.lib.uri', $this->sUri);
+        $this->sUri = $xDialogPlugin->getOption('dialogs.lib.uri', $this->sUri);
         // Set the library URI.
         $this->sUri = rtrim($this->getOption('uri', $this->sUri), '/');
         // Set the subdir
@@ -125,7 +125,7 @@ class Library implements PluginInterface
         // Set the version number
         $this->sVersion = trim($this->getOption('version', $this->sVersion), '/');
         // Set the Response instance
-        $this->xResponse = $xDialog->response();
+        $this->xResponse = $xDialogPlugin->response();
     }
 
     /**
@@ -139,7 +139,7 @@ class Library implements PluginInterface
     final public function getOption(string $sName, $xDefault = null)
     {
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
-        return $this->xDialog->getOption($sName, $xDefault);
+        return $this->xDialogPlugin->getOption($sName, $xDefault);
     }
 
     /**
@@ -152,7 +152,7 @@ class Library implements PluginInterface
     final public function hasOption(string $sName): bool
     {
         $sName = 'dialogs.' . $this->getName() . '.' . $sName;
-        return $this->xDialog->hasOption($sName);
+        return $this->xDialogPlugin->hasOption($sName);
     }
 
     /**
@@ -165,7 +165,7 @@ class Library implements PluginInterface
     final public function getOptionNames(string $sPrefix): array
     {
         // The options names are relative to the plugin in Dialogs configuration
-        return $this->xDialog->getOptionNames('dialogs.' . $this->getName() . '.' . $sPrefix);
+        return $this->xDialogPlugin->getOptionNames('dialogs.' . $this->getName() . '.' . $sPrefix);
     }
 
     /**
@@ -184,7 +184,7 @@ class Library implements PluginInterface
         $sScript = '';
         foreach($aOptions as $sShortName => $sFullName)
         {
-            $value = $this->xDialog->getOption($sFullName);
+            $value = $this->xDialogPlugin->getOption($sFullName);
             if(is_string($value))
             {
                 $value = "'$value'";
@@ -195,7 +195,7 @@ class Library implements PluginInterface
             }
             elseif(!is_numeric($value))
             {
-                $value = print_r($value, true);
+                $value = json_encode($value);
             }
             $sScript .= "\n" . $sSpaces . $sVarPrefix . $sShortName . ' = ' . $value . ';';
         }
@@ -249,7 +249,7 @@ class Library implements PluginInterface
      */
     public function getQuestionTitle(): string
     {
-        return $this->xDialog->getOption('dialogs.question.title', '');
+        return $this->xDialogPlugin->getOption('dialogs.question.title', '');
     }
 
     /**
@@ -259,7 +259,7 @@ class Library implements PluginInterface
      */
     public function getYesButtonText(): string
     {
-        return $this->xDialog->getOption('dialogs.question.yes', 'Yes');
+        return $this->xDialogPlugin->getOption('dialogs.question.yes', 'Yes');
     }
 
     /**
@@ -269,7 +269,7 @@ class Library implements PluginInterface
      */
     public function getNoButtonText(): string
     {
-        return $this->xDialog->getOption('dialogs.question.no', 'No');
+        return $this->xDialogPlugin->getOption('dialogs.question.no', 'No');
     }
 
     /**
@@ -309,15 +309,15 @@ class Library implements PluginInterface
     protected function render(string $sTemplate, array $aVars = []): string
     {
         // Is the library the default for alert messages?
-        $isDefaultForMessage = ($this->getName() == $this->xDialog->getOption('dialogs.default.message'));
+        $isDefaultForMessage = ($this->getName() == $this->xDialogPlugin->getOption('dialogs.default.message'));
         // Is the library the default for confirm questions?
-        $isDefaultForQuestion = ($this->getName() == $this->xDialog->getOption('dialogs.default.question'));
+        $isDefaultForQuestion = ($this->getName() == $this->xDialogPlugin->getOption('dialogs.default.question'));
         $aLocalVars = [
             'yes' => $this->getYesButtonText(),
             'no' => $this->getNoButtonText(),
             'defaultForMessage' => $isDefaultForMessage,
             'defaultForQuestion' => $isDefaultForQuestion
         ];
-        return $this->xDialog->render('jaxon::dialogs::' . $sTemplate, array_merge($aLocalVars, $aVars));
+        return $this->xDialogPlugin->render('jaxon::dialogs::' . $sTemplate, array_merge($aLocalVars, $aVars));
     }
 }

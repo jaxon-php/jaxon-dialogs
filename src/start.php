@@ -1,6 +1,6 @@
 <?php
 
-use Jaxon\Dialogs\Dialog;
+use Jaxon\Dialogs\DialogPlugin;
 
 // Register an instance of this plugin
-jaxon()->registerPlugin(Dialog::class, 'dialog');
+jaxon()->registerPlugin(DialogPlugin::class, 'dialog');

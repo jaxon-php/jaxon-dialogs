@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dialog.php - ModalInterface, message and question dialogs for Jaxon.
+ * DialogPlugin.php - ModalInterface, message and question dialogs for Jaxon.
  *
  * Show modal, message and question dialogs with various javascript libraries
  * based on user settings.
@@ -15,7 +15,9 @@
 
 namespace Jaxon\Dialogs;
 
+use Jaxon\Container\Container;
 use Jaxon\Plugin\ResponsePlugin;
+use Jaxon\Ui\Dialogs\Dialog;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 use Jaxon\Utils\Config\Config;
@@ -23,14 +25,21 @@ use Jaxon\Utils\Template\Engine as TemplateEngine;
 
 use Exception;
 
-class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface, QuestionInterface
+use function dirname;
+
+class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
      * Dependency Injection manager
      *
-     * @var object
+     * @var Container
      */
     protected $di;
+
+    /**
+     * @var Dialog
+     */
+    protected $xDialog;
 
     /**
      * @var Config
@@ -106,13 +115,16 @@ class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface,
     /**
      * The constructor
      *
+     * @param Container $di
      * @param Config $xConfig
+     * @param Dialog $xDialog
      * @param TemplateEngine $xTemplateEngine The template engine
      */
-    public function __construct(Config $xConfig, TemplateEngine $xTemplateEngine)
+    public function __construct(Container $di, Config $xConfig, Dialog $xDialog, TemplateEngine $xTemplateEngine)
     {
-        $this->di = new \Pimple\Container();
+        $this->di = $di;
         $this->xConfig = $xConfig;
+        $this->xDialog = $xDialog;
         $this->xTemplateEngine = $xTemplateEngine;
 
         // Register the template dir into the template renderer
@@ -200,11 +212,11 @@ class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface,
     protected function registerLibrary(string $sName, string $sClass)
     {
         // Register the library in the DI container
-        $this->di[$sName] = function($di) use($sName, $sClass) {
+        $this->di->set($sName, function() use($sName, $sClass) {
             $xLibrary = new $sClass;
             $xLibrary->init($sName, $this);
             return $xLibrary;
-        };
+        });
     }
 
     /**
@@ -247,7 +259,7 @@ class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface,
     {
         try
         {
-            return $this->di[$sName];
+            return $this->di->g($sName);
         }
         catch(Exception $e)
         {
@@ -324,7 +336,7 @@ class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface,
             return $library;
         }
         // Get the default message library
-        return ($bReturnDefault ? jaxon()->dialog()->getDefaultMessage() : null);
+        return ($bReturnDefault ? $this->xDialog->getDefaultMessage() : null);
     }
 
     /**
@@ -362,7 +374,7 @@ class Dialog extends ResponsePlugin implements ModalInterface, MessageInterface,
             return $library;
         }
         // Get the default confirm library
-        return ($bReturnDefault ? jaxon()->dialog()->getDefaultQuestion() : null);
+        return ($bReturnDefault ? $this->xDialog->getDefaultQuestion() : null);
     }
 
     /**
