@@ -16,7 +16,7 @@
 namespace Jaxon\Dialogs;
 
 use Jaxon\Config\ConfigManager;
-use Jaxon\Container\Container;
+use Jaxon\Di\Container;
 use Jaxon\Plugin\ResponsePlugin;
 use Jaxon\Ui\Dialogs\DialogFacade;
 use Jaxon\Ui\Dialogs\MessageInterface;
