@@ -15,12 +15,12 @@
 
 namespace Jaxon\Dialogs;
 
+use Jaxon\Config\ConfigManager;
 use Jaxon\Container\Container;
 use Jaxon\Plugin\ResponsePlugin;
 use Jaxon\Ui\Dialogs\Dialog;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
-use Jaxon\Utils\Config\Config;
 use Jaxon\Utils\Template\Engine as TemplateEngine;
 
 use Exception;
@@ -29,6 +29,11 @@ use function dirname;
 
 class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInterface, QuestionInterface
 {
+    /**
+     * @const The plugin name
+     */
+    const NAME = 'dialog';
+
     /**
      * Dependency Injection manager
      *
@@ -42,9 +47,9 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     protected $xDialog;
 
     /**
-     * @var Config
+     * @var ConfigManager
      */
-    protected $xConfig;
+    protected $xConfigManager;
 
     /**
      * The Jaxon template engine
@@ -115,16 +120,16 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     /**
      * The constructor
      *
-     * @param Container $di
-     * @param Config $xConfig
      * @param Dialog $xDialog
+     * @param Container $di
+     * @param ConfigManager $xConfigManager
      * @param TemplateEngine $xTemplateEngine The template engine
      */
-    public function __construct(Container $di, Config $xConfig, Dialog $xDialog, TemplateEngine $xTemplateEngine)
+    public function __construct(Dialog $xDialog, Container $di, ConfigManager $xConfigManager, TemplateEngine $xTemplateEngine)
     {
-        $this->di = $di;
-        $this->xConfig = $xConfig;
         $this->xDialog = $xDialog;
+        $this->di = $di;
+        $this->xConfigManager = $xConfigManager;
         $this->xTemplateEngine = $xTemplateEngine;
 
         // Register the template dir into the template renderer
@@ -132,6 +137,14 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
 
         $this->registerLibraries();
         $this->registerClasses();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
+    {
+        return self::NAME;
     }
 
     /**
@@ -144,7 +157,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function getOption(string $sName, $xDefault = null)
     {
-        return $this->xConfig->getOption($sName, $xDefault);
+        return $this->xConfigManager->getOption($sName, $xDefault);
     }
 
     /**
@@ -156,7 +169,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function hasOption(string $sName): bool
     {
-        return $this->xConfig->hasOption($sName);
+        return $this->xConfigManager->hasOption($sName);
     }
 
     /**
@@ -168,7 +181,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function getOptionNames(string $sPrefix): array
     {
-        return $this->xConfig->getOptionNames($sPrefix);
+        return $this->xConfigManager->getOptionNames($sPrefix);
     }
 
     /**
@@ -182,14 +195,6 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     public function render(string $sTemplate, array $aVars = []): string
     {
         return $this->xTemplateEngine->render($sTemplate, $aVars);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName(): string
-    {
-        return 'dialog';
     }
 
     /**
@@ -241,10 +246,10 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     protected function registerClasses()
     {
         // Register user defined libraries in the DI container
-        $aLibraries = $this->xConfig->getOptionNames('dialogs.classes');
+        $aLibraries = $this->xConfigManager->getOptionNames('dialogs.classes');
         foreach($aLibraries as $sShortName => $sFullName)
         {
-            $this->registerLibrary($sShortName, $this->xConfig->getOption($sFullName));
+            $this->registerLibrary($sShortName, $this->xConfigManager->getOption($sFullName));
         }
     }
 
@@ -293,7 +298,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
             return $library;
         }
         // Get the default modal library
-        if(($sName = $this->xConfig->getOption('dialogs.default.modal', '')) &&
+        if(($sName = $this->xConfigManager->getOption('dialogs.default.modal', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof ModalInterface))
         {
             return $library;
@@ -330,7 +335,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
             return $library;
         }
         // Get the configured message library
-        if(($sName = $this->xConfig->getOption('dialogs.default.message', '')) &&
+        if(($sName = $this->xConfigManager->getOption('dialogs.default.message', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof MessageInterface))
         {
             return $library;
@@ -368,7 +373,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
             return $library;
         }
         // Get the configured confirm library
-        if(($sName = $this->xConfig->getOption('dialogs.default.question', '')) &&
+        if(($sName = $this->xConfigManager->getOption('dialogs.default.question', '')) &&
             ($library = $this->getLibrary($sName)) && ($library instanceof QuestionInterface))
         {
             return $library;
@@ -384,7 +389,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     protected function getLibrariesInUse(): array
     {
-        $aNames = $this->xConfig->getOption('dialogs.libraries', []);
+        $aNames = $this->xConfigManager->getOption('dialogs.libraries', []);
         if(!is_array($aNames))
         {
             $aNames = [];
