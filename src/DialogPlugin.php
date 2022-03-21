@@ -18,10 +18,10 @@ namespace Jaxon\Dialogs;
 use Jaxon\Config\ConfigManager;
 use Jaxon\Container\Container;
 use Jaxon\Plugin\ResponsePlugin;
-use Jaxon\Ui\Dialogs\Dialog;
+use Jaxon\Ui\Dialogs\DialogFacade;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
-use Jaxon\Utils\Template\Engine as TemplateEngine;
+use Jaxon\Utils\Template\TemplateEngine;
 
 use Exception;
 
@@ -42,9 +42,9 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     protected $di;
 
     /**
-     * @var Dialog
+     * @var DialogFacade
      */
-    protected $xDialog;
+    protected $xDialogFacade;
 
     /**
      * @var ConfigManager
@@ -120,14 +120,15 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     /**
      * The constructor
      *
-     * @param Dialog $xDialog
      * @param Container $di
      * @param ConfigManager $xConfigManager
      * @param TemplateEngine $xTemplateEngine The template engine
+     * @param DialogFacade $xDialogFacade
      */
-    public function __construct(Dialog $xDialog, Container $di, ConfigManager $xConfigManager, TemplateEngine $xTemplateEngine)
+    public function __construct(Container $di, ConfigManager $xConfigManager,
+        TemplateEngine $xTemplateEngine, DialogFacade $xDialogFacade)
     {
-        $this->xDialog = $xDialog;
+        $this->xDialogFacade = $xDialogFacade;
         $this->di = $di;
         $this->xConfigManager = $xConfigManager;
         $this->xTemplateEngine = $xTemplateEngine;
@@ -341,7 +342,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
             return $library;
         }
         // Get the default message library
-        return ($bReturnDefault ? $this->xDialog->getDefaultMessage() : null);
+        return ($bReturnDefault ? $this->xDialogFacade->getDefaultMessage() : null);
     }
 
     /**
@@ -379,7 +380,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
             return $library;
         }
         // Get the default confirm library
-        return ($bReturnDefault ? $this->xDialog->getDefaultQuestion() : null);
+        return ($bReturnDefault ? $this->xDialogFacade->getDefaultQuestion() : null);
     }
 
     /**
