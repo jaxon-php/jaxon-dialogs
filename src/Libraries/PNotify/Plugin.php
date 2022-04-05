@@ -14,13 +14,10 @@ namespace Jaxon\Dialogs\Libraries\PNotify;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Ui\Dialogs\MessageInterface;
-use Jaxon\Ui\Dialogs\LibraryTrait;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
 class Plugin extends Library implements MessageInterface, QuestionInterface
 {
-    use LibraryTrait;
-
     /**
      * The constructor
      */

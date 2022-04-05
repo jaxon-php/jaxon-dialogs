@@ -15,13 +15,10 @@ namespace Jaxon\Dialogs\Libraries\Bootstrap;
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Ui\Dialogs\ModalInterface;
 use Jaxon\Ui\Dialogs\MessageInterface;
-use Jaxon\Ui\Dialogs\LibraryTrait;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
 class Plugin extends Library implements ModalInterface, MessageInterface, QuestionInterface
 {
-    use LibraryTrait;
-
     /**
      * The constructor
      */

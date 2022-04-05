@@ -14,6 +14,7 @@ namespace Jaxon\Dialogs\Libraries;
 
 use Jaxon\Dialogs\DialogPlugin;
 use Jaxon\Dialogs\PluginInterface;
+use Jaxon\Ui\Dialogs\LibraryTrait;
 use Jaxon\Response\Response;
 
 use function trim;
@@ -25,6 +26,8 @@ use function json_encode;
 
 class Library implements PluginInterface
 {
+    use LibraryTrait;
+
     /**
      * The plugin instance
      *
