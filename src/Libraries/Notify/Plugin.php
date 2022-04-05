@@ -14,12 +14,9 @@ namespace Jaxon\Dialogs\Libraries\Notify;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Ui\Dialogs\MessageInterface;
-use Jaxon\Ui\Dialogs\LibraryTrait;
 
 class Plugin extends Library implements MessageInterface
 {
-    use LibraryTrait;
-
     /**
      * The constructor
      */
