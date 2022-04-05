@@ -61,13 +61,6 @@ class Library implements PluginInterface
     protected $sUri = 'https://cdn.jaxon-php.org/libs';
 
     /**
-     * The object used to build the response that will be sent to the client browser
-     *
-     * @var Response
-     */
-    protected $xResponse;
-
-    /**
      * The constructor
      *
      * @param string $sSubDir The subdir of the JS and CSS files in the CDN
@@ -77,16 +70,6 @@ class Library implements PluginInterface
     {
         $this->sSubDir = $sSubDir;
         $this->sVersion = $sVersion;
-    }
-
-    /**
-     * Get the <Jaxon\Response\Response> object
-     *
-     * @return Response
-     */
-    final public function response(): Response
-    {
-        return $this->xResponse;
     }
 
     /**
@@ -124,8 +107,6 @@ class Library implements PluginInterface
         $this->sSubDir = trim($this->getOption('subdir', $this->sSubDir), '/');
         // Set the version number
         $this->sVersion = trim($this->getOption('version', $this->sVersion), '/');
-        // Set the Response instance
-        $this->xResponse = $xDialogPlugin->response();
     }
 
     /**
