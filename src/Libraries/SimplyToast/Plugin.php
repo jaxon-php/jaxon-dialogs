@@ -14,11 +14,11 @@ namespace Jaxon\Dialogs\Libraries\SimplyToast;
 
 use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Ui\Dialogs\MessageInterface;
-use Jaxon\Ui\Dialogs\MessageTrait;
+use Jaxon\Ui\Dialogs\LibraryTrait;
 
 class Plugin extends Library implements MessageInterface
 {
-    use MessageTrait;
+    use LibraryTrait;
 
     /**
      * The constructor

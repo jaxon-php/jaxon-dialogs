@@ -17,17 +17,19 @@ namespace Jaxon\Dialogs;
 
 use Jaxon\Config\ConfigManager;
 use Jaxon\Di\Container;
+use Jaxon\Dialogs\Libraries\Library;
 use Jaxon\Plugin\ResponsePlugin;
 use Jaxon\Ui\Dialogs\DialogFacade;
 use Jaxon\Ui\Dialogs\MessageInterface;
+use Jaxon\Ui\Dialogs\ModalInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 use Jaxon\Utils\Template\TemplateEngine;
 
-use Exception;
-
+use function array_merge;
+use function array_reduce;
 use function dirname;
 
-class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInterface, QuestionInterface
+class DialogPlugin extends ResponsePlugin
 {
     /**
      * @const The plugin name
@@ -97,25 +99,16 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     );
 
     /**
-     * The name of the library to use for modals
+     * The name of the library to use for the next call
      *
      * @var string
      */
-    protected $sModalLibrary = null;
+    protected $sNextLibrary = '';
 
     /**
-     * The name of the library to use for messages
-     *
-     * @var string
+     * @vr array
      */
-    protected $sMessageLibrary = null;
-
-    /**
-     * The name of the library to use for question
-     *
-     * @var string
-     */
-    protected $sQuestionLibrary = null;
+    protected $aLibrariesInUse = [];
 
     /**
      * The constructor
@@ -138,6 +131,24 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
 
         $this->registerLibraries();
         $this->registerClasses();
+        // Get the default modal library
+        if(($sName = $this->xConfigManager->getOption('dialogs.default.modal', '')))
+        {
+            $this->aLibrariesInUse[] = $sName;
+            $xDialogFacade->setModalLibrary($sName);
+        }
+        // Get the configured message library
+        if(($sName = $this->xConfigManager->getOption('dialogs.default.message', '')))
+        {
+            $this->aLibrariesInUse[] = $sName;
+            $xDialogFacade->setMessageLibrary($sName);
+        }
+        // Get the configured question library
+        if(($sName = $this->xConfigManager->getOption('dialogs.default.question', '')))
+        {
+            $this->aLibrariesInUse[] = $sName;
+            $xDialogFacade->setQuestionLibrary($sName);
+        }
     }
 
     /**
@@ -232,7 +243,6 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     protected function registerLibraries()
     {
-        // Register supported libraries in the DI container
         foreach($this->aLibraries as $sName => $sClass)
         {
             $this->registerLibrary($sName, $sClass);
@@ -246,7 +256,6 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     protected function registerClasses()
     {
-        // Register user defined libraries in the DI container
         $aLibraries = $this->xConfigManager->getOptionNames('dialogs.classes');
         foreach($aLibraries as $sShortName => $sFullName)
         {
@@ -259,30 +268,24 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      *
      * @param string $sName The name of the library adapter
      *
-     * @return ModalInterface|MessageInterface|QuestionInterface
+     * @return Library|null
      */
-    public function getLibrary(string $sName)
+    public function getLibrary(string $sName): ?Library
     {
-        try
-        {
-            return $this->di->g($sName);
-        }
-        catch(Exception $e)
-        {
-            return null;
-        }
+        return $this->di->h($sName) ? $this->di->g($sName) : null;
     }
 
     /**
-     * Set the library adapter to use for modals.
+     * Set the library to use for the next call.
      *
-     * @param string $sLibrary The name of the library adapter
+     * @param string $sLibrary The name of the library
      *
-     * @return void
+     * @return DialogPlugin
      */
-    public function setModalLibrary(string $sLibrary)
+    public function with(string $sLibrary): DialogPlugin
     {
-        $this->sModalLibrary = $sLibrary;
+        $this->sNextLibrary = $sLibrary;
+        return $this;
     }
 
     /**
@@ -292,95 +295,33 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     protected function getModalLibrary(): ?ModalInterface
     {
-        // Get the current modal library
-        if(($this->sModalLibrary) &&
-            ($library = $this->getLibrary($this->sModalLibrary)) && ($library instanceof ModalInterface))
-        {
-            return $library;
-        }
-        // Get the default modal library
-        if(($sName = $this->xConfigManager->getOption('dialogs.default.modal', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof ModalInterface))
-        {
-            return $library;
-        }
-        return null;
-    }
-
-    /**
-     * Set the library adapter to use for messages.
-     *
-     * @param string $sLibrary The name of the library adapter
-     *
-     * @return void
-     */
-    public function setMessageLibrary(string $sLibrary)
-    {
-        $this->sMessageLibrary = $sLibrary;
+        $xLibrary = $this->xDialogFacade->getModalLibrary($this->xResponse, $this->sNextLibrary);
+        $this->sNextLibrary = '';
+        return $xLibrary;
     }
 
     /**
      * Get the library adapter to use for messages.
      *
-     * @param bool $bReturnDefault
-     *
      * @return MessageInterface|null
      */
-    protected function getMessageLibrary(bool $bReturnDefault = false): ?MessageInterface
+    protected function getMessageLibrary(): ?MessageInterface
     {
-        // Get the current message library
-        if(($this->sMessageLibrary) &&
-            ($library = $this->getLibrary($this->sMessageLibrary)) &&
-            ($library instanceof MessageInterface))
-        {
-            return $library;
-        }
-        // Get the configured message library
-        if(($sName = $this->xConfigManager->getOption('dialogs.default.message', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof MessageInterface))
-        {
-            return $library;
-        }
-        // Get the default message library
-        return ($bReturnDefault ? $this->xDialogFacade->getDefaultMessage() : null);
-    }
-
-    /**
-     * Set the library adapter to use for question.
-     *
-     * @param string $sLibrary The name of the library adapter
-     *
-     * @return void
-     */
-    public function setQuestionLibrary(string $sLibrary)
-    {
-        $this->sQuestionLibrary = $sLibrary;
+        $xLibrary = $this->xDialogFacade->getMessageLibrary(false, $this->xResponse, $this->sNextLibrary);
+        $this->sNextLibrary = '';
+        return $xLibrary;
     }
 
     /**
      * Get the library adapter to use for question.
      *
-     * @param bool $bReturnDefault Return the default confirm if none is configured
-     *
      * @return QuestionInterface|null
      */
-    protected function getQuestionLibrary(bool $bReturnDefault = false): ?QuestionInterface
+    protected function getQuestionLibrary(): ?QuestionInterface
     {
-        // Get the current confirm library
-        if(($this->sQuestionLibrary) &&
-            ($library = $this->getLibrary($this->sQuestionLibrary)) &&
-            ($library instanceof QuestionInterface))
-        {
-            return $library;
-        }
-        // Get the configured confirm library
-        if(($sName = $this->xConfigManager->getOption('dialogs.default.question', '')) &&
-            ($library = $this->getLibrary($sName)) && ($library instanceof QuestionInterface))
-        {
-            return $library;
-        }
-        // Get the default confirm library
-        return ($bReturnDefault ? $this->xDialogFacade->getDefaultQuestion() : null);
+        $xLibrary = $this->xDialogFacade->getQuestionLibrary($this->xResponse, $this->sNextLibrary);
+        $this->sNextLibrary = '';
+        return $xLibrary;
     }
 
     /**
@@ -390,32 +331,17 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     protected function getLibrariesInUse(): array
     {
-        $aNames = $this->xConfigManager->getOption('dialogs.libraries', []);
-        if(!is_array($aNames))
-        {
-            $aNames = [];
-        }
-        $libraries = [];
+        $aNames = array_merge($this->aLibrariesInUse,
+            $this->xConfigManager->getOption('dialogs.libraries', []));
+        $aLibraries = [];
         foreach($aNames as $sName)
         {
-            if(($library = $this->getLibrary($sName)))
+            if(($xLibrary = $this->getLibrary($sName)))
             {
-                $libraries[$library->getName()] = $library;
+                $aLibraries[$xLibrary->getName()] = $xLibrary;
             }
         }
-        if(($library = $this->getModalLibrary()))
-        {
-            $libraries[$library->getName()] = $library;
-        }
-        if(($library = $this->getMessageLibrary()))
-        {
-            $libraries[$library->getName()] = $library;
-        }
-        if(($library = $this->getQuestionLibrary()))
-        {
-            $libraries[$library->getName()] = $library;
-        }
-        return $libraries;
+        return $aLibraries;
     }
 
     /**
@@ -423,13 +349,9 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function getJs(): string
     {
-        $libraries = $this->getLibrariesInUse();
-        $code = '';
-        foreach($libraries as $library)
-        {
-            $code .= "\n" . $library->getJs() . "\n";
-        }
-        return $code;
+        return array_reduce($this->getLibrariesInUse(), function($sCode, $xLibrary) {
+            return $sCode . $xLibrary->getJs() . "\n\n";
+        }, '');
     }
 
     /**
@@ -437,13 +359,9 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function getCss(): string
     {
-        $libraries = $this->getLibrariesInUse();
-        $code = '';
-        foreach($libraries as $library)
-        {
-            $code .= $library->getCss() . "\n";
-        }
-        return $code;
+        return array_reduce($this->getLibrariesInUse(), function($sCode, $xLibrary) {
+            return $sCode . $xLibrary->getCss() . "\n\n";
+        }, '');
     }
 
     /**
@@ -451,13 +369,9 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function getScript(): string
     {
-        $libraries = $this->getLibrariesInUse();
-        $code = "jaxon.dialogs = {};\n";
-        foreach($libraries as $library)
-        {
-            $code .= $library->getScript() . "\n";
-        }
-        return $code;
+        return array_reduce($this->getLibrariesInUse(), function($sCode, $xLibrary) {
+            return $sCode . $xLibrary->getScript() . "\n\n";
+        }, "jaxon.dialogs = {};\n");
     }
 
     /**
@@ -465,13 +379,9 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function getReadyScript(): string
     {
-        $libraries = $this->getLibrariesInUse();
-        $code = "";
-        foreach($libraries as $library)
-        {
-            $code .= $library->getReadyScript() . "\n";
-        }
-        return $code;
+        return array_reduce($this->getLibrariesInUse(), function($sCode, $xLibrary) {
+            return $sCode . $xLibrary->getReadyScript() . "\n\n";
+        }, '');
     }
 
     /**
@@ -530,37 +440,11 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
     }
 
     /**
-     * Set the library to return the javascript code or run it in the browser.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @param boolean $bReturn Whether to return the code
-     *
-     * @return void
-     */
-    public function setReturn(bool $bReturn)
-    {
-        $this->getMessageLibrary(true)->setReturn($bReturn);
-    }
-
-    /**
-     * Check if the library should return the js code or run it in the browser.
-     *
-     * It is a function of the Jaxon\Contracts\Dialogs\Message interface.
-     *
-     * @return bool
-     */
-    public function getReturn(): bool
-    {
-        return $this->getMessageLibrary(true)->getReturn();
-    }
-
-    /**
      * @inheritDoc
      */
     public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->success($sMessage, $sTitle);
+        return $this->getMessageLibrary()->success($sMessage, $sTitle);
     }
 
     /**
@@ -568,7 +452,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->info($sMessage, $sTitle);
+        return $this->getMessageLibrary()->info($sMessage, $sTitle);
     }
 
     /**
@@ -576,7 +460,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->warning($sMessage, $sTitle);
+        return $this->getMessageLibrary()->warning($sMessage, $sTitle);
     }
 
     /**
@@ -584,7 +468,7 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->getMessageLibrary(true)->error($sMessage, $sTitle);
+        return $this->getMessageLibrary()->error($sMessage, $sTitle);
     }
 
     /**
@@ -592,6 +476,6 @@ class DialogPlugin extends ResponsePlugin implements ModalInterface, MessageInte
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        return $this->getQuestionLibrary(true)->confirm($sQuestion, $sYesScript, $sNoScript);
+        return $this->getQuestionLibrary()->confirm($sQuestion, $sYesScript, $sNoScript);
     }
 }

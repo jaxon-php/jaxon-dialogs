@@ -13,7 +13,7 @@
 namespace Jaxon\Dialogs\Libraries\PgwJS;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\ModalInterface;
+use Jaxon\Ui\Dialogs\ModalInterface;
 
 class Plugin extends Library implements ModalInterface
 {

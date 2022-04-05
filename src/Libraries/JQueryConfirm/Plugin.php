@@ -13,14 +13,14 @@
 namespace Jaxon\Dialogs\Libraries\JQueryConfirm;
 
 use Jaxon\Dialogs\Libraries\Library;
-use Jaxon\Dialogs\ModalInterface;
+use Jaxon\Ui\Dialogs\ModalInterface;
 use Jaxon\Ui\Dialogs\MessageInterface;
-use Jaxon\Ui\Dialogs\MessageTrait;
+use Jaxon\Ui\Dialogs\LibraryTrait;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
 class Plugin extends Library implements ModalInterface, MessageInterface, QuestionInterface
 {
-    use MessageTrait;
+    use LibraryTrait;
 
     /**
      * The constructor
@@ -73,8 +73,8 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function show(string $sTitle, string $sMessage, array $aButtons, array $aOptions = [])
     {
-        $aOptions['title'] = (string)$sTitle;
-        $aOptions['content'] = (string)$sMessage;
+        $aOptions['title'] = $sTitle;
+        $aOptions['content'] = $sMessage;
         $aOptions['buttons'] = [];
         if(!array_key_exists('boxWidth', $aOptions))
         {
