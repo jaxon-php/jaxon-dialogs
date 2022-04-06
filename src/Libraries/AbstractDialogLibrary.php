@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Library.php - Base class for javascript library adapters.
+ * AbstractDialogLibrary.php - Base class for javascript library adapters.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,7 +13,7 @@
 namespace Jaxon\Dialogs\Libraries;
 
 use Jaxon\Dialogs\DialogPlugin;
-use Jaxon\Dialogs\PluginInterface;
+use Jaxon\Dialogs\DialogLibraryInterface;
 use Jaxon\Ui\Dialogs\LibraryTrait;
 use Jaxon\Response\Response;
 
@@ -24,7 +24,7 @@ use function is_bool;
 use function is_numeric;
 use function json_encode;
 
-class Library implements PluginInterface
+class AbstractDialogLibrary implements DialogLibraryInterface
 {
     use LibraryTrait;
 

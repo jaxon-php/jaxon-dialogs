@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the JQuery-Confirm library.
+ * DialogLibraryInterface.php - Adapter for the JQuery-Confirm library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,12 +12,12 @@
 
 namespace Jaxon\Dialogs\Libraries\JQueryConfirm;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\ModalInterface;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements ModalInterface, MessageInterface, QuestionInterface
+class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
      * The constructor
@@ -41,7 +41,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
     public function getCss(): string
     {
         return $this->getCssCode('jquery-confirm.min.css') . '
-<style type="text/css">
+<style>
     .jconfirm .jconfirm-box div.jconfirm-content-pane {
         margin-top: 15px;
     }

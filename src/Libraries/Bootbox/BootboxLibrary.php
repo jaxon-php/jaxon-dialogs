@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the Bootbox library.
+ * DialogLibraryInterface.php - Adapter for the Bootbox library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,12 +12,12 @@
 
 namespace Jaxon\Dialogs\Libraries\Bootbox;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\ModalInterface;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements ModalInterface, MessageInterface, QuestionInterface
+class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
      * The constructor

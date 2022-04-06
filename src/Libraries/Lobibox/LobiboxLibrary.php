@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the Bootstrap library.
+ * DialogLibraryInterface.php - Adapter for the Lobibox library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,21 +10,21 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Libraries\Bootstrap;
+namespace Jaxon\Dialogs\Libraries\Lobibox;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\ModalInterface;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements ModalInterface, MessageInterface, QuestionInterface
+class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
      * The constructor
      */
     public function __construct()
     {
-        parent::__construct('bootstrap-dialog', '1.35.3');
+        parent::__construct('lobibox', '1.2.4');
     }
 
     /**
@@ -32,7 +32,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function getJs(): string
     {
-        return $this->getJsCode('bootstrap-dialog.min.js');
+        return $this->getJsCode('lobibox.min.js');
     }
 
     /**
@@ -40,7 +40,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function getCss(): string
     {
-        return $this->getCssCode('bootstrap-dialog.min.css');
+        return $this->getCssCode('lobibox.min.css');
     }
 
     /**
@@ -48,7 +48,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function getScript(): string
     {
-        return $this->render('bootstrap/alert.js');
+        return $this->render('lobibox/alert.js');
     }
 
     /**
@@ -56,7 +56,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function getReadyScript(): string
     {
-        return $this->render('bootstrap/ready.js.php');
+        return $this->render('lobibox/ready.js.php');
     }
 
     /**
@@ -66,14 +66,15 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
     {
         // Fill the options array with the parameters
         $aOptions['title'] = (string)$sTitle;
-        $aOptions['message'] = (string)$sContent;
+        $aOptions['content'] = (string)$sContent;
         $aOptions['buttons'] = [];
+        $ind = 0;
         foreach($aButtons as $button)
         {
             $_button = [
-                'label' => $button['title'],
-                'cssClass' => $button['class'],
+                'text' => $button['title'],
                 'action' => $button['click'],
+                'class' => $button['class'],
             ];
             // Optional attributes
             foreach($button as $attr => $value)
@@ -83,15 +84,11 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
                     $_button[$attr] = $value;
                 }
             }
-            $aOptions['buttons'][] = $_button;
-        }
-        // Turn the value of the nl2br option to false, because it alters form rendering.
-        if(!array_key_exists('nl2br', $aOptions))
-        {
-            $aOptions['nl2br'] = false;
+            $aOptions['buttons']['btn' . $ind] = $_button;
+            $ind++;
         }
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.show'), $aOptions);
+        $this->addCommand(array('cmd' => 'lobibox.show'), $aOptions);
     }
 
     /**
@@ -100,7 +97,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.hide'), array());
+        $this->addCommand(array('cmd' => 'lobibox.hide'), array());
     }
 
     /**
@@ -112,33 +109,15 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      *
      * @return string
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
+    protected function notify(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->getReturn())
         {
-            $aDataTypes = [
-                'success' => 'BootstrapDialog.TYPE_SUCCESS',
-                'info' => 'BootstrapDialog.TYPE_INFO',
-                'warning' => 'BootstrapDialog.TYPE_WARNING',
-                'danger' => 'BootstrapDialog.TYPE_DANGER',
-            ];
-            $sType = $aDataTypes[$sType];
-            if(($sTitle))
-            {
-                return "BootstrapDialog.alert({message:" . $sMessage . ", title:'" . $sTitle . "', type:" . $sType . "})";
-            }
-            else
-            {
-                return "BootstrapDialog.alert({message:" . $sMessage . ", type:" . $sType . "})";
-            }
+            return "Lobibox.notify('" . $sType . "', {title:'" . $sTitle . "', msg:" . $sMessage . "})";
         }
-        $aOptions = array('message' => $sMessage, 'type' => $sType);
-        if(($sTitle))
-        {
-            $aOptions['title'] = $sTitle;
-        }
+        $aOptions = array('message' => $sMessage, 'type' => $sType, 'title' => (($sTitle) ?: false));
         // Show the alert
-        $this->addCommand(array('cmd' => 'bootstrap.alert'), $aOptions);
+        $this->addCommand(array('cmd' => 'lobibox.notify'), $aOptions);
         return '';
     }
 
@@ -147,7 +126,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'success');
+        return $this->notify($sMessage, $sTitle, 'success');
     }
 
     /**
@@ -155,7 +134,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'info');
+        return $this->notify($sMessage, $sTitle, 'info');
     }
 
     /**
@@ -163,7 +142,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warning');
+        return $this->notify($sMessage, $sTitle, 'warning');
     }
 
     /**
@@ -171,7 +150,7 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
      */
     public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'danger');
+        return $this->notify($sMessage, $sTitle, 'error');
     }
 
     /**
@@ -182,10 +161,10 @@ class Plugin extends Library implements ModalInterface, MessageInterface, Questi
         $sTitle = $this->getQuestionTitle();
         if(!$sNoScript)
         {
-            return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" .
+            return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .
                 $sTitle . "',function(){" . $sYesScript . ";})";
         }
-        return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" . $sTitle .
-            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+        return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .
+            $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
     }
 }

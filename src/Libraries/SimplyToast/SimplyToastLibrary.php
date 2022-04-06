@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the SimplyToast library.
+ * DialogLibraryInterface.php - Adapter for the SimplyToast library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,10 +12,10 @@
 
 namespace Jaxon\Dialogs\Libraries\SimplyToast;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\MessageInterface;
 
-class Plugin extends Library implements MessageInterface
+class SimplyToastLibrary extends AbstractDialogLibrary implements MessageInterface
 {
     /**
      * The constructor
@@ -65,15 +65,16 @@ class Plugin extends Library implements MessageInterface
      * @param string $sMessage The text of the message
      * @param string $sType The type of the message
      *
-     * @return void
+     * @return string
      */
-    private function alert($sMessage, $sType)
+    private function alert(string $sMessage, string $sType): string
     {
         if($this->getReturn())
         {
             return "$.simplyToast(" . $sMessage . ", '" . $sType . "')";
         }
         $this->addCommand(array('cmd' => 'simply.alert'), array('message' => $sMessage, 'type' => $sType));
+        return '';
     }
 
     /**

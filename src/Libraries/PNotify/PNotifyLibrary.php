@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the Toastr library.
+ * DialogLibraryInterface.php - Adapter for the PNotify library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,19 +10,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Libraries\Toastr;
+namespace Jaxon\Dialogs\Libraries\PNotify;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\MessageInterface;
+use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements MessageInterface
+class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
 {
     /**
      * The constructor
      */
     public function __construct()
     {
-        parent::__construct('toastr.js', '2.1.3');
+        parent::__construct('pnotify', '3.0.0');
     }
 
     /**
@@ -30,7 +31,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->getJsCode('toastr.min.js');
+        return $this->getJsCode('pnotify.js') . "\n" . $this->getJsCode('pnotify.confirm.js');
     }
 
     /**
@@ -38,7 +39,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function getCss(): string
     {
-        return $this->getCssCode('toastr.min.css');
+        return $this->getCssCode('pnotify.css');
     }
 
     /**
@@ -46,7 +47,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->render('toastr/alert.js');
+        return $this->render('pnotify/alert.js');
     }
 
     /**
@@ -54,8 +55,8 @@ class Plugin extends Library implements MessageInterface
      */
     public function getReadyScript(): string
     {
-        return $this->render('toastr/ready.js.php', [
-            'options' =>  $this->getOptionScript('toastr.options.', 'options.')
+        return $this->render('pnotify/ready.js.php', [
+            'options' => $this->getOptionScript('PNotify.prototype.options.', 'options.')
         ]);
     }
 
@@ -72,18 +73,11 @@ class Plugin extends Library implements MessageInterface
     {
         if($this->getReturn())
         {
-            if(($sTitle))
-            {
-                return "toastr." . $sType . "(" . $sMessage . ", '" . $sTitle . "')";
-            }
-            else
-            {
-                return "toastr." . $sType . "(" . $sMessage . ")";
-            }
+            return "jaxon.dialogs.pnotify.alert({text:" . $sMessage . ", type:'" . $sType . "', title:'" . $sTitle . "'})";
         }
-        $aOptions = array('message' => $sMessage, 'title' => $sTitle);
+        $aOptions = array('text' => $sMessage, 'title' => $sTitle, 'type' => $sType);
         // Show the alert
-        $this->addCommand(array('cmd' => 'toastr.' . $sType), $aOptions);
+        $this->addCommand(array('cmd' => 'pnotify.alert'), $aOptions);
         return '';
     }
 
@@ -108,7 +102,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warning');
+        return $this->alert($sMessage, $sTitle, 'notice');
     }
 
     /**
@@ -119,13 +113,19 @@ class Plugin extends Library implements MessageInterface
         return $this->alert($sMessage, $sTitle, 'error');
     }
 
-    public function remove()
+    /**
+     * @inheritDoc
+     */
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $this->response()->script('toastr.remove()');
-    }
-
-    public function clear()
-    {
-        $this->response()->script('toastr.clear()');
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
+        {
+            return "jaxon.dialogs.pnotify.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";
+        }
+        else
+        {
+            return "jaxon.dialogs.pnotify.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+        }
     }
 }

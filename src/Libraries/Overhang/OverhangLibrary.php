@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the Noty library.
+ * DialogLibraryInterface.php - Adapter for the Overhang library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,20 +10,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Libraries\Noty;
+namespace Jaxon\Dialogs\Libraries\Overhang;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements MessageInterface, QuestionInterface
+class OverhangLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
 {
     /**
      * The constructor
      */
     public function __construct()
     {
-        parent::__construct('noty', '2.3.11');
+        parent::__construct('overhang', 'latest');
     }
 
     /**
@@ -31,7 +31,15 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      */
     public function getJs(): string
     {
-        return $this->getJsCode('jquery.noty.packaged.min.js');
+        return $this->getJsCode('overhang.min.js');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCss(): string
+    {
+        return $this->getCssCode('overhang.min.css');
     }
 
     /**
@@ -39,7 +47,7 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-         return $this->render('noty/alert.js');
+        return $this->render('overhang/alert.js');
     }
 
     /**
@@ -47,7 +55,7 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      */
     public function getReadyScript(): string
     {
-         return $this->render('noty/ready.js.php');
+        return $this->render('overhang/ready.js.php');
     }
 
     /**
@@ -57,17 +65,18 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      * @param string $sTitle The title of the message
      * @param string $sType The type of the message
      *
-     * @return void
+     * @return string
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType)
+    protected function alert(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->getReturn())
         {
-            return "noty({text:" . $sMessage . ", type:'" . $sType . "', layout: 'topCenter'})";
+            return "$('body').overhang({message:" . $sMessage . ", type:'" . $sType . "'})";
         }
-        $aOptions = array('text' => $sMessage, 'type' => $sType);
+        $aOptions = array('message' => $sMessage, 'type' => $sType);
         // Show the alert
-        $this->addCommand(array('cmd' => 'noty.alert'), $aOptions);
+        $this->addCommand(array('cmd' => 'overhang.alert'), $aOptions);
+        return '';
     }
 
     /**
@@ -83,7 +92,7 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'information');
+        return $this->alert($sMessage, $sTitle, 'info');
     }
 
     /**
@@ -91,7 +100,7 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warn');
     }
 
     /**
@@ -107,14 +116,13 @@ class Plugin extends Library implements MessageInterface, QuestionInterface
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->getQuestionTitle();
         if(!$sNoScript)
         {
-            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";
+            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";})";
         }
         else
         {
-            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
         }
     }
 }

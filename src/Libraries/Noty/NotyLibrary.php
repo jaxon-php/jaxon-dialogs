@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the Notify library.
+ * DialogLibraryInterface.php - Adapter for the Noty library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,19 +10,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Libraries\Notify;
+namespace Jaxon\Dialogs\Libraries\Noty;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\MessageInterface;
+use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements MessageInterface
+class NotyLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
 {
     /**
      * The constructor
      */
     public function __construct()
     {
-        parent::__construct('notify', '0.4.2');
+        parent::__construct('noty', '2.3.11');
     }
 
     /**
@@ -30,7 +31,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->getJsCode('notify.js');
+        return $this->getJsCode('jquery.noty.packaged.min.js');
     }
 
     /**
@@ -38,7 +39,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->render('notify/alert.js');
+         return $this->render('noty/alert.js');
     }
 
     /**
@@ -46,7 +47,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function getReadyScript(): string
     {
-        return $this->render('notify/ready.js.php');
+         return $this->render('noty/ready.js.php');
     }
 
     /**
@@ -54,19 +55,19 @@ class Plugin extends Library implements MessageInterface
      *
      * @param string $sMessage The text of the message
      * @param string $sTitle The title of the message
-     * @param string $sClass The type of the message
+     * @param string $sType The type of the message
      *
      * @return string
      */
-    protected function alert(string $sMessage, string $sTitle, string $sClass): string
+    protected function alert(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->getReturn())
         {
-            return "$.notify(" . $sMessage . ", {className:'" . $sClass . "', position:'top center'})";
+            return "noty({text:" . $sMessage . ", type:'" . $sType . "', layout: 'topCenter'})";
         }
-        $aOptions = array('message' => $sMessage, 'className' => $sClass);
+        $aOptions = array('text' => $sMessage, 'type' => $sType);
         // Show the alert
-        $this->addCommand(array('cmd' => 'notify.alert'), $aOptions);
+        $this->addCommand(array('cmd' => 'noty.alert'), $aOptions);
         return '';
     }
 
@@ -83,7 +84,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'info');
+        return $this->alert($sMessage, $sTitle, 'information');
     }
 
     /**
@@ -91,7 +92,7 @@ class Plugin extends Library implements MessageInterface
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warn');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
@@ -100,5 +101,21 @@ class Plugin extends Library implements MessageInterface
     public function error(string $sMessage, string $sTitle = ''): string
     {
         return $this->alert($sMessage, $sTitle, 'error');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
+    {
+        $sTitle = $this->getQuestionTitle();
+        if(!$sNoScript)
+        {
+            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";
+        }
+        else
+        {
+            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace Jaxon\Dialogs;
 
 use Jaxon\Config\ConfigManager;
 use Jaxon\Di\Container;
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Plugin\ResponsePlugin;
 use Jaxon\Ui\Dialogs\DialogFacade;
 use Jaxon\Ui\Dialogs\MessageInterface;
@@ -67,35 +67,33 @@ class DialogPlugin extends ResponsePlugin
      */
     protected $aLibraries = array(
         // Bootbox
-        'bootbox'       => Libraries\Bootbox\Plugin::class,
+        'bootbox'       => Libraries\Bootbox\BootboxLibrary::class,
         // Bootstrap
-        'bootstrap'     => Libraries\Bootstrap\Plugin::class,
+        'bootstrap'     => Libraries\Bootstrap\BootstrapLibrary::class,
         // PgwJS
-        'pgwjs'         => Libraries\PgwJS\Plugin::class,
+        'pgwjs'         => Libraries\PgwJS\PgwJsLibrary::class,
         // Toastr
-        'toastr'        => Libraries\Toastr\Plugin::class,
+        'toastr'        => Libraries\Toastr\ToastrLibrary::class,
         // JAlert
-        'jalert'        => Libraries\JAlert\Plugin::class,
+        'jalert'        => Libraries\JAlert\JAlertLibrary::class,
         // Tingle
-        'tingle'        => Libraries\Tingle\Plugin::class,
+        'tingle'        => Libraries\Tingle\TingleLibrary::class,
         // SimplyToast
-        'simply'        => Libraries\SimplyToast\Plugin::class,
+        'simply'        => Libraries\SimplyToast\SimplyToastLibrary::class,
         // Noty
-        'noty'          => Libraries\Noty\Plugin::class,
+        'noty'          => Libraries\Noty\NotyLibrary::class,
         // Notify
-        'notify'        => Libraries\Notify\Plugin::class,
+        'notify'        => Libraries\Notify\NotifyLibrary::class,
         // Lobibox
-        'lobibox'       => Libraries\Lobibox\Plugin::class,
+        'lobibox'       => Libraries\Lobibox\LobiboxLibrary::class,
         // Overhang
-        'overhang'      => Libraries\Overhang\Plugin::class,
+        'overhang'      => Libraries\Overhang\OverhangLibrary::class,
         // PNotify
-        'pnotify'       => Libraries\PNotify\Plugin::class,
+        'pnotify'       => Libraries\PNotify\PNotifyLibrary::class,
         // SweetAlert
-        'sweetalert'    => Libraries\SweetAlert\Plugin::class,
+        'sweetalert'    => Libraries\SweetAlert\SweetAlertLibrary::class,
         // JQuery Confirm
-        'jconfirm'      => Libraries\JQueryConfirm\Plugin::class,
-        // YmzBox
-        'ymzbox'        => Libraries\YmzBox\Plugin::class,
+        'jconfirm'      => Libraries\JQueryConfirm\JQueryConfirmLibrary::class,
     );
 
     /**
@@ -268,9 +266,9 @@ class DialogPlugin extends ResponsePlugin
      *
      * @param string $sName The name of the library adapter
      *
-     * @return Library|null
+     * @return AbstractDialogLibrary|null
      */
-    public function getLibrary(string $sName): ?Library
+    public function getLibrary(string $sName): ?AbstractDialogLibrary
     {
         return $this->di->h($sName) ? $this->di->g($sName) : null;
     }
@@ -319,7 +317,7 @@ class DialogPlugin extends ResponsePlugin
      */
     protected function getQuestionLibrary(): ?QuestionInterface
     {
-        $xLibrary = $this->xDialogFacade->getQuestionLibrary($this->xResponse, $this->sNextLibrary);
+        $xLibrary = $this->xDialogFacade->getQuestionLibrary($this->sNextLibrary);
         $this->sNextLibrary = '';
         return $xLibrary;
     }

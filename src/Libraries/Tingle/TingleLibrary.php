@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the Tingle library.
+ * DialogLibraryInterface.php - Adapter for the Tingle library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,10 +12,10 @@
 
 namespace Jaxon\Dialogs\Libraries\Tingle;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\ModalInterface;
 
-class Plugin extends Library implements ModalInterface
+class TingleLibrary extends AbstractDialogLibrary implements ModalInterface
 {
     /**
      * The constructor

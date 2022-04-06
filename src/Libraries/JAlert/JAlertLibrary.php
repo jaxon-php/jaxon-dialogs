@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PluginInterface.php - Adapter for the jAlert library.
+ * DialogLibraryInterface.php - Adapter for the jAlert library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,11 +12,11 @@
 
 namespace Jaxon\Dialogs\Libraries\JAlert;
 
-use Jaxon\Dialogs\Libraries\Library;
+use Jaxon\Dialogs\Libraries\AbstractDialogLibrary;
 use Jaxon\Ui\Dialogs\MessageInterface;
 use Jaxon\Ui\Dialogs\QuestionInterface;
 
-class Plugin extends Library implements MessageInterface, QuestionInterface
+class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
 {
     /**
      * The constructor
