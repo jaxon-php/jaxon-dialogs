@@ -112,7 +112,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
             $aOptions['nl2br'] = false;
         }
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.show'), $aOptions);
+        $this->addCommand(['cmd' => 'bootstrap.show'], $aOptions);
     }
 
     /**
@@ -121,7 +121,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.hide'), array());
+        $this->addCommand(['cmd' => 'bootstrap.hide'], []);
     }
 
     /**
@@ -153,13 +153,13 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
                 return "BootstrapDialog.alert({message:" . $sMessage . ", type:" . $sType . "})";
             }
         }
-        $aOptions = array('message' => $sMessage, 'type' => $sType);
+        $aOptions = ['message' => $sMessage, 'type' => $sType];
         if(($sTitle))
         {
             $aOptions['title'] = $sTitle;
         }
         // Show the alert
-        $this->addCommand(array('cmd' => 'bootstrap.alert'), $aOptions);
+        $this->addCommand(['cmd' => 'bootstrap.alert'], $aOptions);
         return '';
     }
 
