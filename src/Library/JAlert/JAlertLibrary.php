@@ -19,11 +19,32 @@ use Jaxon\Ui\Dialog\QuestionInterface;
 class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
 {
     /**
-     * The constructor
+     * @const The library name
      */
-    public function __construct()
+    const NAME = 'jalert';
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
     {
-        parent::__construct('jAlert', '4.5.1');
+        return self::NAME;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSubdir(): string
+    {
+        return 'jAlert';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVersion(): string
+    {
+        return '4.5.1';
     }
 
     /**

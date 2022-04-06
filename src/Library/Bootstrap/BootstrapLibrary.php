@@ -20,11 +20,32 @@ use Jaxon\Ui\Dialog\QuestionInterface;
 class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
-     * The constructor
+     * @const The library name
      */
-    public function __construct()
+    const NAME = 'bootstrap';
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
     {
-        parent::__construct('bootstrap-dialog', '1.35.3');
+        return self::NAME;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSubdir(): string
+    {
+        return 'bootstrap-dialog';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVersion(): string
+    {
+        return '1.35.3';
     }
 
     /**

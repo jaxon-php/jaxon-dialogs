@@ -20,11 +20,32 @@ use Jaxon\Ui\Dialog\QuestionInterface;
 class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     /**
-     * The constructor
+     * @const The library name
      */
-    public function __construct()
+    const NAME = 'jconfirm';
+
+    /**
+     * @inheritDoc
+     */
+    public function getName(): string
     {
-        parent::__construct('jquery-confirm', '3.3.0');
+        return self::NAME;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSubdir(): string
+    {
+        return 'jquery-confirm';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVersion(): string
+    {
+        return '3.3.0';
     }
 
     /**
