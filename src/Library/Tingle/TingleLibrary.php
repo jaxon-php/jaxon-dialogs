@@ -12,11 +12,14 @@
 
 namespace Jaxon\Dialogs\Library\Tingle;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\ModalInterface;
 
-class TingleLibrary extends AbstractDialogLibrary implements ModalInterface
+class TingleLibrary implements LibraryInterface, ModalInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -51,7 +54,7 @@ class TingleLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('tingle.min.js');
+        return $this->helper()->getJsCode('tingle.min.js');
     }
 
     /**
@@ -59,7 +62,7 @@ class TingleLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('tingle.min.css');
+        return $this->helper()->getCssCode('tingle.min.css');
     }
 
     /**
@@ -67,7 +70,7 @@ class TingleLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('tingle/alert.js');
+        return $this->helper()->render('tingle/alert.js');
     }
 
     /**
@@ -75,7 +78,7 @@ class TingleLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('tingle/ready.js');
+        return $this->helper()->render('tingle/ready.js');
     }
 
     /**

@@ -12,12 +12,15 @@
 
 namespace Jaxon\Dialogs\Library\JAlert;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class JAlertLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -52,7 +55,7 @@ class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, Q
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('jAlert.min.js');
+        return $this->helper()->getJsCode('jAlert.min.js');
     }
 
     /**
@@ -60,7 +63,7 @@ class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, Q
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('jAlert.css');
+        return $this->helper()->getCssCode('jAlert.css');
     }
 
     /**
@@ -68,7 +71,7 @@ class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, Q
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('jalert/alert.js');
+        return $this->helper()->render('jalert/alert.js');
     }
 
     /**
@@ -76,7 +79,7 @@ class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, Q
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('jalert/ready.js.php');
+        return $this->helper()->render('jalert/ready.js.php');
     }
 
     /**
@@ -139,7 +142,7 @@ class JAlertLibrary extends AbstractDialogLibrary implements MessageInterface, Q
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";

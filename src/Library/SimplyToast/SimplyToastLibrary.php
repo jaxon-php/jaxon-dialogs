@@ -12,11 +12,14 @@
 
 namespace Jaxon\Dialogs\Library\SimplyToast;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 
-class SimplyToastLibrary extends AbstractDialogLibrary implements MessageInterface
+class SimplyToastLibrary implements LibraryInterface, MessageInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -51,7 +54,7 @@ class SimplyToastLibrary extends AbstractDialogLibrary implements MessageInterfa
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('simply-toast.min.js');
+        return $this->helper()->getJsCode('simply-toast.min.js');
     }
 
     /**
@@ -59,7 +62,7 @@ class SimplyToastLibrary extends AbstractDialogLibrary implements MessageInterfa
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('simply-toast.min.css');
+        return $this->helper()->getCssCode('simply-toast.min.css');
     }
 
     /**
@@ -67,7 +70,7 @@ class SimplyToastLibrary extends AbstractDialogLibrary implements MessageInterfa
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('simplytoast/alert.js');
+        return $this->helper()->render('simplytoast/alert.js');
     }
 
     /**
@@ -75,8 +78,8 @@ class SimplyToastLibrary extends AbstractDialogLibrary implements MessageInterfa
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('simplytoast/ready.js.php', [
-            'options' => json_encode($this->xHelper->getOptionNames('options.'))
+        return $this->helper()->render('simplytoast/ready.js.php', [
+            'options' => json_encode($this->helper()->getOptionNames('options.'))
         ]);
     }
 

@@ -12,13 +12,16 @@
 
 namespace Jaxon\Dialogs\Library\Bootstrap;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\ModalInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class BootstrapLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -53,7 +56,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('bootstrap-dialog.min.js');
+        return $this->helper()->getJsCode('bootstrap-dialog.min.js');
     }
 
     /**
@@ -61,7 +64,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('bootstrap-dialog.min.css');
+        return $this->helper()->getCssCode('bootstrap-dialog.min.css');
     }
 
     /**
@@ -69,7 +72,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('bootstrap/alert.js');
+        return $this->helper()->render('bootstrap/alert.js');
     }
 
     /**
@@ -77,7 +80,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('bootstrap/ready.js.php');
+        return $this->helper()->render('bootstrap/ready.js.php');
     }
 
     /**
@@ -200,7 +203,7 @@ class BootstrapLibrary extends AbstractDialogLibrary implements ModalInterface, 
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" .

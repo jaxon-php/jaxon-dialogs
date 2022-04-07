@@ -12,11 +12,14 @@
 
 namespace Jaxon\Dialogs\Library\Toastr;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 
-class ToastrLibrary extends AbstractDialogLibrary implements MessageInterface
+class ToastrLibrary implements LibraryInterface, MessageInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -51,7 +54,7 @@ class ToastrLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('toastr.min.js');
+        return $this->helper()->getJsCode('toastr.min.js');
     }
 
     /**
@@ -59,7 +62,7 @@ class ToastrLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('toastr.min.css');
+        return $this->helper()->getCssCode('toastr.min.css');
     }
 
     /**
@@ -67,7 +70,7 @@ class ToastrLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('toastr/alert.js');
+        return $this->helper()->render('toastr/alert.js');
     }
 
     /**
@@ -75,8 +78,8 @@ class ToastrLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('toastr/ready.js.php', [
-            'options' =>  $this->xHelper->getOptionScript('toastr.options.', 'options.')
+        return $this->helper()->render('toastr/ready.js.php', [
+            'options' =>  $this->helper()->getOptionScript('toastr.options.', 'options.')
         ]);
     }
 

@@ -12,11 +12,14 @@
 
 namespace Jaxon\Dialogs\Library\Notify;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 
-class NotifyLibrary extends AbstractDialogLibrary implements MessageInterface
+class NotifyLibrary implements LibraryInterface, MessageInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -51,7 +54,7 @@ class NotifyLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('notify.js');
+        return $this->helper()->getJsCode('notify.js');
     }
 
     /**
@@ -59,7 +62,7 @@ class NotifyLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('notify/alert.js');
+        return $this->helper()->render('notify/alert.js');
     }
 
     /**
@@ -67,7 +70,7 @@ class NotifyLibrary extends AbstractDialogLibrary implements MessageInterface
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('notify/ready.js.php');
+        return $this->helper()->render('notify/ready.js.php');
     }
 
     /**
