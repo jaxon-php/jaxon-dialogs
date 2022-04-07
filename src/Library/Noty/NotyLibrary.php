@@ -12,12 +12,15 @@
 
 namespace Jaxon\Dialogs\Library\Noty;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class NotyLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -52,7 +55,7 @@ class NotyLibrary extends AbstractDialogLibrary implements MessageInterface, Que
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('jquery.noty.packaged.min.js');
+        return $this->helper()->getJsCode('jquery.noty.packaged.min.js');
     }
 
     /**
@@ -60,7 +63,7 @@ class NotyLibrary extends AbstractDialogLibrary implements MessageInterface, Que
      */
     public function getScript(): string
     {
-         return $this->xHelper->render('noty/alert.js');
+         return $this->helper()->render('noty/alert.js');
     }
 
     /**
@@ -68,7 +71,7 @@ class NotyLibrary extends AbstractDialogLibrary implements MessageInterface, Que
      */
     public function getReadyScript(): string
     {
-         return $this->xHelper->render('noty/ready.js.php');
+         return $this->helper()->render('noty/ready.js.php');
     }
 
     /**
@@ -129,7 +132,7 @@ class NotyLibrary extends AbstractDialogLibrary implements MessageInterface, Que
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";

@@ -12,11 +12,14 @@
 
 namespace Jaxon\Dialogs\Library\PgwJS;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\ModalInterface;
 
-class PgwJsLibrary extends AbstractDialogLibrary implements ModalInterface
+class PgwJsLibrary implements LibraryInterface, ModalInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -51,7 +54,7 @@ class PgwJsLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('pgwmodal.min.js');
+        return $this->helper()->getJsCode('pgwmodal.min.js');
     }
 
     /**
@@ -59,7 +62,7 @@ class PgwJsLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('pgwmodal.min.css');
+        return $this->helper()->getCssCode('pgwmodal.min.css');
     }
 
     /**
@@ -67,7 +70,7 @@ class PgwJsLibrary extends AbstractDialogLibrary implements ModalInterface
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('pgwjs/alert.js');
+        return $this->helper()->render('pgwjs/alert.js');
     }
 
     /**
@@ -76,8 +79,8 @@ class PgwJsLibrary extends AbstractDialogLibrary implements ModalInterface
     public function getReadyScript(): string
     {
         $sVarPrefix = 'jaxon.dialogs.pgwjs.options.';
-        return $this->xHelper->render('pgwjs/ready.js.php', [
-            'options' => $this->xHelper->getOptionScript($sVarPrefix, 'options.modal.'),
+        return $this->helper()->render('pgwjs/ready.js.php', [
+            'options' => $this->helper()->getOptionScript($sVarPrefix, 'options.modal.'),
         ]);
     }
 
@@ -88,7 +91,7 @@ class PgwJsLibrary extends AbstractDialogLibrary implements ModalInterface
     {
         // Set the value of the max width, if there is no value defined
         $aOptions['title'] = $sTitle;
-        $aOptions['content'] = $this->xHelper->render('pgwjs/dialog.html',
+        $aOptions['content'] = $this->helper()->render('pgwjs/dialog.html',
             ['content' => $sContent, 'buttons' => $aButtons]);
         // Affectations du contenu de la fenêtre
         $this->addCommand(array('cmd'=>'pgw.modal'), $aOptions);

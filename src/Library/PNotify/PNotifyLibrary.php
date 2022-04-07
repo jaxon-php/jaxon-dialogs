@@ -12,12 +12,15 @@
 
 namespace Jaxon\Dialogs\Library\PNotify;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class PNotifyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -52,7 +55,7 @@ class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, 
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('pnotify.js') . "\n" . $this->xHelper->getJsCode('pnotify.confirm.js');
+        return $this->helper()->getJsCode('pnotify.js') . "\n" . $this->helper()->getJsCode('pnotify.confirm.js');
     }
 
     /**
@@ -60,7 +63,7 @@ class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, 
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('pnotify.css');
+        return $this->helper()->getCssCode('pnotify.css');
     }
 
     /**
@@ -68,7 +71,7 @@ class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, 
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('pnotify/alert.js');
+        return $this->helper()->render('pnotify/alert.js');
     }
 
     /**
@@ -76,8 +79,8 @@ class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, 
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('pnotify/ready.js.php', [
-            'options' => $this->xHelper->getOptionScript('PNotify.prototype.options.', 'options.')
+        return $this->helper()->render('pnotify/ready.js.php', [
+            'options' => $this->helper()->getOptionScript('PNotify.prototype.options.', 'options.')
         ]);
     }
 
@@ -139,7 +142,7 @@ class PNotifyLibrary extends AbstractDialogLibrary implements MessageInterface, 
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.pnotify.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";

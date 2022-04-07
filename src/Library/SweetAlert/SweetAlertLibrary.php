@@ -12,12 +12,15 @@
 
 namespace Jaxon\Dialogs\Library\SweetAlert;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class SweetAlertLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class SweetAlertLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -52,7 +55,7 @@ class SweetAlertLibrary extends AbstractDialogLibrary implements MessageInterfac
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('sweetalert.min.js');
+        return $this->helper()->getJsCode('sweetalert.min.js');
     }
 
     /**
@@ -60,7 +63,7 @@ class SweetAlertLibrary extends AbstractDialogLibrary implements MessageInterfac
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('sweetalert.css');
+        return $this->helper()->getCssCode('sweetalert.css');
     }
 
     /**
@@ -68,7 +71,7 @@ class SweetAlertLibrary extends AbstractDialogLibrary implements MessageInterfac
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('sweetalert/alert.js');
+        return $this->helper()->render('sweetalert/alert.js');
     }
 
     /**
@@ -76,8 +79,8 @@ class SweetAlertLibrary extends AbstractDialogLibrary implements MessageInterfac
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('sweetalert/ready.js.php', [
-            'options' =>  $this->xHelper->getOptionScript('jaxon.dialogs.swal.options.', 'options.')
+        return $this->helper()->render('sweetalert/ready.js.php', [
+            'options' =>  $this->helper()->getOptionScript('jaxon.dialogs.swal.options.', 'options.')
         ]);
     }
 
@@ -143,7 +146,7 @@ class SweetAlertLibrary extends AbstractDialogLibrary implements MessageInterfac
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.swal.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";

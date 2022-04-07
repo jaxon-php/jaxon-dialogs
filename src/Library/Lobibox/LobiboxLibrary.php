@@ -12,13 +12,16 @@
 
 namespace Jaxon\Dialogs\Library\Lobibox;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\ModalInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class LobiboxLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -53,7 +56,7 @@ class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('lobibox.min.js');
+        return $this->helper()->getJsCode('lobibox.min.js');
     }
 
     /**
@@ -61,7 +64,7 @@ class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('lobibox.min.css');
+        return $this->helper()->getCssCode('lobibox.min.css');
     }
 
     /**
@@ -69,7 +72,7 @@ class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('lobibox/alert.js');
+        return $this->helper()->render('lobibox/alert.js');
     }
 
     /**
@@ -77,7 +80,7 @@ class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('lobibox/ready.js.php');
+        return $this->helper()->render('lobibox/ready.js.php');
     }
 
     /**
@@ -179,7 +182,7 @@ class LobiboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .

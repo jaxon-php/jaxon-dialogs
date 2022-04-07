@@ -12,13 +12,16 @@
 
 namespace Jaxon\Dialogs\Library\Bootbox;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\ModalInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class BootboxLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -55,12 +58,7 @@ class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     protected function getContainer(): string
     {
-        $sContainer = 'bootbox-container';
-        if($this->xHelper->hasOption('dom.container'))
-        {
-            $sContainer = $this->xHelper->getOption('dom.container');
-        }
-        return $sContainer;
+        return $this->helper()->getOption('dom.container', 'bootbox-container');
     }
 
     /**
@@ -68,7 +66,7 @@ class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('bootbox.min.js');
+        return $this->helper()->getJsCode('bootbox.min.js');
     }
 
     /**
@@ -76,7 +74,7 @@ class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('bootbox/alert.js');
+        return $this->helper()->render('bootbox/alert.js');
     }
 
     /**
@@ -84,7 +82,7 @@ class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('bootbox/ready.js.php', ['container' => $this->getContainer()]);
+        return $this->helper()->render('bootbox/ready.js.php', ['container' => $this->getContainer()]);
     }
 
     /**
@@ -97,7 +95,7 @@ class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
 
         // Set the value of the max width, if there is no value defined
         $width = $aOptions['width'] ?? 600;
-        $html = $this->xHelper->render('bootbox/dialog.html',
+        $html = $this->helper()->render('bootbox/dialog.html',
             ['title' => $sTitle, 'content' => $sContent, 'buttons' => $aButtons]);
 
         // Assign dialog content
@@ -170,7 +168,7 @@ class BootboxLibrary extends AbstractDialogLibrary implements ModalInterface, Me
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         return empty($sNoScript) ?
             "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})" :
             "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .

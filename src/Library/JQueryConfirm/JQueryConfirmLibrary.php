@@ -12,13 +12,16 @@
 
 namespace Jaxon\Dialogs\Library\JQueryConfirm;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\ModalInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -53,7 +56,7 @@ class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterfa
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('jquery-confirm.min.js');
+        return $this->helper()->getJsCode('jquery-confirm.min.js');
     }
 
     /**
@@ -61,7 +64,7 @@ class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterfa
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('jquery-confirm.min.css') . '
+        return $this->helper()->getCssCode('jquery-confirm.min.css') . '
 <style>
     .jconfirm .jconfirm-box div.jconfirm-content-pane {
         margin-top: 15px;
@@ -75,7 +78,7 @@ class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterfa
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('jqueryconfirm/alert.js');
+        return $this->helper()->render('jqueryconfirm/alert.js');
     }
 
     /**
@@ -83,7 +86,7 @@ class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterfa
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('jqueryconfirm/ready.js.php');
+        return $this->helper()->render('jqueryconfirm/ready.js.php');
     }
 
     /**
@@ -189,7 +192,7 @@ class JQueryConfirmLibrary extends AbstractDialogLibrary implements ModalInterfa
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->xHelper->getQuestionTitle();
+        $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" .

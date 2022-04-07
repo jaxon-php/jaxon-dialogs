@@ -12,12 +12,15 @@
 
 namespace Jaxon\Dialogs\Library\Overhang;
 
-use Jaxon\Ui\Dialog\Library\AbstractDialogLibrary;
+use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Ui\Dialog\LibraryInterface;
 use Jaxon\Ui\Dialog\MessageInterface;
 use Jaxon\Ui\Dialog\QuestionInterface;
 
-class OverhangLibrary extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
+    use DialogLibraryTrait;
+
     /**
      * @const The library name
      */
@@ -52,7 +55,7 @@ class OverhangLibrary extends AbstractDialogLibrary implements MessageInterface,
      */
     public function getJs(): string
     {
-        return $this->xHelper->getJsCode('overhang.min.js');
+        return $this->helper()->getJsCode('overhang.min.js');
     }
 
     /**
@@ -60,7 +63,7 @@ class OverhangLibrary extends AbstractDialogLibrary implements MessageInterface,
      */
     public function getCss(): string
     {
-        return $this->xHelper->getCssCode('overhang.min.css');
+        return $this->helper()->getCssCode('overhang.min.css');
     }
 
     /**
@@ -68,7 +71,7 @@ class OverhangLibrary extends AbstractDialogLibrary implements MessageInterface,
      */
     public function getScript(): string
     {
-        return $this->xHelper->render('overhang/alert.js');
+        return $this->helper()->render('overhang/alert.js');
     }
 
     /**
@@ -76,7 +79,7 @@ class OverhangLibrary extends AbstractDialogLibrary implements MessageInterface,
      */
     public function getReadyScript(): string
     {
-        return $this->xHelper->render('overhang/ready.js.php');
+        return $this->helper()->render('overhang/ready.js.php');
     }
 
     /**
