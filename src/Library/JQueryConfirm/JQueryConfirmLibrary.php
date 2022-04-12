@@ -12,11 +12,11 @@
 
 namespace Jaxon\Dialogs\Library\JQueryConfirm;
 
-use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Ui\Dialog\LibraryInterface;
-use Jaxon\Ui\Dialog\ModalInterface;
-use Jaxon\Ui\Dialog\MessageInterface;
-use Jaxon\Ui\Dialog\QuestionInterface;
+use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\LibraryInterface;
+use Jaxon\App\Dialog\ModalInterface;
+use Jaxon\App\Dialog\MessageInterface;
+use Jaxon\App\Dialog\QuestionInterface;
 
 class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
