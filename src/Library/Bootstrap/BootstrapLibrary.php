@@ -12,11 +12,11 @@
 
 namespace Jaxon\Dialogs\Library\Bootstrap;
 
-use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Ui\Dialog\LibraryInterface;
-use Jaxon\Ui\Dialog\ModalInterface;
-use Jaxon\Ui\Dialog\MessageInterface;
-use Jaxon\Ui\Dialog\QuestionInterface;
+use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\LibraryInterface;
+use Jaxon\App\Dialog\ModalInterface;
+use Jaxon\App\Dialog\MessageInterface;
+use Jaxon\App\Dialog\QuestionInterface;
 
 class BootstrapLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
@@ -115,7 +115,7 @@ class BootstrapLibrary implements LibraryInterface, ModalInterface, MessageInter
             $aOptions['nl2br'] = false;
         }
         // Show the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.show'), $aOptions);
+        $this->addCommand(['cmd' => 'bootstrap.show'], $aOptions);
     }
 
     /**
@@ -124,7 +124,7 @@ class BootstrapLibrary implements LibraryInterface, ModalInterface, MessageInter
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(array('cmd' => 'bootstrap.hide'), array());
+        $this->addCommand(['cmd' => 'bootstrap.hide'], []);
     }
 
     /**
@@ -156,13 +156,13 @@ class BootstrapLibrary implements LibraryInterface, ModalInterface, MessageInter
                 return "BootstrapDialog.alert({message:" . $sMessage . ", type:" . $sType . "})";
             }
         }
-        $aOptions = array('message' => $sMessage, 'type' => $sType);
+        $aOptions = ['message' => $sMessage, 'type' => $sType];
         if(($sTitle))
         {
             $aOptions['title'] = $sTitle;
         }
         // Show the alert
-        $this->addCommand(array('cmd' => 'bootstrap.alert'), $aOptions);
+        $this->addCommand(['cmd' => 'bootstrap.alert'], $aOptions);
         return '';
     }
 

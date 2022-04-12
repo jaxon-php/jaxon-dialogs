@@ -12,9 +12,9 @@
 
 namespace Jaxon\Dialogs\Library\Tingle;
 
-use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Ui\Dialog\LibraryInterface;
-use Jaxon\Ui\Dialog\ModalInterface;
+use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\LibraryInterface;
+use Jaxon\App\Dialog\ModalInterface;
 
 class TingleLibrary implements LibraryInterface, ModalInterface
 {

@@ -12,9 +12,9 @@
 
 namespace Jaxon\Dialogs\Library\Toastr;
 
-use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Ui\Dialog\LibraryInterface;
-use Jaxon\Ui\Dialog\MessageInterface;
+use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\LibraryInterface;
+use Jaxon\App\Dialog\MessageInterface;
 
 class ToastrLibrary implements LibraryInterface, MessageInterface
 {

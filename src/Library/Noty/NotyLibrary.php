@@ -12,10 +12,10 @@
 
 namespace Jaxon\Dialogs\Library\Noty;
 
-use Jaxon\Ui\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Ui\Dialog\LibraryInterface;
-use Jaxon\Ui\Dialog\MessageInterface;
-use Jaxon\Ui\Dialog\QuestionInterface;
+use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\LibraryInterface;
+use Jaxon\App\Dialog\MessageInterface;
+use Jaxon\App\Dialog\QuestionInterface;
 
 class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
@@ -132,14 +132,12 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $sTitle = $this->helper()->getQuestionTitle();
+        // $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
             return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";
         }
-        else
-        {
-            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
-        }
+        return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript .
+            ";},function(){" . $sNoScript . ";})";
     }
 }
