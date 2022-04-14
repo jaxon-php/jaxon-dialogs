@@ -12,8 +12,8 @@ function registerDialogLibraries()
         'bootbox'       => Jaxon\Dialogs\Library\Bootbox\BootboxLibrary::class,
         // Bootstrap
         'bootstrap'     => Jaxon\Dialogs\Library\Bootstrap\BootstrapLibrary::class,
-        // PgwJS
-        'pgwjs'         => Jaxon\Dialogs\Library\PgwJS\PgwJsLibrary::class,
+        // PgwJs
+        'pgwjs'         => Jaxon\Dialogs\Library\PgwJs\PgwJsLibrary::class,
         // Toastr
         'toastr'        => Jaxon\Dialogs\Library\Toastr\ToastrLibrary::class,
         // JAlert

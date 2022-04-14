@@ -28,7 +28,7 @@ jaxon.dialogs.noty = {
                     text: "<?php echo $this->no ?>",
                     onClick: function($noty){
                         $noty.close();
-                        if(noCallback != undefined)
+                        if(noCallback !== undefined)
                             noCallback();
                     }
                 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the PgwJS ModalInterface library.
+ * DialogLibraryInterface.php - Adapter for the PgwJs ModalInterface library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,7 +10,7 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\PgwJS;
+namespace Jaxon\Dialogs\Library\PgwJs;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;
