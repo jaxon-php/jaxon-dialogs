@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/jaxon-php/jaxon-dialogs.svg?branch=master)](https://travis-ci.org/jaxon-php/jaxon-dialogs)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jaxon-php/jaxon-dialogs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jaxon-php/jaxon-dialogs/?branch=master)
 [![StyleCI](https://styleci.io/repos/60390067/shield?branch=master)](https://styleci.io/repos/60390067)
 
@@ -17,7 +16,7 @@ Features
 --------
 
 This package provides modal, alert and confirmation dialogs to Jaxon applications with various javascript libraries.
-16 libraries are currently supported.
+12 libraries are currently supported.
 
 The javascript library to use for each function is chosen by configuration, and the package takes care of loading the library files into the page and generating the javascript code.
 
@@ -30,8 +29,8 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 
 ```json
 "require": {
-    "jaxon-php/jaxon-core": "~3.0",
-    "jaxon-php/jaxon-dialogs": "~3.0"
+    "jaxon-php/jaxon-core": "^4.0",
+    "jaxon-php/jaxon-dialogs": "^4.0"
 }
 ```
 
@@ -196,7 +195,7 @@ Example with Jaxon selector.
 
 ```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq('HelloWorld')->call('setColor', pm()->select('colorselect'))
+    echo rq('HelloWorld')->setColor(pm()->select('colorselect'))
         ->confirm('Set color to {1}?', pm()->select('colorselect')) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
@@ -209,7 +208,7 @@ Example with jQuery selector.
 
 ```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq('HelloWorld')->call('setColor', jq('#colorselect')->val())
+    echo rq('HelloWorld')->setColor(jq('#colorselect')->val())
         ->confirm('Set color to {1}?', jq('#colorselect')->val()) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
@@ -223,20 +222,13 @@ Supported libraries
 
 This package currently supports 16 javascript libraries, each implementing one or more interfaces.
 
-Bootstrap Dialog: https://nakupanda.github.io/bootstrap3-dialog
-
-- Dialog id: bootstrap
-- Implements: Modal, Alert, Confirm
-- Versions: 1.35.3
-
-
 Bootbox: http://bootboxjs.com
 
 - Dialog id: bootbox
 - Implements: Modal, Alert, Confirm
 - Versions: 4.3.0
 
-jAlert: http://flwebsites.biz/jAlert/
+jAlert: https://htmlguyllc.github.io/jAlert/
 
 - Dialog id: jalert
 - Implements: Alert, Confirm
@@ -254,49 +246,37 @@ Toastr: https://codeseven.github.io/toastr/
 - Implements: Alert
 - Versions: 2.1.3
 
-Tingle: http://robinparisi.github.io/tingle/
+Tingle: https://tingle.robinparisi.com/
 
 - Dialog id: tingle
 - Implements: Modal
 - Versions: 0.8.4
 
-Simply Toast: https://github.com/ericprieto/simply-toast
-
-- Dialog id: simply
-- Implements: Alert
-- Versions:
-
-Noty: http://ned.im/noty/
+Noty: https://ned.im/noty/
 
 - Dialog id: noty
 - Implements: Alert, Confirm
 - Versions: 2.3.11
 
-Notify: https://notifyjs.com
+Notify: https://notifyjs.jpillora.com/
 
 - Dialog id: notify
 - Implements: Alert
 - Versions: 0.4.2
 
-Lobibox: http://lobianijs.com/site/lobibox
-
-- Dialog id: lobibox
-- Implements: Modal, Alert, Confirm
-- Versions: 1.2.4
-
-Overhang: http://paulkr.github.io/overhang.js/ (requires jQuery and jQuery UI)
+Overhang: https://paulkr.github.io/overhang.js/ (requires jQuery and jQuery UI)
 
 - Dialog id: overhang
 - Implements: Alert, Confirm
 - Versions:
 
-PNotify: http://sciactive.com/pnotify/ (requires jQuery and jQuery UI)
+PNotify: https://sciactive.com/pnotify/ (requires jQuery and jQuery UI)
 
 - Dialog id: pnotify
 - Implements: Alert, Confirm
 - Versions: 3.0.0
 
-Sweet Alert: http://t4t5.github.io/sweetalert/
+Sweet Alert: https://sweetalert.js.org/
 
 - Dialog id: sweetalert
 - Implements: Alert, Confirm
@@ -308,129 +288,200 @@ JQuery-Confirm: https://craftpip.github.io/jquery-confirm/
 - Implements: Modal, Alert, Confirm
 - Versions: 3.0.1, 3.3.0, 3.3.1, 3.3.2
 
-IziToast: http://izitoast.marcelodolce.com
+Bootstrap 3 Dialog: https://nakupanda.github.io/bootstrap3-dialog
 
-- Dialog id: izi.toast
-- Implements: Alert, Confirm
-- Versions: 1.1.1
-
-YmzBox: https://github.com/returnphp/ymzbox
-
-- Dialog id: ymzbox
-- Implements: Alert, Confirm
-- Versions:
-
+- Dialog id: bootstrap
+- Implements: Modal, Alert, Confirm
+- Versions: 1.35.3
 
 Adding a new library
 --------------------
 
-In order to add a new javascript library to the Dialogs plugin, a new class needs to be defined and registered.
+In order to add a new javascript library to this plugin, a new class needs to be defined and registered.
 
-The class must inherit from `Jaxon\Dialogs\Libraries\Library`, and implement a few functions and interfaces.
-Starting from release `1.1.0`, its constructor takes the default subdir and version number as parameters.
+The class must implement the `Jaxon\App\Dialog\LibraryInterface` interface, and at least one of the
+`Jaxon\App\Dialog\LibraryInterface`, `Jaxon\App\Dialog\LibraryInterface`, or `Jaxon\App\Dialog\LibraryInterface`
+interfaces, depending on the features it provides.
 
-### Functions
+### Interfaces
 
-These optional functions can be defined in the class.
+The `LibraryInterface` interface is defined as follow.
+It defines the name of the library, and its javascript code.
 
 ```php
+interface LibraryInterface
+{
     /**
-     * Get the javascript header code and file includes
+     * Get the library name
      *
      * @return string
      */
-    public function getJs(){}
+    public function getName(): string;
+
+    /**
+     * Get the library base URI
+     *
+     * @return string
+     */
+    public function getUri(): string;
+
+    /**
+     * Get the library subdir for the URI
+     *
+     * @return string
+     */
+    public function getSubdir(): string;
+
+    /**
+     * Get the library version for the URI
+     *
+     * @return string
+     */
+    public function getVersion(): string;
 
     /**
      * Get the CSS header code and file includes
      *
      * @return string
      */
-    public function getCss(){}
+    public function getCss(): string;
+
+    /**
+     * Get the javascript header code and file includes
+     *
+     * @return string
+     */
+    public function getJs(): string;
 
     /**
      * Get the javascript code to be printed into the page
      *
      * @return string
      */
-    public function getScript(){}
+    public function getScript(): string;
+
+    /**
+     * Get the javascript code to be executed on page load
+     *
+     * @return string
+     */
+    public function getReadyScript(): string;
+}
 ```
 
 The `getJs()` and `getCss()` methods return the HTML header code for loading javascript and CSS files of the library.
 The `getScript()` method returns the javascript code to be executed after the page is loaded to initialize the library.
 
-### Interfaces
-
 Depending on the javascript library features, the class must implement one or more of the following three interfaces.
 
-```php
-namespace Jaxon\Dialogs\Contracts;
+For windows and modal dialogs.
 
-Interface Modal
+```php
+interface ModalInterface
 {
     /**
      * Show a modal dialog.
+     *
+     * @param string $sTitle The title of the dialog
+     * @param string $sContent The content of the dialog
+     * @param array $aButtons The buttons of the dialog
+     * @param array $aOptions The options of the dialog
+     *
+     * @return void
      */
-    public function show($title, $content, array $buttons, array $options = []);
+    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = []);
 
     /**
      * Hide the modal dialog.
+     *
+     * @return void
      */
     public function hide();
 }
 ```
 
-```php
-namespace Jaxon\Contracts\Dialogs;
+For notifications dialogs.
 
-Interface Message
+```php
+interface MessageInterface
 {
     /**
-     * Print a success message.
+     * Show a success message.
+     *
+     * @param string $sMessage    The text of the message
+     * @param string $sTitle    The title of the message
+     *
+     * @return string
      */
-    public function success($message, $title = null);
+    public function success(string $sMessage, string $sTitle = ''): string;
 
     /**
-     * Print an information message.
+     * Show an information message.
+     *
+     * @param string $sMessage    The text of the message
+     * @param string $sTitle    The title of the message
+     *
+     * @return string
      */
-    public function info($message, $title = null);
+    public function info(string $sMessage, string $sTitle = ''): string;
 
     /**
-     * Print a warning message.
+     * Show a warning message.
+     *
+     * @param string $sMessage    The text of the message
+     * @param string $sTitle    The title of the message
+     *
+     * @return string
      */
-    public function warning($message, $title = null);
+    public function warning(string $sMessage, string $sTitle = ''): string;
 
     /**
-     * Print an error message.
+     * Show an error message.
+     *
+     * @param string $sMessage    The text of the message
+     * @param string $sTitle    The title of the message
+     *
+     * @return string
      */
-    public function error($message, $title = null);
+    public function error(string $sMessage, string $sTitle = ''): string;
 }
 ```
 
-```php
-namespace Jaxon\Contracts\Dialogs;
+For confirmation dialogs.
 
-interface Question
+```php
+interface QuestionInterface
 {
     /**
      * Return a script which makes a call only if the user answers yes to the given question
+     *
+     * @param string  $sQuestion
+     * @param string  $sYesScript
+     * @param string  $sNoScript
+     *
+     * @return string
      */
-    public function confirm($question, $yesScript, $noScript);
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string;
 }
 ```
 
-### Config options
+### Helper
 
-The `getOption($sName)` method provided by the `Jaxon\Dialogs\Libraries\Library` class returns the value of a config option of the library.
-The parameter `$sName` is the name of the option without the `dialogs.<library_name>` prefix.
-
-In the example below, a call to `$this->getOption('options.position')` will return the value `center`.
+The `Jaxon\App\Dialog\Library\DialogLibraryTrait` provides default implementations for some methods of the
+`Jaxon\App\Dialog\LibraryInterface` interface, as well as a `Jaxon\App\Dialog\Library\DialogLibraryHelper` object,
+returned by the `helper()` method, which gives access to the dialog config options, and templates.
 
 ### Registration
 
 After it is defined, the library class needs to be configured and registered before it can be used in the application.
 
-First, declare the class in the Dialogs plugin configuration.
+The class can be registered when starting the library.
+
+```php
+jaxon()->dialog()->registerLibrary(\Path\To\My\Plugin::class, 'myplugin');
+```
+
+Or declared in the `dialog` section of the Jaxon configuration.
 
 ```php
     'dialogs' => [
