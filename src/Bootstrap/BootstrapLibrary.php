@@ -10,7 +10,7 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\Bootstrap;
+namespace Jaxon\Dialogs\Bootstrap;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;

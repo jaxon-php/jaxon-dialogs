@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Overhang library.
+ * DialogLibraryInterface.php - Adapter for the Noty library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,21 +10,21 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\Overhang;
+namespace Jaxon\Dialogs\Noty;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInterface
+class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'overhang';
+    const NAME = 'noty';
 
     /**
      * @inheritDoc
@@ -39,7 +39,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function getSubdir(): string
     {
-        return 'overhang';
+        return 'noty';
     }
 
     /**
@@ -47,7 +47,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function getVersion(): string
     {
-        return 'latest';
+        return '2.3.11';
     }
 
     /**
@@ -55,15 +55,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('overhang.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('overhang.min.css');
+        return $this->helper()->getJsCode('jquery.noty.packaged.min.js');
     }
 
     /**
@@ -71,7 +63,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function getScript(): string
     {
-        return $this->helper()->render('overhang/alert.js');
+         return $this->helper()->render('noty/alert.js');
     }
 
     /**
@@ -79,7 +71,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function getReadyScript(): string
     {
-        return $this->helper()->render('overhang/ready.js.php');
+         return $this->helper()->render('noty/ready.js.php');
     }
 
     /**
@@ -95,11 +87,11 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
     {
         if($this->returnCode())
         {
-            return "$('body').overhang({message:" . $sMessage . ", type:'" . $sType . "'})";
+            return "noty({text:" . $sMessage . ", type:'" . $sType . "', layout: 'topCenter'})";
         }
-        $aOptions = ['message' => $sMessage, 'type' => $sType];
+        $aOptions = array('text' => $sMessage, 'type' => $sType);
         // Show the alert
-        $this->addCommand(['cmd' => 'overhang.alert'], $aOptions);
+        $this->addCommand(array('cmd' => 'noty.alert'), $aOptions);
         return '';
     }
 
@@ -116,7 +108,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'info');
+        return $this->alert($sMessage, $sTitle, 'information');
     }
 
     /**
@@ -124,7 +116,7 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warn');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
@@ -140,13 +132,12 @@ class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInt
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
+        // $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
-            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";})";
+            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";
         }
-        else
-        {
-            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
-        }
+        return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript .
+            ";},function(){" . $sNoScript . ";})";
     }
 }

@@ -10,7 +10,7 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\JAlert;
+namespace Jaxon\Dialogs\JAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;

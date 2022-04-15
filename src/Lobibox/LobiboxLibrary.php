@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the JQuery-Confirm library.
+ * DialogLibraryInterface.php - Adapter for the Lobibox library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,7 +10,7 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\JQueryConfirm;
+namespace Jaxon\Dialogs\Lobibox;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;
@@ -18,14 +18,14 @@ use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
+class LobiboxLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'jconfirm';
+    const NAME = 'lobibox';
 
     /**
      * @inheritDoc
@@ -40,7 +40,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function getSubdir(): string
     {
-        return 'jquery-confirm';
+        return 'lobibox';
     }
 
     /**
@@ -48,7 +48,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function getVersion(): string
     {
-        return '3.3.0';
+        return '1.2.4';
     }
 
     /**
@@ -56,7 +56,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('jquery-confirm.min.js');
+        return $this->helper()->getJsCode('lobibox.min.js');
     }
 
     /**
@@ -64,13 +64,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('jquery-confirm.min.css') . '
-<style>
-    .jconfirm .jconfirm-box div.jconfirm-content-pane {
-        margin-top: 15px;
-    }
-</style>
-';
+        return $this->helper()->getCssCode('lobibox.min.css');
     }
 
     /**
@@ -78,7 +72,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function getScript(): string
     {
-        return $this->helper()->render('jqueryconfirm/alert.js');
+        return $this->helper()->render('lobibox/alert.js');
     }
 
     /**
@@ -86,29 +80,25 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function getReadyScript(): string
     {
-        return $this->helper()->render('jqueryconfirm/ready.js.php');
+        return $this->helper()->render('lobibox/ready.js.php');
     }
 
     /**
      * @inheritDoc
      */
-    public function show(string $sTitle, string $sMessage, array $aButtons, array $aOptions = [])
+    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
+        // Fill the options array with the parameters
         $aOptions['title'] = $sTitle;
-        $aOptions['content'] = $sMessage;
+        $aOptions['content'] = $sContent;
         $aOptions['buttons'] = [];
-        if(!array_key_exists('boxWidth', $aOptions))
-        {
-            $aOptions['useBootstrap'] = false;
-            $aOptions['boxWidth'] = '600';
-        }
         $ind = 0;
         foreach($aButtons as $button)
         {
             $_button = [
                 'text' => $button['title'],
-                'btnClass' => $button['class'],
                 'action' => $button['click'],
+                'class' => $button['class'],
             ];
             // Optional attributes
             foreach($button as $attr => $value)
@@ -118,10 +108,11 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
                     $_button[$attr] = $value;
                 }
             }
-            $aOptions['buttons']['btn' . $ind++] = $_button;
+            $aOptions['buttons']['btn' . $ind] = $_button;
+            $ind++;
         }
-        // Show dialog
-        $this->addCommand(array('cmd' => 'jconfirm.show'), $aOptions);
+        // Show the modal dialog
+        $this->addCommand(array('cmd' => 'lobibox.show'), $aOptions);
     }
 
     /**
@@ -129,8 +120,8 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function hide()
     {
-        // Hide dialog
-        $this->addCommand(array('cmd' => 'jconfirm.hide'), array());
+        // Hide the modal dialog
+        $this->addCommand(array('cmd' => 'lobibox.hide'), array());
     }
 
     /**
@@ -139,19 +130,18 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      * @param string $sMessage The text of the message
      * @param string $sTitle The title of the message
      * @param string $sType The type of the message
-     * @param string $sIcon The icon of the message
      *
      * @return string
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType, string $sIcon): string
+    protected function notify(string $sMessage, string $sTitle, string $sType): string
     {
         if($this->returnCode())
         {
-            return "$.alert({content:" . $sMessage . ", title:'" . $sTitle .
-                "', type:'" . $sType . "', icon:'" . $sIcon . "'})";
+            return "Lobibox.notify('" . $sType . "', {title:'" . $sTitle . "', msg:" . $sMessage . "})";
         }
-        $this->addCommand(array('cmd' => 'jconfirm.alert'),
-            ['content' => $sMessage, 'title' => $sTitle, 'type' => $sType, 'icon' => $sIcon]);
+        $aOptions = array('message' => $sMessage, 'type' => $sType, 'title' => (($sTitle) ?: false));
+        // Show the alert
+        $this->addCommand(array('cmd' => 'lobibox.notify'), $aOptions);
         return '';
     }
 
@@ -160,7 +150,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function success(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'green', 'fa fa-success');
+        return $this->notify($sMessage, $sTitle, 'success');
     }
 
     /**
@@ -168,7 +158,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'blue', 'fa fa-info');
+        return $this->notify($sMessage, $sTitle, 'info');
     }
 
     /**
@@ -176,7 +166,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'orange', 'fa fa-warning');
+        return $this->notify($sMessage, $sTitle, 'warning');
     }
 
     /**
@@ -184,7 +174,7 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
      */
     public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'red', 'fa fa-error');
+        return $this->notify($sMessage, $sTitle, 'error');
     }
 
     /**
@@ -195,10 +185,10 @@ class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageI
         $sTitle = $this->helper()->getQuestionTitle();
         if(!$sNoScript)
         {
-            return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" .
+            return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .
                 $sTitle . "',function(){" . $sYesScript . ";})";
         }
-        return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" . $sTitle .
-            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+        return "jaxon.dialogs.lobibox.confirm(" . $sQuestion . ",'" .
+            $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Noty library.
+ * DialogLibraryInterface.php - Adapter for the Notify library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,21 +10,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\Noty;
+namespace Jaxon\Dialogs\Notify;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
-use Jaxon\App\Dialog\QuestionInterface;
 
-class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
+class NotifyLibrary implements LibraryInterface, MessageInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'noty';
+    const NAME = 'notify';
 
     /**
      * @inheritDoc
@@ -39,7 +38,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function getSubdir(): string
     {
-        return 'noty';
+        return 'notify';
     }
 
     /**
@@ -47,7 +46,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function getVersion(): string
     {
-        return '2.3.11';
+        return '0.4.2';
     }
 
     /**
@@ -55,7 +54,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('jquery.noty.packaged.min.js');
+        return $this->helper()->getJsCode('notify.js');
     }
 
     /**
@@ -63,7 +62,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function getScript(): string
     {
-         return $this->helper()->render('noty/alert.js');
+        return $this->helper()->render('notify/alert.js');
     }
 
     /**
@@ -71,7 +70,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function getReadyScript(): string
     {
-         return $this->helper()->render('noty/ready.js.php');
+        return $this->helper()->render('notify/ready.js.php');
     }
 
     /**
@@ -79,19 +78,19 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      *
      * @param string $sMessage The text of the message
      * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
+     * @param string $sClass The type of the message
      *
      * @return string
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
+    protected function alert(string $sMessage, string $sTitle, string $sClass): string
     {
         if($this->returnCode())
         {
-            return "noty({text:" . $sMessage . ", type:'" . $sType . "', layout: 'topCenter'})";
+            return "$.notify(" . $sMessage . ", {className:'" . $sClass . "', position:'top center'})";
         }
-        $aOptions = array('text' => $sMessage, 'type' => $sType);
+        $aOptions = array('message' => $sMessage, 'className' => $sClass);
         // Show the alert
-        $this->addCommand(array('cmd' => 'noty.alert'), $aOptions);
+        $this->addCommand(array('cmd' => 'notify.alert'), $aOptions);
         return '';
     }
 
@@ -108,7 +107,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function info(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'information');
+        return $this->alert($sMessage, $sTitle, 'info');
     }
 
     /**
@@ -116,7 +115,7 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warn');
     }
 
     /**
@@ -125,19 +124,5 @@ class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterfa
     public function error(string $sMessage, string $sTitle = ''): string
     {
         return $this->alert($sMessage, $sTitle, 'error');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        // $sTitle = $this->helper()->getQuestionTitle();
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";
-        }
-        return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript .
-            ";},function(){" . $sNoScript . ";})";
     }
 }

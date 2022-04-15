@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Toastr library.
+ * DialogLibraryInterface.php - Adapter for the Overhang library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,20 +10,21 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\Toastr;
+namespace Jaxon\Dialogs\Overhang;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
+use Jaxon\App\Dialog\QuestionInterface;
 
-class ToastrLibrary implements LibraryInterface, MessageInterface
+class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'toastr';
+    const NAME = 'overhang';
 
     /**
      * @inheritDoc
@@ -38,7 +39,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function getSubdir(): string
     {
-        return 'toastr.js';
+        return 'overhang';
     }
 
     /**
@@ -46,7 +47,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function getVersion(): string
     {
-        return '2.1.3';
+        return 'latest';
     }
 
     /**
@@ -54,7 +55,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('toastr.min.js');
+        return $this->helper()->getJsCode('overhang.min.js');
     }
 
     /**
@@ -62,7 +63,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('toastr.min.css');
+        return $this->helper()->getCssCode('overhang.min.css');
     }
 
     /**
@@ -70,7 +71,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('toastr/alert.js');
+        return $this->helper()->render('overhang/alert.js');
     }
 
     /**
@@ -78,9 +79,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function getReadyScript(): string
     {
-        return $this->helper()->render('toastr/ready.js.php', [
-            'options' =>  $this->helper()->getOptionScript('toastr.options.', 'options.')
-        ]);
+        return $this->helper()->render('overhang/ready.js.php');
     }
 
     /**
@@ -96,11 +95,11 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
     {
         if($this->returnCode())
         {
-            return empty($sTitle) ? "toastr.$sType($sMessage)" : "toastr.$sType($sMessage, '$sTitle')";
+            return "$('body').overhang({message:" . $sMessage . ", type:'" . $sType . "'})";
         }
-        $aOptions = ['message' => $sMessage, 'title' => $sTitle];
+        $aOptions = ['message' => $sMessage, 'type' => $sType];
         // Show the alert
-        $this->addCommand(['cmd' => 'toastr.' . $sType], $aOptions);
+        $this->addCommand(['cmd' => 'overhang.alert'], $aOptions);
         return '';
     }
 
@@ -125,7 +124,7 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warning');
+        return $this->alert($sMessage, $sTitle, 'warn');
     }
 
     /**
@@ -136,13 +135,18 @@ class ToastrLibrary implements LibraryInterface, MessageInterface
         return $this->alert($sMessage, $sTitle, 'error');
     }
 
-    public function remove()
+    /**
+     * @inheritDoc
+     */
+    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        $this->response()->script('toastr.remove()');
-    }
-
-    public function clear()
-    {
-        $this->response()->script('toastr.clear()');
+        if(!$sNoScript)
+        {
+            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";})";
+        }
+        else
+        {
+            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+        }
     }
 }

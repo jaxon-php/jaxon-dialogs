@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Tingle library.
+ * DialogLibraryInterface.php - Adapter for the PgwJs ModalInterface library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -10,20 +10,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library\Tingle;
+namespace Jaxon\Dialogs\PgwJs;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\ModalInterface;
 
-class TingleLibrary implements LibraryInterface, ModalInterface
+class PgwJsLibrary implements LibraryInterface, ModalInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'tingle';
+    const NAME = 'pgwjs';
 
     /**
      * @inheritDoc
@@ -38,7 +38,7 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function getSubdir(): string
     {
-        return 'tingle';
+        return 'pgwjs/modal';
     }
 
     /**
@@ -46,7 +46,7 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function getVersion(): string
     {
-        return '0.8.4';
+        return '2.0.0';
     }
 
     /**
@@ -54,7 +54,7 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('tingle.min.js');
+        return $this->helper()->getJsCode('pgwmodal.min.js');
     }
 
     /**
@@ -62,7 +62,7 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('tingle.min.css');
+        return $this->helper()->getCssCode('pgwmodal.min.css');
     }
 
     /**
@@ -70,7 +70,7 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('tingle/alert.js');
+        return $this->helper()->render('pgwjs/alert.js');
     }
 
     /**
@@ -78,7 +78,10 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function getReadyScript(): string
     {
-        return $this->helper()->render('tingle/ready.js');
+        $sVarPrefix = 'jaxon.dialogs.pgwjs.options.';
+        return $this->helper()->render('pgwjs/ready.js.php', [
+            'options' => $this->helper()->getOptionScript($sVarPrefix, 'options.modal.'),
+        ]);
     }
 
     /**
@@ -86,11 +89,12 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
-        // Show the footer only if there is a button to display.
-        $aOptions['footer'] = (count($aButtons) > 0);
-        // Show the modal dialog
-        $this->addCommand(['cmd' => 'tingle.show'],
-            ['content' => '<h2>' . $sTitle . '</h2>' . $sContent, 'buttons' => $aButtons, 'options' => $aOptions]);
+        // Set the value of the max width, if there is no value defined
+        $aOptions['title'] = $sTitle;
+        $aOptions['content'] = $this->helper()->render('pgwjs/dialog.html',
+            ['content' => $sContent, 'buttons' => $aButtons]);
+        // Affectations du contenu de la fenêtre
+        $this->addCommand(array('cmd'=>'pgw.modal'), $aOptions);
     }
 
     /**
@@ -98,7 +102,6 @@ class TingleLibrary implements LibraryInterface, ModalInterface
      */
     public function hide()
     {
-        // Hide the modal dialog
-        $this->addCommand(['cmd' => 'tingle.hide'], []);
+        $this->response()->script('$.pgwModal("close")');
     }
 }
