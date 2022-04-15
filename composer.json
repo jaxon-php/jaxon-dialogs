@@ -18,7 +18,10 @@
     "autoload": {
         "psr-4": {
             "Jaxon\\Dialogs\\": "src/"
-        }
+        },
+        "files": [
+            "src/start.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
