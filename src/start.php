@@ -22,14 +22,10 @@ function registerDialogLibraries()
         'jalert'        => Jaxon\Dialogs\JAlert\JAlertLibrary::class,
         // Tingle
         'tingle'        => Jaxon\Dialogs\Tingle\TingleLibrary::class,
-        // SimplyToast
-        'simply'        => Jaxon\Dialogs\SimplyToast\SimplyToastLibrary::class,
         // Noty
         'noty'          => Jaxon\Dialogs\Noty\NotyLibrary::class,
         // Notify
         'notify'        => Jaxon\Dialogs\Notify\NotifyLibrary::class,
-        // Lobibox
-        'lobibox'       => Jaxon\Dialogs\Lobibox\LobiboxLibrary::class,
         // Overhang
         'overhang'      => Jaxon\Dialogs\Overhang\OverhangLibrary::class,
         // PNotify
