@@ -3,44 +3,32 @@
 use Jaxon\Exception\SetupException;
 
 /**
- * Register the javascript libraries in the DI container.
- *
  * @return void
  */
 function registerDialogLibraries()
 {
     $aLibraries = [
-        // Bootbox
-        'bootbox'       => Jaxon\Dialogs\Bootbox\BootboxLibrary::class,
-        // Bootstrap
-        'bootstrap'     => Jaxon\Dialogs\Bootstrap\BootstrapLibrary::class,
-        // PgwJs
-        'pgwjs'         => Jaxon\Dialogs\PgwJs\PgwJsLibrary::class,
-        // Toastr
-        'toastr'        => Jaxon\Dialogs\Toastr\ToastrLibrary::class,
-        // JAlert
-        'jalert'        => Jaxon\Dialogs\JAlert\JAlertLibrary::class,
-        // Tingle
-        'tingle'        => Jaxon\Dialogs\Tingle\TingleLibrary::class,
-        // Noty
-        'noty'          => Jaxon\Dialogs\Noty\NotyLibrary::class,
-        // Notify
-        'notify'        => Jaxon\Dialogs\Notify\NotifyLibrary::class,
-        // Overhang
-        'overhang'      => Jaxon\Dialogs\Overhang\OverhangLibrary::class,
-        // PNotify
-        'pnotify'       => Jaxon\Dialogs\PNotify\PNotifyLibrary::class,
-        // SweetAlert
-        'sweetalert'    => Jaxon\Dialogs\SweetAlert\SweetAlertLibrary::class,
-        // JQuery Confirm
-        'jconfirm'      => Jaxon\Dialogs\JQueryConfirm\JQueryConfirmLibrary::class,
+        Jaxon\Dialogs\Bootbox\BootboxLibrary::class, // Bootbox
+        Jaxon\Dialogs\Bootstrap\BootstrapLibrary::class, // Bootstrap
+        Jaxon\Dialogs\PgwJs\PgwJsLibrary::class, // PgwJs
+        Jaxon\Dialogs\Toastr\ToastrLibrary::class, // Toastr
+        Jaxon\Dialogs\JAlert\JAlertLibrary::class, // JAlert
+        Jaxon\Dialogs\Tingle\TingleLibrary::class, // Tingle
+        Jaxon\Dialogs\Noty\NotyLibrary::class, // Noty
+        Jaxon\Dialogs\Notify\NotifyLibrary::class, // Notify
+        Jaxon\Dialogs\Overhang\OverhangLibrary::class, // Overhang
+        Jaxon\Dialogs\PNotify\PNotifyLibrary::class, // PNotify
+        Jaxon\Dialogs\SweetAlert\SweetAlertLibrary::class, // SweetAlert
+        Jaxon\Dialogs\JQueryConfirm\JQueryConfirmLibrary::class, // JQuery Confirm
+        Jaxon\Dialogs\XDialog\XDialogLibrary::class, // XDialog
+        Jaxon\Dialogs\CuteAlert\CuteAlertLibrary::class, // CuteAlert
     ];
     $jaxon = jaxon();
-    foreach($aLibraries as $sName => $sClass)
+    foreach($aLibraries as $sClass)
     {
         try
         {
-            $jaxon->dialog()->registerLibrary($sClass, $sName);
+            $jaxon->dialog()->registerLibrary($sClass, $sClass::NAME);
         }
         catch(SetupException $e){}
     }
