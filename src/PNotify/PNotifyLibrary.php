@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the PNotify library.
+ * PNotifyLibrary.php
+ *
+ * Adapter for the PNotify library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,11 +15,10 @@
 namespace Jaxon\Dialogs\PNotify;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class PNotifyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
+class PNotifyLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 

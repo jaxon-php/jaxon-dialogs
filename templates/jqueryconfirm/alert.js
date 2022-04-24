@@ -5,7 +5,7 @@ jaxon.dialogs.jconfirm = {
         for(key in args.data.buttons)
         {
             button = args.data.buttons[key];
-            if(button.action == "close")
+            if(button.action === 'close')
             {
                 button.action = function(){jaxon.dialogs.jconfirm.dialog.close();};
             }

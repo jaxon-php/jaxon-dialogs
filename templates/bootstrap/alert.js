@@ -3,21 +3,16 @@
  */
 jaxon.dialogs.bootstrap = {
     show: function(args) {
-        // Add buttons
-        for(var ind = 0, len = args.data.buttons.length; ind < len; ind++)
-        {
-            button = args.data.buttons[ind];
-            if(button.action == "close")
-            {
-                button.action = function(dialog){dialog.close();};
-            }
-            else
-            {
-                button.action = new Function(button.action);
-            }
-        }
         // Open modal
-        BootstrapDialog.show(args.data);
+        BootstrapDialog.show({
+            ...args.data,
+            buttons: args.data.buttons.map(button => {
+                return {
+                    ...button,
+                    action: button.action === 'close' ? function(dialog){dialog.close();} : new Function(button.action),
+                };
+            }),
+        });
     },
     hide: function(args) {
         // Hide modal

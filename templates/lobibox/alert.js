@@ -5,7 +5,7 @@ jaxon.dialogs.lobibox = {
         for(key in args.data.buttons)
         {
             button = args.data.buttons[key];
-            if(button.action == "close")
+            if(button.action === 'close')
             {
                 button.action = function(){return false;};
                 button.closeOnClick = true;

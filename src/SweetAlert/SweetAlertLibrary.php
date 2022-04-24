@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the SweetAlert library.
+ * SweetAlertLibrary.php
+ *
+ * Adapter for the SweetAlert library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,11 +15,10 @@
 namespace Jaxon\Dialogs\SweetAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class SweetAlertLibrary implements LibraryInterface, MessageInterface, QuestionInterface
+class SweetAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 

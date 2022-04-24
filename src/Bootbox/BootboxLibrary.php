@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Bootbox library.
+ * BootboxLibrary.php
+ *
+ * Adapter for the Bootbox library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,12 +15,11 @@
 namespace Jaxon\Dialogs\Bootbox;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class BootboxLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
+class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
@@ -169,6 +170,7 @@ class BootboxLibrary implements LibraryInterface, ModalInterface, MessageInterfa
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
         $sTitle = $this->helper()->getQuestionTitle();
+
         return empty($sNoScript) ?
             "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})" :
             "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .

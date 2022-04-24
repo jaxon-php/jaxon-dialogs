@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Overhang library.
+ * OverhangLibrary.php
+ *
+ * Adapter for the Overhang library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,11 +15,10 @@
 namespace Jaxon\Dialogs\Overhang;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class OverhangLibrary implements LibraryInterface, MessageInterface, QuestionInterface
+class OverhangLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
