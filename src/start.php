@@ -2,6 +2,20 @@
 
 namespace Jaxon\Dialogs;
 
+use Jaxon\Dialogs\Bootbox\BootboxLibrary;
+use Jaxon\Dialogs\Bootstrap\BootstrapLibrary;
+use Jaxon\Dialogs\PgwJs\PgwJsLibrary;
+use Jaxon\Dialogs\Toastr\ToastrLibrary;
+use Jaxon\Dialogs\JAlert\JAlertLibrary;
+use Jaxon\Dialogs\Tingle\TingleLibrary;
+use Jaxon\Dialogs\Noty\NotyLibrary;
+use Jaxon\Dialogs\Notify\NotifyLibrary;
+use Jaxon\Dialogs\Overhang\OverhangLibrary;
+use Jaxon\Dialogs\PNotify\PNotifyLibrary;
+use Jaxon\Dialogs\SweetAlert\SweetAlertLibrary;
+use Jaxon\Dialogs\JQueryConfirm\JQueryConfirmLibrary;
+use Jaxon\Dialogs\XDialog\XDialogLibrary;
+use Jaxon\Dialogs\CuteAlert\CuteAlertLibrary;
 use Jaxon\Exception\SetupException;
 use function Jaxon\jaxon;
 
@@ -11,20 +25,20 @@ use function Jaxon\jaxon;
 function registerDialogLibraries()
 {
     $aLibraries = [
-        Jaxon\Dialogs\Bootbox\BootboxLibrary::class, // Bootbox
-        Jaxon\Dialogs\Bootstrap\BootstrapLibrary::class, // Bootstrap
-        Jaxon\Dialogs\PgwJs\PgwJsLibrary::class, // PgwJs
-        Jaxon\Dialogs\Toastr\ToastrLibrary::class, // Toastr
-        Jaxon\Dialogs\JAlert\JAlertLibrary::class, // JAlert
-        Jaxon\Dialogs\Tingle\TingleLibrary::class, // Tingle
-        Jaxon\Dialogs\Noty\NotyLibrary::class, // Noty
-        Jaxon\Dialogs\Notify\NotifyLibrary::class, // Notify
-        Jaxon\Dialogs\Overhang\OverhangLibrary::class, // Overhang
-        Jaxon\Dialogs\PNotify\PNotifyLibrary::class, // PNotify
-        Jaxon\Dialogs\SweetAlert\SweetAlertLibrary::class, // SweetAlert
-        Jaxon\Dialogs\JQueryConfirm\JQueryConfirmLibrary::class, // JQuery Confirm
-        Jaxon\Dialogs\XDialog\XDialogLibrary::class, // XDialog
-        Jaxon\Dialogs\CuteAlert\CuteAlertLibrary::class, // CuteAlert
+        BootboxLibrary::class, // Bootbox
+        BootstrapLibrary::class, // Bootstrap
+        PgwJsLibrary::class, // PgwJs
+        ToastrLibrary::class, // Toastr
+        JAlertLibrary::class, // JAlert
+        TingleLibrary::class, // Tingle
+        NotyLibrary::class, // Noty
+        NotifyLibrary::class, // Notify
+        OverhangLibrary::class, // Overhang
+        PNotifyLibrary::class, // PNotify
+        SweetAlertLibrary::class, // SweetAlert
+        JQueryConfirmLibrary::class, // JQuery Confirm
+        XDialogLibrary::class, // XDialog
+        CuteAlertLibrary::class, // CuteAlert
     ];
     $jaxon = jaxon();
     foreach($aLibraries as $sClass)
