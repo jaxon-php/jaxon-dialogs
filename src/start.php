@@ -3,6 +3,7 @@
 namespace Jaxon\Dialogs;
 
 use Jaxon\Exception\SetupException;
+use function Jaxon\jaxon;
 
 /**
  * @return void
