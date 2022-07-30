@@ -1,32 +1,32 @@
 <?php
 
 /**
- * BootboxLibrary.php
+ * XDialogLibrary.php
  *
- * Adapter for the Bootbox library.
+ * Adapter for the XDialog library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
- * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @copyright 2022 Thierry Feuzeu <thierry.feuzeu@gmail.com>
  * @license https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Bootbox;
+namespace Jaxon\Dialogs\XDialog;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class XDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'bootbox';
+    const NAME = 'xdialog';
 
     /**
      * @inheritDoc
@@ -39,27 +39,17 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'bootbox';
+        return 'https://cdn.jsdelivr.net/gh/xxjapp/xdialog@3';
     }
 
     /**
      * @inheritDoc
      */
-    public function getVersion(): string
+    public function getCss(): string
     {
-        return '4.3.0';
-    }
-
-    /**
-     * The id of the HTML container block
-     *
-     * @return string
-     */
-    protected function getContainer(): string
-    {
-        return $this->helper()->getOption('dom.container', 'bootbox-container');
+        return $this->helper()->getCssCode('xdialog.min.css');
     }
 
     /**
@@ -67,7 +57,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('bootbox.min.js');
+        return $this->helper()->getJsCode('xdialog.min.js');
     }
 
     /**
@@ -75,7 +65,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function getScript(): string
     {
-        return $this->helper()->render('bootbox/alert.js');
+        return $this->helper()->render('xdialog/alert.js');
     }
 
     /**
@@ -83,7 +73,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function getReadyScript(): string
     {
-        return $this->helper()->render('bootbox/ready.js.php', ['container' => $this->getContainer()]);
+        return $this->helper()->render('xdialog/ready.js.php');
     }
 
     /**
@@ -91,18 +81,25 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
     {
-        // ModalInterface container
-        $sContainer = $this->getContainer();
-
-        // Set the value of the max width, if there is no value defined
-        $width = $aOptions['width'] ?? 600;
-        $html = $this->helper()->render('bootbox/dialog.html',
-            ['title' => $sTitle, 'content' => $sContent, 'buttons' => $aButtons]);
+        $aOptions['title'] = $sTitle;
+        $aOptions['body'] = $sContent;
+        $aOptions['buttons'] = [];
+        foreach($aButtons as $aButton)
+        {
+            if($aButton['click'] === 'close')
+            {
+                $aOptions['buttons']['cancel'] = $aButton['title'];
+                $aOptions['oncancel'] = 'jaxon.dialogs.xdialog.hide()';
+            }
+            else
+            {
+                $aOptions['buttons']['ok'] = $aButton['title'];
+                $aOptions['onok'] = $aButton['click'];
+            }
+        }
 
         // Assign dialog content
-        $this->response()->assign($sContainer, 'innerHTML', $html);
-        $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
-        $this->response()->script("$('#styledModal').modal('show')");
+        $this->addCommand(['cmd' => 'xdialog.show'], $aOptions);
     }
 
     /**
@@ -110,7 +107,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function hide()
     {
-        $this->response()->script("$('#styledModal').modal('hide')");
+        $this->addCommand(['cmd' => 'xdialog.hide'], []);
     }
 
     /**
@@ -126,9 +123,10 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
     {
         if($this->returnCode())
         {
-            return "jaxon.dialogs.bootbox.alert('" . $sType . "'," . $sContent . ",'" . $sTitle . "')";
+            return "jaxon.dialogs.xdialog.$sType(" . $sContent . "'" . $sTitle . "')";
         }
-        $this->addCommand(['cmd' => 'bootbox'], ['type' => $sType, 'content' => $sContent, 'title' => $sTitle]);
+
+        $this->addCommand(['cmd' => "xdialog.$sType"], ['body' => $sContent, 'title' => $sTitle]);
         return '';
     }
 
@@ -161,7 +159,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function error(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'danger');
+        return $this->alert($sMessage, $sTitle, 'error');
     }
 
     /**
@@ -172,8 +170,8 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
         $sTitle = $this->helper()->getQuestionTitle();
 
         return empty($sNoScript) ?
-            "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})" :
-            "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .
+            "jaxon.dialogs.xdialog.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})" :
+            "jaxon.dialogs.xdialog.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .
                 ";},function(){" . $sNoScript . ";})";
     }
 }

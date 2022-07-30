@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Notify library.
+ * NotifyLibrary.php
+ *
+ * Adapter for the Notify library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,10 +15,9 @@
 namespace Jaxon\Dialogs\Notify;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 
-class NotifyLibrary implements LibraryInterface, MessageInterface
+class NotifyLibrary implements MessageInterface
 {
     use DialogLibraryTrait;
 

@@ -1,31 +1,31 @@
 <?php
 
 /**
- * OverhangLibrary.php
+ * CuteAlertLibrary.php
  *
- * Adapter for the Overhang library.
+ * Adapter for the CuteAlert library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
- * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @copyright 2022 Thierry Feuzeu <thierry.feuzeu@gmail.com>
  * @license https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Overhang;
+namespace Jaxon\Dialogs\CuteAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class OverhangLibrary implements MessageInterface, QuestionInterface
+class CuteAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'overhang';
+    const NAME = 'cute';
 
     /**
      * @inheritDoc
@@ -38,17 +38,9 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'overhang';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getVersion(): string
-    {
-        return 'latest';
+        return 'https://cdn.jsdelivr.net/gh/gustavosmanc/cute-alert';
     }
 
     /**
@@ -56,7 +48,7 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('overhang.min.js');
+        return $this->helper()->getJsCode('cute-alert.min.js');
     }
 
     /**
@@ -64,7 +56,7 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('overhang.min.css');
+        return $this->helper()->getCssCode('style.min.css');
     }
 
     /**
@@ -72,7 +64,7 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('overhang/alert.js');
+        return $this->helper()->render('cutealert/alert.js');
     }
 
     /**
@@ -80,27 +72,30 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function getReadyScript(): string
     {
-        return $this->helper()->render('overhang/ready.js.php');
+        return $this->helper()->render('cutealert/ready.js.php');
     }
 
     /**
      * Print an alert message.
      *
-     * @param string $sMessage The text of the message
+     * @param string $sContent The text of the message
      * @param string $sTitle The title of the message
      * @param string $sType The type of the message
      *
      * @return string
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
+    protected function alert(string $sContent, string $sTitle, string $sType): string
     {
+        if(!$sTitle)
+        {
+            $sTitle = '&nbsp;';
+        }
         if($this->returnCode())
         {
-            return "$('body').overhang({message:" . $sMessage . ", type:'" . $sType . "'})";
+            return "cuteAlert({message:" . $sContent . ", title:'" . $sTitle . "', type:'" . $sType . "'})";
         }
-        $aOptions = ['message' => $sMessage, 'type' => $sType];
-        // Show the alert
-        $this->addCommand(['cmd' => 'overhang.alert'], $aOptions);
+
+        $this->addCommand(['cmd' => 'cutealert.alert'], ['message' => $sContent, 'title' => $sTitle, 'type' => $sType]);
         return '';
     }
 
@@ -125,7 +120,7 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function warning(string $sMessage, string $sTitle = ''): string
     {
-        return $this->alert($sMessage, $sTitle, 'warn');
+        return $this->alert($sMessage, $sTitle, 'warning');
     }
 
     /**
@@ -141,13 +136,9 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";})";
-        }
-        else
-        {
-            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
-        }
+        $sTitle = $this->helper()->getQuestionTitle();
+
+        return "jaxon.dialogs.cutealert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .
+            ($sNoScript ? ";},function(){" . $sNoScript . ";})" : ";})");
     }
 }

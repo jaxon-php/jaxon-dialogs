@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Toastr library.
+ * ToastrLibrary.php
+ *
+ * Adapter for the Toastr library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,10 +15,9 @@
 namespace Jaxon\Dialogs\Toastr;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 
-class ToastrLibrary implements LibraryInterface, MessageInterface
+class ToastrLibrary implements MessageInterface
 {
     use DialogLibraryTrait;
 

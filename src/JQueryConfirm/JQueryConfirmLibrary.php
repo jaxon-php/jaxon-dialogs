@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the JQuery-Confirm library.
+ * JQueryConfirmLibrary.php
+ *
+ * Adapter for the JQuery-Confirm library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,12 +15,11 @@
 namespace Jaxon\Dialogs\JQueryConfirm;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class JQueryConfirmLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
+class JQueryConfirmLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 

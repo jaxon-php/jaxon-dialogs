@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Noty library.
+ * NotyLibrary.php
+ *
+ * Adapter for the Noty library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,11 +15,10 @@
 namespace Jaxon\Dialogs\Noty;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class NotyLibrary implements LibraryInterface, MessageInterface, QuestionInterface
+class NotyLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 

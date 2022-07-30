@@ -1,7 +1,9 @@
 <?php
 
 /**
- * DialogLibraryInterface.php - Adapter for the Bootstrap library.
+ * BootstrapLibrary.php
+ *
+ * Adapter for the Bootstrap library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -13,12 +15,11 @@
 namespace Jaxon\Dialogs\Bootstrap;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\LibraryInterface;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
-class BootstrapLibrary implements LibraryInterface, ModalInterface, MessageInterface, QuestionInterface
+class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 

@@ -220,43 +220,65 @@ Example with jQuery selector.
 Supported libraries
 -------------------
 
-This package currently supports 16 javascript libraries, each implementing one or more interfaces.
+This package currently supports 14 javascript libraries, each implementing one or more interfaces.
 
-Bootbox: http://bootboxjs.com
+#### XDialog
+
+https://xxjapp.github.io/xdialog/
+
+- Dialog id: xdialog
+- Implements: Modal, Alert, Confirm
+- Version: 3.4.0
+
+#### CuteAlert
+
+https://github.com/gustavosmanc/cute-alert
+
+- Dialog id: cute
+- Implements: Alert, Confirm
+- Version:
+
+#### Bootbox
+
+http://bootboxjs.com
 
 - Dialog id: bootbox
 - Implements: Modal, Alert, Confirm
-- Versions: 4.3.0
+- Version: 4.3.0
 
 jAlert: https://htmlguyllc.github.io/jAlert/
 
 - Dialog id: jalert
 - Implements: Alert, Confirm
-- Versions: 4.5.1
+- Version: 4.5.1
 
-PgwJS: http://pgwjs.com/pgwmodal/
+#### PgwJS
+
+http://pgwjs.com/pgwmodal/
 
 - Dialog id: pgwjs
 - Implements: Modal
-- Versions: 2.0.0
+- Version: 2.0.0
 
-Toastr: https://codeseven.github.io/toastr/
+#### Toastr
+
+https://codeseven.github.io/toastr/
 
 - Dialog id: toastr
 - Implements: Alert
-- Versions: 2.1.3
+- Version: 2.1.3
 
 Tingle: https://tingle.robinparisi.com/
 
 - Dialog id: tingle
 - Implements: Modal
-- Versions: 0.8.4
+- Version: 0.8.4
 
 Noty: https://ned.im/noty/
 
 - Dialog id: noty
 - Implements: Alert, Confirm
-- Versions: 2.3.11
+- Version: 2.3.11
 
 Notify: https://notifyjs.jpillora.com/
 
@@ -268,21 +290,25 @@ Overhang: https://paulkr.github.io/overhang.js/ (requires jQuery and jQuery UI)
 
 - Dialog id: overhang
 - Implements: Alert, Confirm
-- Versions:
+- Version:
 
 PNotify: https://sciactive.com/pnotify/ (requires jQuery and jQuery UI)
 
 - Dialog id: pnotify
 - Implements: Alert, Confirm
-- Versions: 3.0.0
+- Version: 3.0.0
+
+#### Sweet Alert
 
 Sweet Alert: https://sweetalert.js.org/
 
 - Dialog id: sweetalert
 - Implements: Alert, Confirm
-- Versions: 1.1.1
+- Version: 1.1.1
 
-JQuery-Confirm: https://craftpip.github.io/jquery-confirm/
+#### JQuery-Confirm
+
+https://craftpip.github.io/jquery-confirm/
 
 - Dialog id: jconfirm
 - Implements: Modal, Alert, Confirm
