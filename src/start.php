@@ -1,5 +1,7 @@
 <?php
 
+namespace Jaxon\Dialogs;
+
 use Jaxon\Exception\SetupException;
 
 /**
