@@ -1,4 +1,4 @@
-jaxon.dialogs.cutealert = {
+jaxon.dialogs.jalert = {
     success: function(content, title = 'Success') {
         $.jAlert({content: content, title: title, theme: 'green'});
     },
