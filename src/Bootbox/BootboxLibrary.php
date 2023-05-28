@@ -93,15 +93,17 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
     {
         // ModalInterface container
         $sContainer = $this->getContainer();
-
-        // Set the value of the max width, if there is no value defined
-        $width = $aOptions['width'] ?? 600;
         $html = $this->helper()->render('bootbox/dialog.html',
             ['title' => $sTitle, 'content' => $sContent, 'buttons' => $aButtons]);
 
         // Assign dialog content
         $this->response()->assign($sContainer, 'innerHTML', $html);
-        $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
+        if(isset($aOptions['width']))
+        {
+            // Set the value of the dialog width
+            $width = $aOptions['width'];
+            $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
+        }
         $this->response()->script("$('#styledModal').modal('show')");
     }
 
