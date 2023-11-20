@@ -9,6 +9,4 @@
 <?php endif ?>
     jaxon.command.handler.register("jconfirm.show", jaxon.dialogs.jconfirm.show);
     jaxon.command.handler.register("jconfirm.hide", jaxon.dialogs.jconfirm.hide);
-    jaxon.command.handler.register("jconfirm.alert", function(args) {
-        $.alert(args.data);
-    });
+    jaxon.command.handler.register("jconfirm.alert", (args) => $.alert(args.data));

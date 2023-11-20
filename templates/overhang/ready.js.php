@@ -7,7 +7,7 @@
 <?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.overhang.confirm;
 <?php endif ?>
-    jaxon.command.handler.register("overhang.alert", function(args) {
+    jaxon.command.handler.register("overhang.alert", (args) => {
         // Default options
         args.data.duration = 5;
         $("body").overhang(args.data);

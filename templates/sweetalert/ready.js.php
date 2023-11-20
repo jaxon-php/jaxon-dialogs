@@ -8,7 +8,7 @@
 <?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.swal.confirm;
 <?php endif ?>
-    jaxon.command.handler.register("sweetalert.alert", function(args) {
+    jaxon.command.handler.register("sweetalert.alert", (args) => {
         // Set user and default options into data only when they are missing
         for(key in jaxon.dialogs.swal.options)
         {

@@ -98,13 +98,14 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
 
         // Assign dialog content
         $this->response()->assign($sContainer, 'innerHTML', $html);
-        if(isset($aOptions['width']))
+        if(!isset($aOptions['width']))
         {
-            // Set the value of the dialog width
-            $width = $aOptions['width'];
-            $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
+            $this->response()->script("$('#styledModal').modal('show')");
+            return;
         }
-        $this->response()->script("$('#styledModal').modal('show')");
+        // Set the value of the dialog width
+        $width = $aOptions['width'];
+        $this->response()->script("$('.modal-dialog').css('width', '{$width}px')");
     }
 
     /**
@@ -173,9 +174,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
     {
         $sTitle = $this->helper()->getQuestionTitle();
 
-        return empty($sNoScript) ?
-            "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})" :
-            "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .
-                ";},function(){" . $sNoScript . ";})";
+        return "jaxon.dialogs.bootbox.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

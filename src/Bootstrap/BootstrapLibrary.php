@@ -205,12 +205,8 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
         $sTitle = $this->helper()->getQuestionTitle();
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" .
-                $sTitle . "',function(){" . $sYesScript . ";})";
-        }
-        return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" . $sTitle .
-            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+
+        return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

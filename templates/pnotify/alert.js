@@ -1,21 +1,13 @@
 jaxon.dialogs.pnotify = {
-    alert: function(data) {
+    alert: (data) => {
         notice = new PNotify(data);
-        notice.get().click(function(){notice.remove();});
+        notice.get().click(notice.remove);
     },
-    success: function(content, title) {
-        jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'success'});
-    },
-    info: function(content, title) {
-        jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'info'});
-    },
-    warning: function(content, title) {
-        jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'notice'});
-    },
-    error: function(content, title) {
-        jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'error'});
-    },
-    confirm: function(question, title, yesCallback, noCallback) {
+    success: (content, title) => jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'success'}),
+    info: (content, title) => jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'info'}),
+    warning: (content, title) => jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'notice'}),
+    error: (content, title) => jaxon.dialogs.pnotify.alert({text: content, title: title, type: 'error'}),
+    confirm: (question, title, yesCallback, noCallback) => {
         PNotify.prototype.options.confirm.buttons[0].text = "<?php echo $this->yes ?>";
         PNotify.prototype.options.confirm.buttons[1].text = "<?php echo $this->no ?>";
         notice = new PNotify({
@@ -28,13 +20,10 @@ jaxon.dialogs.pnotify = {
             buttons:{
                 closer: false,
                 sticker: false,
-                labels: {
-
-                }
+                labels: {}
             }
         });
         notice.get().on("pnotify.confirm", yesCallback);
-        if(noCallback != undefined)
-            notice.get().on("pnotify.cancel", noCallback);
+        noCallback && notice.get().on("pnotify.cancel", noCallback);
     }
 };

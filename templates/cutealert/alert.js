@@ -1,17 +1,9 @@
 jaxon.dialogs.cutealert = {
-    success: function(content, title = 'Success') {
-        cuteAlert({message: content, title: title, type: 'green'});
-    },
-    info: function(content, title = 'Information') {
-        cuteAlert({message: content, title: title, type: 'blue'});
-    },
-    warning: function(content, title = 'Warning') {
-        cuteAlert({message: content, title: title, type: 'yellow'});
-    },
-    error: function(content, title = 'Error') {
-        cuteAlert({message: content, title: title, type: 'red'});
-    },
-    confirm: function(question, title, yesCallback, noCallback) {
+    success: (content, title = 'Success') => cuteAlert({message: content, title: title, type: 'green'}),
+    info: (content, title = 'Information') => cuteAlert({message: content, title: title, type: 'blue'}),
+    warning: (content, title = 'Warning') => cuteAlert({message: content, title: title, type: 'yellow'}),
+    error: (content, title = 'Error') => cuteAlert({message: content, title: title, type: 'red'}),
+    confirm: (question, title, yesCallback, noCallback) => {
         cuteAlert({
             title: title,
             type: 'question',

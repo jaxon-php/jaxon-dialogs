@@ -9,15 +9,11 @@
 <?php endif ?>
     jaxon.command.handler.register("xdialog.show", jaxon.dialogs.xdialog.show);
     jaxon.command.handler.register("xdialog.hide", jaxon.dialogs.xdialog.hide);
-    jaxon.command.handler.register("xdialog.success", function(args) {
-        jaxon.dialogs.xdialog.success(args.data.body, args.data.title);
-    });
-    jaxon.command.handler.register("xdialog.info", function(args) {
-        jaxon.dialogs.xdialog.info(args.data.body, args.data.title);
-    });
-    jaxon.command.handler.register("xdialog.warning", function(args) {
-        jaxon.dialogs.xdialog.warning(args.data.body, args.data.title);
-    });
-    jaxon.command.handler.register("xdialog.error", function(args) {
-        jaxon.dialogs.xdialog.error(args.data.body, args.data.title);
-    });
+    jaxon.command.handler.register("xdialog.success", (args) =>
+        jaxon.dialogs.xdialog.success(args.data.body, args.data.title));
+    jaxon.command.handler.register("xdialog.info", (args) =>
+        jaxon.dialogs.xdialog.info(args.data.body, args.data.title));
+    jaxon.command.handler.register("xdialog.warning", (args) =>
+        jaxon.dialogs.xdialog.warning(args.data.body, args.data.title));
+    jaxon.command.handler.register("xdialog.error", (args) =>
+        jaxon.dialogs.xdialog.error(args.data.body, args.data.title));

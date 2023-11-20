@@ -4,6 +4,5 @@
     jaxon.ajax.message.warning = jaxon.dialogs.notify.warning;
     jaxon.ajax.message.error = jaxon.dialogs.notify.error;
 <?php endif ?>
-    jaxon.command.handler.register("notify.alert", function(args) {
-        $.notify(args.data.message, {className: args.data.className, position: "top center"});
-    });
+    jaxon.command.handler.register("notify.alert", (args) =>
+        $.notify(args.data.message, {className: args.data.className, position: "top center"}));

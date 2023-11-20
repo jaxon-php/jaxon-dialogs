@@ -194,12 +194,8 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
         $sTitle = $this->helper()->getQuestionTitle();
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" .
-                $sTitle . "',function(){" . $sYesScript . ";})";
-        }
-        return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" . $sTitle .
-            "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
+
+        return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

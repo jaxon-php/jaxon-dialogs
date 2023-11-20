@@ -7,6 +7,4 @@
 <?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.cutealert.confirm;
 <?php endif ?>
-    jaxon.command.handler.register("cutealert.alert", function(args) {
-        cuteAlert(args.data);
-    });
+    jaxon.command.handler.register("cutealert.alert", (args) => cuteAlert(args.data));
