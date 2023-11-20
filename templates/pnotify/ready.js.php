@@ -10,6 +10,4 @@
     PNotify.prototype.options.delay = 5000;
     PNotify.prototype.options.styling = 'fontawesome';
 <?php echo $this->options ?>
-    jaxon.command.handler.register("pnotify.alert", function(args) {
-        jaxon.pnotify.alert(args.data);
-    });
+    jaxon.command.handler.register("pnotify.alert", (args) => jaxon.pnotify.alert(args.data));

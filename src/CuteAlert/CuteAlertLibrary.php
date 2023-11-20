@@ -138,7 +138,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
     {
         $sTitle = $this->helper()->getQuestionTitle();
 
-        return "jaxon.dialogs.cutealert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .
-            ($sNoScript ? ";},function(){" . $sNoScript . ";})" : ";})");
+        return "jaxon.dialogs.cutealert.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

@@ -1,7 +1,9 @@
 jaxon.dialogs.pgwjs = {
-    defaults: {maxWidth: 400},
+    defaults: {
+        maxWidth: 400,
+    },
     options: {},
-    show: function(args) {
+    show: (args) => {
         // Set user and default options into data only when they are missing
         for(key in jaxon.dialogs.pgwjs.options)
         {

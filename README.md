@@ -37,10 +37,15 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 Configuration
 -------------
 
-This package defines 3 config options in the `default` section to set the default library to be used resp.
-for modal, alert and confirmation dialogs.
-The `libraries` option allows to load additional libraries into the page.
+This package defines 3 config options in the `default` section to set the default library to be used.
+- modal: the default library for modal dialogs
+- message: the default library for messages
+- question: the default library for questions
+
+The `lib.use` option allows to load additional libraries into the page, if they are used in the application.
+
 The `question` section defines options for the question dialog.
+
 The `lib.uri` option defines the URI where to download the libraries files from.
 
 Specific options can also be set for each library.
@@ -52,9 +57,9 @@ Specific options can also be set for each library.
             'message' => 'jconfirm', // Default library for messages
             'question' => 'noty',    // Default library for questions
         ],
-        'libraries' => ['pgwjs', 'toastr'], // Additional libraries
         'lib' => [
             'uri' => 'https://cdn.jaxon-php.org/libs',
+            'use' => ['pgwjs', 'toastr'], // Additional libraries in use
         ],
         // Confirm options
         'question' => [
@@ -516,8 +521,10 @@ Or declared in the `dialog` section of the Jaxon configuration.
             'message' => 'myplugin',  // Default library for messages
             'question' => 'myplugin', // Default library for questions
         ],
-        'classes' => [
-            'myplugin' => \Path\To\My\Plugin::class,
+        'lib' => [
+            'ext' => [
+                'myplugin' => \Path\To\My\Plugin::class,
+            ],
         ],
         'myplugin' => [         // Plugin config options
             'options' => [

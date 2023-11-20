@@ -169,9 +169,7 @@ class XDialogLibrary implements ModalInterface, MessageInterface, QuestionInterf
     {
         $sTitle = $this->helper()->getQuestionTitle();
 
-        return empty($sNoScript) ?
-            "jaxon.dialogs.xdialog.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})" :
-            "jaxon.dialogs.xdialog.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript .
-                ";},function(){" . $sNoScript . ";})";
+        return "jaxon.dialogs.xdialog.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

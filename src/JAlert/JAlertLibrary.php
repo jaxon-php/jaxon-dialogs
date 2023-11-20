@@ -144,13 +144,8 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
         $sTitle = $this->helper()->getQuestionTitle();
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";})";
-        }
-        else
-        {
-            return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
-        }
+
+        return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

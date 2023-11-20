@@ -7,6 +7,5 @@
 <?php if(($this->defaultForQuestion)): ?>
     jaxon.ajax.message.confirm = jaxon.dialogs.noty.confirm;
 <?php endif ?>
-    jaxon.command.handler.register('noty.alert', function(args) {
-        noty({text: args.data.text, type: args.data.type, layout: 'topCenter', timeout: 5000});
-    });
+    jaxon.command.handler.register('noty.alert', (args) =>
+        noty({text: args.data.text, type: args.data.type, layout: 'topCenter', timeout: 5000}));

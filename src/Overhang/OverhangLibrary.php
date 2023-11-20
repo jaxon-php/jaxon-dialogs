@@ -141,13 +141,7 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";})";
-        }
-        else
-        {
-            return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",function(){" . $sYesScript . ";},function(){" . $sNoScript . ";})";
-        }
+        return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

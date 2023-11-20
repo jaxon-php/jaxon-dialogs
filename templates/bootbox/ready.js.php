@@ -5,9 +5,8 @@
     {
         $('body').append('<div id="<?php echo $this->container ?>"></div>');
     }
-    jaxon.command.handler.register("bootbox", function(args) {
-        bootbox.alert(args.data.type, args.data.content, args.data.title);
-    });
+    jaxon.command.handler.register("bootbox", (args) =>
+        bootbox.alert(args.data.type, args.data.content, args.data.title));
 <?php if(($this->defaultForMessage)): ?>
     jaxon.ajax.message.success = jaxon.dialogs.bootbox.success;
     jaxon.ajax.message.info = jaxon.dialogs.bootbox.info;

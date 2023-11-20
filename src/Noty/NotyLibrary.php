@@ -133,12 +133,7 @@ class NotyLibrary implements MessageInterface, QuestionInterface
      */
     public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
     {
-        // $sTitle = $this->helper()->getQuestionTitle();
-        if(!$sNoScript)
-        {
-            return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript . ";})";
-        }
-        return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',function(){" . $sYesScript .
-            ";},function(){" . $sNoScript . ";})";
+        return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',() => {" .
+            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }
