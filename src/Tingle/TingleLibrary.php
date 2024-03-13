@@ -90,7 +90,7 @@ class TingleLibrary implements ModalInterface
         // Show the footer only if there is a button to display.
         $aOptions['footer'] = (count($aButtons) > 0);
         // Show the modal dialog
-        $this->addCommand(['cmd' => 'tingle.show'],
+        $this->addCommand('tingle.show',
             ['content' => '<h2>' . $sTitle . '</h2>' . $sContent, 'buttons' => $aButtons, 'options' => $aOptions]);
     }
 
@@ -100,6 +100,6 @@ class TingleLibrary implements ModalInterface
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(['cmd' => 'tingle.hide'], []);
+        $this->addCommand('tingle.hide', []);
     }
 }

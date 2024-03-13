@@ -15,12 +15,14 @@
 namespace Jaxon\Dialogs\PNotify;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class PNotifyLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -86,66 +88,14 @@ class PNotifyLibrary implements MessageInterface, QuestionInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     *
-     * @return string
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
-    {
-        if($this->returnCode())
-        {
-            return "jaxon.dialogs.pnotify.alert({text:" . $sMessage . ", type:'" . $sType . "', title:'" . $sTitle . "'})";
-        }
-        $aOptions = ['text' => $sMessage, 'title' => $sTitle, 'type' => $sType];
-        // Show the alert
-        $this->addCommand(['cmd' => 'pnotify.alert'], $aOptions);
-        return '';
-    }
-
-    /**
      * @inheritDoc
      */
-    public function success(string $sMessage, string $sTitle = ''): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'notice');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'error');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        $sTitle = $this->helper()->getQuestionTitle();
-
-        return "jaxon.dialogs.pnotify.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
+        $aTypes = [
+            'warning' => 'notice',
+        ];
+        $sType = $aTypes[$sStdType] ?? $sStdType;
+        $this->addCommand('pnotify.alert', ['text' => $sMessage, 'title' => $sTitle, 'type' => $sType]);
     }
 }

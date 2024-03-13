@@ -15,12 +15,14 @@
 namespace Jaxon\Dialogs\SweetAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class SweetAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -86,70 +88,16 @@ class SweetAlertLibrary implements MessageInterface, QuestionInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
+    protected function alert(string $sMessage, string $sTitle, string $sType)
     {
-        if($this->returnCode())
-        {
-            return "swal({text:" . $sMessage . ", title:'" . $sTitle . "', type:'" . $sType . "'})";
-        }
         $aOptions = ['text' => $sMessage, 'title' => '', 'type' => $sType];
         if(($sTitle))
         {
             $aOptions['title'] = $sTitle;
         }
         // Show the alert
-        $this->addCommand(['cmd' => 'sweetalert.alert'], $aOptions);
-        return '';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function success(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'warning');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'error');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        $sTitle = $this->helper()->getQuestionTitle();
-
-        return "jaxon.dialogs.swal.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
+        $this->addCommand('sweetalert.alert', $aOptions);
     }
 }

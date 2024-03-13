@@ -15,12 +15,14 @@
 namespace Jaxon\Dialogs\JAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class JAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -84,68 +86,21 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sContent The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sTheme The type of the message
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function alert(string $sContent, string $sTitle, string $sTheme): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
+        $aTypes = [
+            'success' => 'green',
+            'info' => 'blue',
+            'warning' => 'yellow',
+            'error' => 'red',
+        ];
+        $sTheme = $aTypes[$sStdType] ?? $sStdType;
         if(!$sTitle)
         {
             $sTitle = '&nbsp;';
         }
-        if($this->returnCode())
-        {
-            return "$.jAlert({content:" . $sContent . ", title:'" . $sTitle . "', theme:'" . $sTheme . "'})";
-        }
-        $this->addCommand(array('cmd' => 'jalert.alert'), array('content' => $sContent, 'title' => $sTitle, 'theme' => $sTheme));
-        return '';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function success(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'green');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'blue');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'yellow');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'red');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        $sTitle = $this->helper()->getQuestionTitle();
-
-        return "jaxon.dialogs.jalert.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
+        $this->addCommand('jalert.alert', ['content' => $sMessage, 'title' => $sTitle, 'theme' => $sTheme]);
     }
 }

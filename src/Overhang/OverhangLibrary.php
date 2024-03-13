@@ -15,12 +15,14 @@
 namespace Jaxon\Dialogs\Overhang;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class OverhangLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -84,64 +86,14 @@ class OverhangLibrary implements MessageInterface, QuestionInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     *
-     * @return string
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
-    {
-        if($this->returnCode())
-        {
-            return "$('body').overhang({message:" . $sMessage . ", type:'" . $sType . "'})";
-        }
-        $aOptions = ['message' => $sMessage, 'type' => $sType];
-        // Show the alert
-        $this->addCommand(['cmd' => 'overhang.alert'], $aOptions);
-        return '';
-    }
-
-    /**
      * @inheritDoc
      */
-    public function success(string $sMessage, string $sTitle = ''): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'warn');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'error');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        return "jaxon.dialogs.overhang.confirm(" . $sQuestion . ",() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
+        $aTypes = [
+            'warning' => 'warn',
+        ];
+        $sType = $aTypes[$sStdType] ?? $sStdType;
+        $this->addCommand('overhang.alert', ['message' => $sMessage, 'type' => $sType]);
     }
 }

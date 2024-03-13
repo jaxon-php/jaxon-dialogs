@@ -20,5 +20,6 @@ jaxon.dialogs.pgwjs = {
             }
         }
         $.pgwModal(args.data);
-    }
+    },
+    hide: () => $.pgwModal('close'),
 };

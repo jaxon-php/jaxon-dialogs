@@ -15,6 +15,7 @@
 namespace Jaxon\Dialogs\Bootstrap;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
@@ -22,6 +23,7 @@ use Jaxon\App\Dialog\QuestionInterface;
 class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -116,7 +118,7 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
             $aOptions['nl2br'] = false;
         }
         // Show the modal dialog
-        $this->addCommand(['cmd' => 'bootstrap.show'], $aOptions);
+        $this->addCommand('bootstrap.show', $aOptions);
     }
 
     /**
@@ -125,88 +127,23 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
     public function hide()
     {
         // Hide the modal dialog
-        $this->addCommand(['cmd' => 'bootstrap.hide'], []);
+        $this->addCommand('bootstrap.hide', []);
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
-        if($this->returnCode())
-        {
-            $aDataTypes = [
-                'success' => 'BootstrapDialog.TYPE_SUCCESS',
-                'info' => 'BootstrapDialog.TYPE_INFO',
-                'warning' => 'BootstrapDialog.TYPE_WARNING',
-                'danger' => 'BootstrapDialog.TYPE_DANGER',
-            ];
-            $sType = $aDataTypes[$sType];
-            if(($sTitle))
-            {
-                return "BootstrapDialog.alert({message:" . $sMessage . ", title:'" . $sTitle . "', type:" . $sType . "})";
-            }
-            else
-            {
-                return "BootstrapDialog.alert({message:" . $sMessage . ", type:" . $sType . "})";
-            }
-        }
+        $aTypes = [
+            'error' => 'danger',
+        ];
+        $sType = $aTypes[$sStdType] ?? $sStdType;
         $aOptions = ['message' => $sMessage, 'type' => $sType];
         if(($sTitle))
         {
             $aOptions['title'] = $sTitle;
         }
-        // Show the alert
-        $this->addCommand(['cmd' => 'bootstrap.alert'], $aOptions);
-        return '';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function success(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'warning');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'danger');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        $sTitle = $this->helper()->getQuestionTitle();
-
-        return "jaxon.dialogs.bootstrap.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
+        $this->addCommand('bootstrap.alert', $aOptions);
     }
 }

@@ -95,7 +95,7 @@ class PgwJsLibrary implements ModalInterface
         $aOptions['content'] = $this->helper()->render('pgwjs/dialog.html',
             ['content' => $sContent, 'buttons' => $aButtons]);
         // Affectations du contenu de la fenêtre
-        $this->addCommand(array('cmd'=>'pgw.modal'), $aOptions);
+        $this->addCommand('pgw.modal.show', $aOptions);
     }
 
     /**
@@ -103,6 +103,6 @@ class PgwJsLibrary implements ModalInterface
      */
     public function hide()
     {
-        $this->response()->script('$.pgwModal("close")');
+        $this->addCommand('pgw.modal.hide');
     }
 }

@@ -15,6 +15,7 @@
 namespace Jaxon\Dialogs\JQueryConfirm;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
@@ -22,6 +23,7 @@ use Jaxon\App\Dialog\QuestionInterface;
 class JQueryConfirmLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -122,7 +124,7 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
             $aOptions['buttons']['btn' . $ind++] = $_button;
         }
         // Show dialog
-        $this->addCommand(array('cmd' => 'jconfirm.show'), $aOptions);
+        $this->addCommand('jconfirm.show', $aOptions);
     }
 
     /**
@@ -131,71 +133,23 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
     public function hide()
     {
         // Hide dialog
-        $this->addCommand(array('cmd' => 'jconfirm.hide'), array());
+        $this->addCommand('jconfirm.hide', []);
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     * @param string $sIcon The icon of the message
-     *
-     * @return string
+     * @inheritDoc
      */
-    protected function alert(string $sMessage, string $sTitle, string $sType, string $sIcon): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
-        if($this->returnCode())
-        {
-            return "$.alert({content:" . $sMessage . ", title:'" . $sTitle .
-                "', type:'" . $sType . "', icon:'" . $sIcon . "'})";
-        }
-        $this->addCommand(array('cmd' => 'jconfirm.alert'),
+        $aTypes = [
+            'success' => 'green',
+            'info' => 'blue',
+            'warning' => 'orange',
+            'error' => 'red',
+        ];
+        $sIcon = "fa fa-$sStdType";
+        $sType = $aTypes[$sStdType] ?? $sStdType;
+        $this->addCommand('jconfirm.alert',
             ['content' => $sMessage, 'title' => $sTitle, 'type' => $sType, 'icon' => $sIcon]);
-        return '';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function success(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'green', 'fa fa-success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'blue', 'fa fa-info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'orange', 'fa fa-warning');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'red', 'fa fa-error');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        $sTitle = $this->helper()->getQuestionTitle();
-
-        return "jaxon.dialogs.jconfirm.confirm(" . $sQuestion . ",'" . $sTitle . "',() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
     }
 }

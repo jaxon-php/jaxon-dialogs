@@ -15,11 +15,13 @@
 namespace Jaxon\Dialogs\Notify;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 
 class NotifyLibrary implements MessageInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -75,55 +77,14 @@ class NotifyLibrary implements MessageInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sClass The type of the message
-     *
-     * @return string
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sClass): string
-    {
-        if($this->returnCode())
-        {
-            return "$.notify(" . $sMessage . ", {className:'" . $sClass . "', position:'top center'})";
-        }
-        $aOptions = array('message' => $sMessage, 'className' => $sClass);
-        // Show the alert
-        $this->addCommand(array('cmd' => 'notify.alert'), $aOptions);
-        return '';
-    }
-
-    /**
      * @inheritDoc
      */
-    public function success(string $sMessage, string $sTitle = ''): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'warn');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'error');
+        $aTypes = [
+            'warning' => 'warn',
+        ];
+        $sClass = $aTypes[$sStdType] ?? $sStdType;
+        $this->addCommand('notify.alert', ['message' => $sMessage, 'className' => $sClass]);
     }
 }

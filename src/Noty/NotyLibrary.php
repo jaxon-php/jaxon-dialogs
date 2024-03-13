@@ -15,12 +15,14 @@
 namespace Jaxon\Dialogs\Noty;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class NotyLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -76,64 +78,14 @@ class NotyLibrary implements MessageInterface, QuestionInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     *
-     * @return string
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
-    {
-        if($this->returnCode())
-        {
-            return "noty({text:" . $sMessage . ", type:'" . $sType . "', layout: 'topCenter'})";
-        }
-        $aOptions = array('text' => $sMessage, 'type' => $sType);
-        // Show the alert
-        $this->addCommand(array('cmd' => 'noty.alert'), $aOptions);
-        return '';
-    }
-
-    /**
      * @inheritDoc
      */
-    public function success(string $sMessage, string $sTitle = ''): string
+    protected function alert(string $sMessage, string $sTitle, string $sStdType)
     {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'information');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'warning');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'error');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string
-    {
-        return "jaxon.dialogs.noty.confirm(" . $sQuestion . ",'',() => {" .
-            $sYesScript . (empty($sNoScript) ? ";})" : ";},() => {" . $sNoScript . ";})");
+        $aTypes = [
+            'info' => 'information',
+        ];
+        $sType = $aTypes[$sStdType] ?? $sStdType;
+        $this->addCommand('noty.alert', ['text' => $sMessage, 'type' => $sType]);
     }
 }

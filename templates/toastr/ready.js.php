@@ -13,3 +13,5 @@
         jaxon.dialogs.toastr.warning(args.data.message, args.data.title));
     jaxon.command.handler.register("toastr.error", (args) =>
         jaxon.dialogs.toastr.error(args.data.message, args.data.title));
+    jaxon.command.handler.register("toastr.remove", jaxon.dialogs.toastr.remove);
+    jaxon.command.handler.register("toastr.clear", jaxon.dialogs.toastr.clear);

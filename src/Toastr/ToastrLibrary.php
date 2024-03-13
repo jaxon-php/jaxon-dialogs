@@ -15,11 +15,13 @@
 namespace Jaxon\Dialogs\Toastr;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
+use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 
 class ToastrLibrary implements MessageInterface
 {
     use DialogLibraryTrait;
+    use MessageTrait;
 
     /**
      * @const The library name
@@ -85,65 +87,20 @@ class ToastrLibrary implements MessageInterface
     }
 
     /**
-     * Print an alert message.
-     *
-     * @param string $sMessage The text of the message
-     * @param string $sTitle The title of the message
-     * @param string $sType The type of the message
-     *
-     * @return string
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sType): string
-    {
-        if($this->returnCode())
-        {
-            return empty($sTitle) ? "toastr.$sType($sMessage)" : "toastr.$sType($sMessage, '$sTitle')";
-        }
-        $aOptions = ['message' => $sMessage, 'title' => $sTitle];
-        // Show the alert
-        $this->addCommand(['cmd' => 'toastr.' . $sType], $aOptions);
-        return '';
-    }
-
-    /**
      * @inheritDoc
      */
-    public function success(string $sMessage, string $sTitle = ''): string
+    protected function alert(string $sMessage, string $sTitle, string $sType)
     {
-        return $this->alert($sMessage, $sTitle, 'success');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function info(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'info');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'warning');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function error(string $sMessage, string $sTitle = ''): string
-    {
-        return $this->alert($sMessage, $sTitle, 'error');
+        $this->addCommand('toastr.' . $sType, ['message' => $sMessage, 'title' => $sTitle]);
     }
 
     public function remove()
     {
-        $this->response()->script('toastr.remove()');
+        $this->addCommand('toastr.remove');
     }
 
     public function clear()
     {
-        $this->response()->script('toastr.clear()');
+        $this->addCommand('toastr.clear');
     }
 }
