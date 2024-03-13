@@ -16,6 +16,7 @@ namespace Jaxon\Dialogs\Bootbox;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\Library\MessageTrait;
+use Jaxon\App\Dialog\Library\QuestionTrait;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
@@ -24,6 +25,7 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
 {
     use DialogLibraryTrait;
     use MessageTrait;
+    use QuestionTrait;
 
     /**
      * @const The library name

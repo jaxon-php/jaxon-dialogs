@@ -16,6 +16,7 @@ namespace Jaxon\Dialogs\PNotify;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
 use Jaxon\App\Dialog\Library\MessageTrait;
+use Jaxon\App\Dialog\Library\QuestionTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
@@ -23,6 +24,7 @@ class PNotifyLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
     use MessageTrait;
+    use QuestionTrait;
 
     /**
      * @const The library name
