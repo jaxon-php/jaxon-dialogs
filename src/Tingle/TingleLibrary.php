@@ -37,17 +37,9 @@ class TingleLibrary implements ModalInterface
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'tingle';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getVersion(): string
-    {
-        return '0.8.4';
+        return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
     }
 
     /**
@@ -71,35 +63,6 @@ class TingleLibrary implements ModalInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('tingle/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('tingle/ready.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
-    {
-        // Show the footer only if there is a button to display.
-        $aOptions['footer'] = (count($aButtons) > 0);
-        // Show the modal dialog
-        $this->addCommand('tingle.show',
-            ['content' => '<h2>' . $sTitle . '</h2>' . $sContent, 'buttons' => $aButtons, 'options' => $aOptions]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hide()
-    {
-        // Hide the modal dialog
-        $this->addCommand('tingle.hide', []);
+        return $this->helper()->render('tingle/lib.js');
     }
 }

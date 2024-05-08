@@ -15,16 +15,12 @@
 namespace Jaxon\Dialogs\SweetAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\Library\MessageTrait;
-use Jaxon\App\Dialog\Library\QuestionTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class SweetAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
-    use MessageTrait;
-    use QuestionTrait;
 
     /**
      * @const The library name
@@ -42,17 +38,9 @@ class SweetAlertLibrary implements MessageInterface, QuestionInterface
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'sweetalert';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getVersion(): string
-    {
-        return '1.1.1';
+        return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
     }
 
     /**
@@ -66,40 +54,8 @@ class SweetAlertLibrary implements MessageInterface, QuestionInterface
     /**
      * @inheritDoc
      */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('sweetalert.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getScript(): string
     {
-        return $this->helper()->render('sweetalert/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('sweetalert/ready.js.php', [
-            'options' =>  $this->helper()->getOptionScript('jaxon.dialogs.swal.options.', 'options.')
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sType)
-    {
-        $aOptions = ['text' => $sMessage, 'title' => '', 'type' => $sType];
-        if(($sTitle))
-        {
-            $aOptions['title'] = $sTitle;
-        }
-        // Show the alert
-        $this->addCommand('sweetalert.alert', $aOptions);
+        return $this->helper()->render('sweetalert/lib.js');
     }
 }

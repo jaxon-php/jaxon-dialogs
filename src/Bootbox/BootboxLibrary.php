@@ -15,8 +15,6 @@
 namespace Jaxon\Dialogs\Bootbox;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\Library\MessageTrait;
-use Jaxon\App\Dialog\Library\QuestionTrait;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
@@ -24,8 +22,6 @@ use Jaxon\App\Dialog\QuestionInterface;
 class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
-    use MessageTrait;
-    use QuestionTrait;
 
     /**
      * @const The library name
@@ -43,27 +39,9 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'bootbox';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getVersion(): string
-    {
-        return '4.3.0';
-    }
-
-    /**
-     * The id of the HTML container block
-     *
-     * @return string
-     */
-    protected function getContainer(): string
-    {
-        return $this->helper()->getOption('dom.container', 'bootbox-container');
+        return 'https://cdn.jsdelivr.net/npm/bootbox@6.0.0/dist';
     }
 
     /**
@@ -79,55 +57,6 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function getScript(): string
     {
-        return $this->helper()->render('bootbox/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('bootbox/ready.js.php', ['container' => $this->getContainer()]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
-    {
-        // ModalInterface container
-        $sContainer = $this->getContainer();
-        $html = $this->helper()->render('bootbox/dialog.html',
-            ['title' => $sTitle, 'content' => $sContent, 'buttons' => $aButtons]);
-
-        // Assign dialog content
-        $this->response()->assign($sContainer, 'innerHTML', $html);
-        $this->response()->jq('#styledModal')->modal('show');
-        if(isset($aOptions['width']))
-        {
-            // Set the value of the dialog width
-            $width = $aOptions['width'];
-            $this->response()->jq('.modal-dialog')->css('width', "{$width}px");
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hide()
-    {
-        $this->response()->jq('#styledModal')->modal('hide');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sStdType)
-    {
-        $aTypes = [
-            'error' => 'danger',
-        ];
-        $sType = $aTypes[$sStdType] ?? $sStdType;
-        $this->addCommand('bootbox', ['type' => $sType, 'content' => $sMessage, 'title' => $sTitle]);
+        return $this->helper()->render('bootbox/lib.js');
     }
 }

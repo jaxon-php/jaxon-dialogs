@@ -15,13 +15,11 @@
 namespace Jaxon\Dialogs\Toastr;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\MessageInterface;
 
 class ToastrLibrary implements MessageInterface
 {
     use DialogLibraryTrait;
-    use MessageTrait;
 
     /**
      * @const The library name
@@ -39,17 +37,17 @@ class ToastrLibrary implements MessageInterface
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getVersion(): string
     {
-        return 'toastr.js';
+        return 'latest';
     }
 
     /**
      * @inheritDoc
      */
-    public function getVersion(): string
+    public function getUri(): string
     {
-        return '2.1.3';
+        return '//cdnjs.cloudflare.com/ajax/libs/toastr.js';
     }
 
     /**
@@ -57,7 +55,7 @@ class ToastrLibrary implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('toastr.min.js');
+        return $this->helper()->getJsCode('js/toastr.min.js');
     }
 
     /**
@@ -65,7 +63,7 @@ class ToastrLibrary implements MessageInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('toastr.min.css');
+        return $this->helper()->getCssCode('css/toastr.min.css');
     }
 
     /**
@@ -73,34 +71,6 @@ class ToastrLibrary implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('toastr/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('toastr/ready.js.php', [
-            'options' =>  $this->helper()->getOptionScript('toastr.options.', 'options.')
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sType)
-    {
-        $this->addCommand('toastr.' . $sType, ['message' => $sMessage, 'title' => $sTitle]);
-    }
-
-    public function remove()
-    {
-        $this->addCommand('toastr.remove');
-    }
-
-    public function clear()
-    {
-        $this->addCommand('toastr.clear');
+        return $this->helper()->render('toastr/lib.js');
     }
 }

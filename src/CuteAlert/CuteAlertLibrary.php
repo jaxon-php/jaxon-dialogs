@@ -15,16 +15,12 @@
 namespace Jaxon\Dialogs\CuteAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\Library\MessageTrait;
-use Jaxon\App\Dialog\Library\QuestionTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class CuteAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
-    use MessageTrait;
-    use QuestionTrait;
 
     /**
      * @const The library name
@@ -44,7 +40,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/gh/gustavosmanc/cute-alert';
+        return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0rc1/libs/cute-alert';
     }
 
     /**
@@ -52,7 +48,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('cute-alert.min.js');
+        return $this->helper()->getJsCode('cute-alert.js');
     }
 
     /**
@@ -60,7 +56,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('style.min.css');
+        return $this->helper()->getCssCode('style.css');
     }
 
     /**
@@ -68,26 +64,6 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('cutealert/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('cutealert/ready.js.php');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sStdType)
-    {
-        if(!$sTitle)
-        {
-            $sTitle = '&nbsp;';
-        }
-        $this->addCommand('cutealert.alert', ['message' => $sMessage, 'title' => $sTitle, 'type' => $sStdType]);
+        return $this->helper()->render('cutealert/lib.js');
     }
 }

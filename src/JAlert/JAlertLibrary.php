@@ -15,16 +15,12 @@
 namespace Jaxon\Dialogs\JAlert;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\Library\MessageTrait;
-use Jaxon\App\Dialog\Library\QuestionTrait;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
 
 class JAlertLibrary implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
-    use MessageTrait;
-    use QuestionTrait;
 
     /**
      * @const The library name
@@ -42,17 +38,9 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'jAlert';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getVersion(): string
-    {
-        return '4.5.1';
+        return 'https://cdn.jsdelivr.net/npm/jAlert@4.9.1/dist';
     }
 
     /**
@@ -68,7 +56,7 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('jAlert.css');
+        return $this->helper()->getCssCode('jAlert.min.css');
     }
 
     /**
@@ -76,33 +64,6 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('jalert/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('jalert/ready.js.php');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sStdType)
-    {
-        $aTypes = [
-            'success' => 'green',
-            'info' => 'blue',
-            'warning' => 'yellow',
-            'error' => 'red',
-        ];
-        $sTheme = $aTypes[$sStdType] ?? $sStdType;
-        if(!$sTitle)
-        {
-            $sTitle = '&nbsp;';
-        }
-        $this->addCommand('jalert.alert', ['content' => $sMessage, 'title' => $sTitle, 'theme' => $sTheme]);
+        return $this->helper()->render('jalert/lib.js');
     }
 }

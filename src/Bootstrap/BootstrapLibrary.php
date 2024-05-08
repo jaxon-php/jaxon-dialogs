@@ -15,7 +15,6 @@
 namespace Jaxon\Dialogs\Bootstrap;
 
 use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\Library\MessageTrait;
 use Jaxon\App\Dialog\ModalInterface;
 use Jaxon\App\Dialog\MessageInterface;
 use Jaxon\App\Dialog\QuestionInterface;
@@ -23,7 +22,6 @@ use Jaxon\App\Dialog\QuestionInterface;
 class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
-    use MessageTrait;
 
     /**
      * @const The library name
@@ -41,17 +39,9 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
     /**
      * @inheritDoc
      */
-    public function getSubdir(): string
+    public function getUri(): string
     {
-        return 'bootstrap-dialog';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getVersion(): string
-    {
-        return '1.35.3';
+        return 'https://cdn.jsdelivr.net/npm/bootstrap3-dialog@1.35.4/dist';
     }
 
     /**
@@ -59,7 +49,7 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('bootstrap-dialog.min.js');
+        return $this->helper()->getJsCode('js/bootstrap-dialog.min.js');
     }
 
     /**
@@ -67,7 +57,7 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('bootstrap-dialog.min.css');
+        return $this->helper()->getCssCode('css/bootstrap-dialog.min.css');
     }
 
     /**
@@ -75,75 +65,6 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getScript(): string
     {
-        return $this->helper()->render('bootstrap/alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getReadyScript(): string
-    {
-        return $this->helper()->render('bootstrap/ready.js.php');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = [])
-    {
-        // Fill the options array with the parameters
-        $aOptions['title'] = $sTitle;
-        $aOptions['message'] = $sContent;
-        $aOptions['buttons'] = [];
-        foreach($aButtons as $button)
-        {
-            $_button = [
-                'label' => $button['title'],
-                'cssClass' => $button['class'],
-                'action' => $button['click'],
-            ];
-            // Optional attributes
-            foreach($button as $attr => $value)
-            {
-                if(!in_array($attr, ['title', 'class', 'click']))
-                {
-                    $_button[$attr] = $value;
-                }
-            }
-            $aOptions['buttons'][] = $_button;
-        }
-        // Turn the value of the nl2br option to false, because it alters form rendering.
-        if(!array_key_exists('nl2br', $aOptions))
-        {
-            $aOptions['nl2br'] = false;
-        }
-        // Show the modal dialog
-        $this->addCommand('bootstrap.show', $aOptions);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hide()
-    {
-        // Hide the modal dialog
-        $this->addCommand('bootstrap.hide', []);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function alert(string $sMessage, string $sTitle, string $sStdType)
-    {
-        $aTypes = [
-            'error' => 'danger',
-        ];
-        $sType = $aTypes[$sStdType] ?? $sStdType;
-        $aOptions = ['message' => $sMessage, 'type' => $sType];
-        if(($sTitle))
-        {
-            $aOptions['title'] = $sTitle;
-        }
-        $this->addCommand('bootstrap.alert', $aOptions);
+        return $this->helper()->render('bootstrap/lib.js');
     }
 }
