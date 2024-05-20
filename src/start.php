@@ -33,11 +33,12 @@ function registerDialogLibraries()
         CuteAlertLibrary::class, // CuteAlert
     ];
     $jaxon = Ajax::getInstance();
+    $xDialog = $jaxon->dialog();
     foreach($aLibraries as $sClass)
     {
         try
         {
-            $jaxon->dialog()->registerLibrary($sClass, $sClass::NAME);
+            $xDialog->registerLibrary($sClass, $sClass::NAME);
         }
         catch(SetupException $_){}
     }
