@@ -2,6 +2,7 @@
 
 namespace Jaxon\Dialogs;
 
+use Jaxon\App\Ajax;
 use Jaxon\Dialogs\Bootbox\BootboxLibrary;
 use Jaxon\Dialogs\Bootstrap\BootstrapLibrary;
 use Jaxon\Dialogs\Toastr\ToastrLibrary;
@@ -13,8 +14,6 @@ use Jaxon\Dialogs\SweetAlert\SweetAlertLibrary;
 use Jaxon\Dialogs\JQueryConfirm\JQueryConfirmLibrary;
 use Jaxon\Dialogs\CuteAlert\CuteAlertLibrary;
 use Jaxon\Exception\SetupException;
-
-use function Jaxon\jaxon;
 
 /**
  * @return void
@@ -33,7 +32,7 @@ function registerDialogLibraries()
         JQueryConfirmLibrary::class, // JQuery Confirm
         CuteAlertLibrary::class, // CuteAlert
     ];
-    $jaxon = jaxon();
+    $jaxon = Ajax::getInstance();
     foreach($aLibraries as $sClass)
     {
         try
