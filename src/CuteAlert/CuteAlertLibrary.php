@@ -40,7 +40,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0rc1/libs/cute-alert';
+        return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0rc-11/dist/libs/cute-alert';
     }
 
     /**
