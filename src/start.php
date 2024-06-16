@@ -2,7 +2,7 @@
 
 namespace Jaxon\Dialogs;
 
-use Jaxon\App\Ajax;
+use Jaxon\App\Ajax\Lib as Jaxon;
 use Jaxon\Dialogs\Bootbox\BootboxLibrary;
 use Jaxon\Dialogs\Bootstrap\BootstrapLibrary;
 use Jaxon\Dialogs\Toastr\ToastrLibrary;
@@ -32,7 +32,7 @@ function registerDialogLibraries()
         JQueryConfirmLibrary::class, // JQuery Confirm
         CuteAlertLibrary::class, // CuteAlert
     ];
-    $jaxon = Ajax::getInstance();
+    $jaxon = Jaxon::getInstance();
     $xDialog = $jaxon->dialog();
     foreach($aLibraries as $sClass)
     {
