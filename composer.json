@@ -1,0 +1,28 @@
+{
+    "name": "jaxon-php/jaxon-dialogs",
+    "type": "library",
+    "description": "Modal, alerts and confirmation dialogs for Jaxon with various javascript libraries",
+    "authors": [
+        {"name": "Thierry Feuzeu"}
+    ],
+    "homepage": "https://github.com/jaxon-php/jaxon-dialogs",
+    "license": "BSD-3-Clause",
+    "keywords": ["Jaxon", "Xajax", "Ajax", "PHP", "Javascript", "Dialog", "Modal", "Alert", "Confirmation"],
+    "support": {
+        "issues": "https://github.com/jaxon-php/jaxon-dialogs/issues",
+        "source": "https://github.com/jaxon-php/jaxon-dialogs"
+    },
+    "require": {
+        "jaxon-php/jaxon-core": "dev-main"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jaxon\\Dialogs\\": "src/"
+        },
+        "files": [
+            "src/start.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
