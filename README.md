@@ -330,8 +330,8 @@ Adding a new library
 
 In order to add a new javascript library to this plugin, a new class needs to be defined and registered.
 
-The class must implement the `Jaxon\App\Dialog\LibraryInterface` interface, and at least one of the
-`Jaxon\App\Dialog\LibraryInterface`, `Jaxon\App\Dialog\LibraryInterface`, or `Jaxon\App\Dialog\LibraryInterface`
+The class must implement the `Jaxon\Plugin\Response\Dialog\Library\LibraryInterface` interface, and at least one of the
+`Jaxon\Plugin\Response\Dialog\Library\LibraryInterface`, `Jaxon\Plugin\Response\Dialog\Library\LibraryInterface`, or `Jaxon\Plugin\Response\Dialog\Library\LibraryInterface`
 interfaces, depending on the features it provides.
 
 ### Interfaces
@@ -498,8 +498,8 @@ interface QuestionInterface
 
 ### Helper
 
-The `Jaxon\App\Dialog\Library\DialogLibraryTrait` provides default implementations for some methods of the
-`Jaxon\App\Dialog\LibraryInterface` interface, as well as a `Jaxon\App\Dialog\Library\DialogLibraryHelper` object,
+The `Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait` provides default implementations for some methods of the
+`Jaxon\Plugin\Response\Dialog\Library\LibraryInterface` interface, as well as a `Jaxon\Plugin\Response\Dialog\Library\DialogLibraryHelper` object,
 returned by the `helper()` method, which gives access to the dialog config options, and templates.
 
 ### Registration

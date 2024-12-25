@@ -14,10 +14,10 @@
 
 namespace Jaxon\Dialogs\Bootbox;
 
-use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\ModalInterface;
-use Jaxon\App\Dialog\MessageInterface;
-use Jaxon\App\Dialog\QuestionInterface;
+use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
+use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
+use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
 class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {

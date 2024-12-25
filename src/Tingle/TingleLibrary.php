@@ -14,8 +14,8 @@
 
 namespace Jaxon\Dialogs\Tingle;
 
-use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\ModalInterface;
+use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 
 class TingleLibrary implements ModalInterface
 {

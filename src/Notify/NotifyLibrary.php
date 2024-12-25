@@ -14,8 +14,8 @@
 
 namespace Jaxon\Dialogs\Notify;
 
-use Jaxon\App\Dialog\Library\DialogLibraryTrait;
-use Jaxon\App\Dialog\MessageInterface;
+use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 
 class NotifyLibrary implements MessageInterface
 {
