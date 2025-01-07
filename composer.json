@@ -20,7 +20,7 @@
             "Jaxon\\Dialogs\\": "src/"
         },
         "files": [
-            "src/start.php"
+            "src/register.php"
         ]
     },
     "minimum-stability": "dev",
