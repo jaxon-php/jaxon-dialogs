@@ -1,30 +1,31 @@
 <?php
 
 /**
- * NotifyLibrary.php
+ * CuteAlertLibrary.php
  *
- * Adapter for the Notify library.
+ * Adapter for the CuteAlert library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
- * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @copyright 2022 Thierry Feuzeu <thierry.feuzeu@gmail.com>
  * @license https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Notify;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
+use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class NotifyLibrary implements MessageInterface
+class CuteAlert implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'notify';
+    const NAME = 'cute';
 
     /**
      * @inheritDoc
@@ -39,7 +40,7 @@ class NotifyLibrary implements MessageInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/notify-js-legacy@0.4.1';
+        return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0-beta.9/dist/libs/cute-alert';
     }
 
     /**
@@ -47,7 +48,15 @@ class NotifyLibrary implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('notify.min.js');
+        return $this->helper()->getJsCode('cute-alert.js');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCss(): string
+    {
+        return $this->helper()->getCssCode('style.css');
     }
 
     /**
@@ -55,6 +64,6 @@ class NotifyLibrary implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('notify/lib.js');
+        return $this->helper()->render('cutealert.js');
     }
 }

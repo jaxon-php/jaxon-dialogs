@@ -1,9 +1,9 @@
 <?php
 
 /**
- * ToastrLibrary.php
+ * JAlertLibrary.php
  *
- * Adapter for the Toastr library.
+ * Adapter for the jAlert library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,19 +12,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Toastr;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
+use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class ToastrLibrary implements MessageInterface
+class JAlert implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'toastr';
+    const NAME = 'jalert';
 
     /**
      * @inheritDoc
@@ -37,17 +38,9 @@ class ToastrLibrary implements MessageInterface
     /**
      * @inheritDoc
      */
-    public function getVersion(): string
-    {
-        return 'latest';
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getUri(): string
     {
-        return '//cdnjs.cloudflare.com/ajax/libs/toastr.js';
+        return 'https://cdn.jsdelivr.net/npm/jAlert@4.9.1/dist';
     }
 
     /**
@@ -55,7 +48,7 @@ class ToastrLibrary implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('js/toastr.min.js');
+        return $this->helper()->getJsCode('jAlert.min.js');
     }
 
     /**
@@ -63,7 +56,7 @@ class ToastrLibrary implements MessageInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('css/toastr.min.css');
+        return $this->helper()->getCssCode('jAlert.min.css');
     }
 
     /**
@@ -71,6 +64,6 @@ class ToastrLibrary implements MessageInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('toastr/lib.js');
+        return $this->helper()->render('jalert.js');
     }
 }

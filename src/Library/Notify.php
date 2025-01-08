@@ -1,9 +1,9 @@
 <?php
 
 /**
- * JAlertLibrary.php
+ * NotifyLibrary.php
  *
- * Adapter for the jAlert library.
+ * Adapter for the Notify library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,20 +12,19 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\JAlert;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class JAlertLibrary implements MessageInterface, QuestionInterface
+class Notify implements MessageInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'jalert';
+    const NAME = 'notify';
 
     /**
      * @inheritDoc
@@ -40,7 +39,7 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/jAlert@4.9.1/dist';
+        return 'https://cdn.jsdelivr.net/npm/notify-js-legacy@0.4.1';
     }
 
     /**
@@ -48,15 +47,7 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('jAlert.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('jAlert.min.css');
+        return $this->helper()->getJsCode('notify.min.js');
     }
 
     /**
@@ -64,6 +55,6 @@ class JAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('jalert/lib.js');
+        return $this->helper()->render('notify.js');
     }
 }

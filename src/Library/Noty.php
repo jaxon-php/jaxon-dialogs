@@ -12,13 +12,13 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Noty;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class NotyLibrary implements MessageInterface, QuestionInterface
+class Noty implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
@@ -70,6 +70,6 @@ class NotyLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-         return $this->helper()->render('noty/lib.js');
+         return $this->helper()->render('noty.js');
     }
 }

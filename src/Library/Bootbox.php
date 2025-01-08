@@ -1,31 +1,32 @@
 <?php
 
 /**
- * CuteAlertLibrary.php
+ * BootboxLibrary.php
  *
- * Adapter for the CuteAlert library.
+ * Adapter for the Bootbox library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
- * @copyright 2022 Thierry Feuzeu <thierry.feuzeu@gmail.com>
+ * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
  * @license https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\CuteAlert;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class CuteAlertLibrary implements MessageInterface, QuestionInterface
+class Bootbox implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'cute';
+    const NAME = 'bootbox';
 
     /**
      * @inheritDoc
@@ -40,7 +41,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0-beta.9/dist/libs/cute-alert';
+        return 'https://cdn.jsdelivr.net/npm/bootbox@6.0.0/dist';
     }
 
     /**
@@ -48,15 +49,7 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('cute-alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('style.css');
+        return $this->helper()->getJsCode('bootbox.min.js');
     }
 
     /**
@@ -64,6 +57,6 @@ class CuteAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('cutealert/lib.js');
+        return $this->helper()->render('bootbox.js');
     }
 }

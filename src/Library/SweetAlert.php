@@ -1,9 +1,9 @@
 <?php
 
 /**
- * TingleLibrary.php
+ * SweetAlertLibrary.php
  *
- * Adapter for the Tingle library.
+ * Adapter for the SweetAlert library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,19 +12,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Tingle;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
+use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
+use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class TingleLibrary implements ModalInterface
+class SweetAlert implements MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'tingle';
+    const NAME = 'sweetalert';
 
     /**
      * @inheritDoc
@@ -39,7 +40,7 @@ class TingleLibrary implements ModalInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
+        return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
     }
 
     /**
@@ -47,15 +48,7 @@ class TingleLibrary implements ModalInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('tingle.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('tingle.min.css');
+        return $this->helper()->getJsCode('sweetalert.min.js');
     }
 
     /**
@@ -63,6 +56,6 @@ class TingleLibrary implements ModalInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('tingle/lib.js');
+        return $this->helper()->render('sweetalert.js');
     }
 }

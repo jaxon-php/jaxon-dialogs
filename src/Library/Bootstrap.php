@@ -1,9 +1,9 @@
 <?php
 
 /**
- * JQueryConfirmLibrary.php
+ * BootstrapLibrary.php
  *
- * Adapter for the JQuery-Confirm library.
+ * Adapter for the Bootstrap library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,21 +12,21 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\JQueryConfirm;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
 use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class JQueryConfirmLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class Bootstrap implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'jconfirm';
+    const NAME = 'bootstrap';
 
     /**
      * @inheritDoc
@@ -41,7 +41,7 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/jquery-confirm@3.3.4/dist';
+        return 'https://cdn.jsdelivr.net/npm/bootstrap3-dialog@1.35.4/dist';
     }
 
     /**
@@ -49,7 +49,7 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('jquery-confirm.min.js');
+        return $this->helper()->getJsCode('js/bootstrap-dialog.min.js');
     }
 
     /**
@@ -57,7 +57,7 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('jquery-confirm.min.css');
+        return $this->helper()->getCssCode('css/bootstrap-dialog.min.css');
     }
 
     /**
@@ -65,6 +65,6 @@ class JQueryConfirmLibrary implements ModalInterface, MessageInterface, Question
      */
     public function getScript(): string
     {
-        return $this->helper()->render('jqueryconfirm/lib.js');
+        return $this->helper()->render('bootstrap.js');
     }
 }

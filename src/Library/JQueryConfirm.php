@@ -1,9 +1,9 @@
 <?php
 
 /**
- * SweetAlertLibrary.php
+ * JQueryConfirmLibrary.php
  *
- * Adapter for the SweetAlert library.
+ * Adapter for the JQuery-Confirm library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,20 +12,21 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\SweetAlert;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class SweetAlertLibrary implements MessageInterface, QuestionInterface
+class JQueryConfirm implements ModalInterface, MessageInterface, QuestionInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'sweetalert';
+    const NAME = 'jconfirm';
 
     /**
      * @inheritDoc
@@ -40,7 +41,7 @@ class SweetAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
+        return 'https://cdn.jsdelivr.net/npm/jquery-confirm@3.3.4/dist';
     }
 
     /**
@@ -48,7 +49,15 @@ class SweetAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('sweetalert.min.js');
+        return $this->helper()->getJsCode('jquery-confirm.min.js');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCss(): string
+    {
+        return $this->helper()->getCssCode('jquery-confirm.min.css');
     }
 
     /**
@@ -56,6 +65,6 @@ class SweetAlertLibrary implements MessageInterface, QuestionInterface
      */
     public function getScript(): string
     {
-        return $this->helper()->render('sweetalert/lib.js');
+        return $this->helper()->render('jqueryconfirm.js');
     }
 }

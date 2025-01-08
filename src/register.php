@@ -2,16 +2,6 @@
 
 namespace Jaxon\Dialogs;
 
-use Jaxon\Dialogs\Bootbox\BootboxLibrary;
-use Jaxon\Dialogs\Bootstrap\BootstrapLibrary;
-use Jaxon\Dialogs\Toastr\ToastrLibrary;
-use Jaxon\Dialogs\JAlert\JAlertLibrary;
-use Jaxon\Dialogs\Tingle\TingleLibrary;
-use Jaxon\Dialogs\Noty\NotyLibrary;
-use Jaxon\Dialogs\Notify\NotifyLibrary;
-use Jaxon\Dialogs\SweetAlert\SweetAlertLibrary;
-use Jaxon\Dialogs\JQueryConfirm\JQueryConfirmLibrary;
-use Jaxon\Dialogs\CuteAlert\CuteAlertLibrary;
 use Jaxon\Exception\SetupException;
 
 use function Jaxon\jaxon;
@@ -29,17 +19,17 @@ function register()
     };
 
     $aLibraries = [
-        Library\Alertify::class,
-        BootboxLibrary::class, // Bootbox
-        BootstrapLibrary::class, // Bootstrap
-        ToastrLibrary::class, // Toastr
-        JAlertLibrary::class, // JAlert
-        TingleLibrary::class, // Tingle
-        NotyLibrary::class, // Noty
-        NotifyLibrary::class, // Notify
-        SweetAlertLibrary::class, // SweetAlert
-        JQueryConfirmLibrary::class, // JQuery Confirm
-        CuteAlertLibrary::class, // CuteAlert
+        Library\Alertify::class, // Alertify
+        Library\Bootbox::class, // Bootbox
+        Library\Bootstrap::class, // Bootstrap
+        Library\Toastr::class, // Toastr
+        Library\JAlert::class, // JAlert
+        Library\Tingle::class, // Tingle
+        Library\Noty::class, // Noty
+        Library\Notify::class, // Notify
+        Library\SweetAlert::class, // SweetAlert
+        Library\JQueryConfirm::class, // JQuery Confirm
+        Library\CuteAlert::class, // CuteAlert
     ];
     $jaxon = jaxon();
     $xDialog = $jaxon->dialog();

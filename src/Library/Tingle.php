@@ -1,9 +1,9 @@
 <?php
 
 /**
- * BootstrapLibrary.php
+ * TingleLibrary.php
  *
- * Adapter for the Bootstrap library.
+ * Adapter for the Tingle library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,21 +12,19 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Bootstrap;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
 use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
-use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class Tingle implements ModalInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'bootstrap';
+    const NAME = 'tingle';
 
     /**
      * @inheritDoc
@@ -41,7 +39,7 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/bootstrap3-dialog@1.35.4/dist';
+        return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
     }
 
     /**
@@ -49,7 +47,7 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('js/bootstrap-dialog.min.js');
+        return $this->helper()->getJsCode('tingle.min.js');
     }
 
     /**
@@ -57,7 +55,7 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('css/bootstrap-dialog.min.css');
+        return $this->helper()->getCssCode('tingle.min.css');
     }
 
     /**
@@ -65,6 +63,6 @@ class BootstrapLibrary implements ModalInterface, MessageInterface, QuestionInte
      */
     public function getScript(): string
     {
-        return $this->helper()->render('bootstrap/lib.js');
+        return $this->helper()->render('tingle.js');
     }
 }

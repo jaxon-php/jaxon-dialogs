@@ -1,9 +1,9 @@
 <?php
 
 /**
- * BootboxLibrary.php
+ * ToastrLibrary.php
  *
- * Adapter for the Bootbox library.
+ * Adapter for the Toastr library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,21 +12,19 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Bootbox;
+namespace Jaxon\Dialogs\Library;
 
 use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
-use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterface
+class Toastr implements MessageInterface
 {
     use DialogLibraryTrait;
 
     /**
      * @const The library name
      */
-    const NAME = 'bootbox';
+    const NAME = 'toastr';
 
     /**
      * @inheritDoc
@@ -39,9 +37,17 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
     /**
      * @inheritDoc
      */
+    public function getVersion(): string
+    {
+        return 'latest';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/bootbox@6.0.0/dist';
+        return '//cdnjs.cloudflare.com/ajax/libs/toastr.js';
     }
 
     /**
@@ -49,7 +55,15 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('bootbox.min.js');
+        return $this->helper()->getJsCode('js/toastr.min.js');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCss(): string
+    {
+        return $this->helper()->getCssCode('css/toastr.min.css');
     }
 
     /**
@@ -57,6 +71,6 @@ class BootboxLibrary implements ModalInterface, MessageInterface, QuestionInterf
      */
     public function getScript(): string
     {
-        return $this->helper()->render('bootbox/lib.js');
+        return $this->helper()->render('toastr.js');
     }
 }
