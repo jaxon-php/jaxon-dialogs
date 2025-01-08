@@ -10,14 +10,8 @@ use function php_sapi_name;
 /**
  * @return void
  */
-function register()
+function _register()
 {
-    // Do nothing if running in cli.
-    if(php_sapi_name() === 'cli')
-    {
-        return;
-    };
-
     $aLibraries = [
         Library\Alertify::class, // Alertify
         Library\Bootbox::class, // Bootbox
@@ -44,6 +38,15 @@ function register()
 
     // Register the template dir into the template renderer
     $jaxon->template()->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/lib');
+}
+
+function register()
+{
+    // Do nothing if running in cli.
+    if(php_sapi_name() !== 'cli')
+    {
+        _register();
+    };
 }
 
 register();
