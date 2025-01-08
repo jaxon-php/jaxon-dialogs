@@ -29,6 +29,7 @@ function register()
     };
 
     $aLibraries = [
+        Library\Alertify::class,
         BootboxLibrary::class, // Bootbox
         BootstrapLibrary::class, // Bootstrap
         ToastrLibrary::class, // Toastr
