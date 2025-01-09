@@ -33,7 +33,7 @@ function _register()
     // Dialog library manager
     $xDi->set(DialogManager::class, function($di) {
         // Register the template dir into the template renderer
-        jaxon()->template()->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/lib');
+        jaxon()->template()->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/js');
 
         $xDialog = new DialogManager($di, $di->g(ConfigManager::class), $di->g(Translator::class));
         // Register the provided libraries.
