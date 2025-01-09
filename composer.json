@@ -16,6 +16,11 @@
         "php": ">=8.0",
         "jaxon-php/jaxon-core": "dev-main"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "php-coveralls/php-coveralls": "^2.5",
+        "phpunit/phpcov": "^8.2"
+    },
     "autoload": {
         "psr-4": {
             "Jaxon\\Dialogs\\": "src/"
@@ -23,6 +28,14 @@
         "files": [
             "src/register.php"
         ]
+    },
+    "scripts": {
+        "test": [
+            "@clearCache",
+            "@putenv XDEBUG_MODE=coverage",
+            "vendor/bin/phpunit"
+        ],
+        "clearCache": "rm -rf cache/*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

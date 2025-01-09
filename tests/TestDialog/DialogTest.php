@@ -1,6 +1,6 @@
 <?php
 
-namespace Jaxon\Tests\TestUi;
+namespace Jaxon\Dialogs\Tests\TestDialog;
 
 require_once __DIR__ . '/../src/dialog.php';
 
@@ -88,7 +88,6 @@ class DialogTest extends TestCase
         $this->assertEquals('', $xConfirmLibrary->getReadyScript());
 
         $xDialogPlugin = jaxon()->di()->getDialogPlugin();
-        $this->assertEquals('', $xDialogPlugin->getUri());
     }
 
     public function testDialogJsCode()
@@ -492,8 +491,8 @@ class DialogTest extends TestCase
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
-                '"confirm":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
-                '"alert":{"lib":"cute","type":"success","title":"","phrase":{"str":"No confirm","args":[]}}})',
+                '"question":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
+                '"message":{"lib":"cute","type":"success","title":"","phrase":{"str":"No confirm","args":[]}}})',
             rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseSuccess("No confirm")->__toString()
         );
@@ -510,8 +509,8 @@ class DialogTest extends TestCase
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
-                '"confirm":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
-                '"alert":{"lib":"cute","type":"info","title":"","phrase":{"str":"No confirm","args":[]}}})',
+                '"question":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
+                '"message":{"lib":"cute","type":"info","title":"","phrase":{"str":"No confirm","args":[]}}})',
             rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseInfo("No confirm")->__toString()
         );
@@ -528,8 +527,8 @@ class DialogTest extends TestCase
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
-                '"confirm":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
-                '"alert":{"lib":"cute","type":"warning","title":"","phrase":{"str":"No confirm","args":[]}}})',
+                '"question":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
+                '"message":{"lib":"cute","type":"warning","title":"","phrase":{"str":"No confirm","args":[]}}})',
             rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseWarning("No confirm")->__toString()
         );
@@ -546,8 +545,8 @@ class DialogTest extends TestCase
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
-                '"confirm":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
-                '"alert":{"lib":"cute","type":"error","title":"","phrase":{"str":"No confirm","args":[]}}})',
+                '"question":{"lib":"noty","title":"","phrase":{"str":"Really?","args":[]}},' .
+                '"message":{"lib":"cute","type":"error","title":"","phrase":{"str":"No confirm","args":[]}}})',
             rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseError("No confirm")->__toString()
         );

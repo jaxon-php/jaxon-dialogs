@@ -1,9 +1,9 @@
 <?php
 
+use Jaxon\App\CallableClass;
 use Jaxon\App\Dialog\Library\LibraryInterface;
 use Jaxon\App\Dialog\Library\ConfirmInterface;
 use Jaxon\Dialogs\Dialog\AbstractLibrary;
-use Jaxon\Tests\Ns\CallableClass;
 
 class Dialog extends CallableClass
 {
