@@ -65,8 +65,8 @@ function _register()
     $xDi->alias(LibraryRegistryInterface::class, DialogManager::class);
     $xDi->set(Alert::class, fn() => new Alert());
 
-    $xEventManager = $xDi->g(ConfigEventManager::class);
-    $xEventManager->addListener(DialogManager::class);
+    // Listener for app config changes.
+    $jaxon->config()->addLibEventListener(DialogManager::class);
 
     // Register the plugin
     $jaxon->registerPlugin(DialogPlugin::class, DialogPlugin::NAME, 900);
