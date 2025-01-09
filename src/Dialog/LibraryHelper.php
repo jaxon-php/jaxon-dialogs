@@ -123,16 +123,6 @@ class LibraryHelper
     }
 
     /**
-     * Get the text of the "Yes" button for confirm dialog
-     *
-     * @return string
-     */
-    public function getQuestionTitle(): string
-    {
-        return $this->xConfigManager->getOption('dialogs.question.title', '');
-    }
-
-    /**
      * @param string $sOption The assets option name
      * @param string $sFile The javascript file name
      *

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DialogPlugin.php - ModalInterface, message and question dialogs for Jaxon.
+ * DialogPlugin.php - modal, alert and confirm dialogs for Jaxon.
  *
  * Show modal, alert and confirm dialogs with various javascript libraries.
  * This class generates js ans css code for dialog libraries.

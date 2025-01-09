@@ -3,7 +3,7 @@
 /**
  * AlertLibrary.php
  *
- * Implements the dialog message and question features using the js alert and confirm functions.
+ * Implements the dialog alert and confirm features using the js alert and confirm functions.
  *
  * @package jaxon-core
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>

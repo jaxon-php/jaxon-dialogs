@@ -116,10 +116,10 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
             throw new SetupException($sMessage);
         }
 
-        $bIsQuestion = in_array(ConfirmInterface::class, $aInterfaces);
-        $bIsMessage = in_array(AlertInterface::class, $aInterfaces);
+        $bIsConfirm = in_array(ConfirmInterface::class, $aInterfaces);
+        $bIsAlert = in_array(AlertInterface::class, $aInterfaces);
         $bIsModal = in_array(ModalInterface::class, $aInterfaces);
-        if(!$bIsQuestion && !$bIsMessage && !$bIsModal)
+        if(!$bIsConfirm && !$bIsAlert && !$bIsModal)
         {
             // The class is invalid.
             $sMessage = $this->xTranslator->trans('errors.register.invalid', ['name' => $sClassName]);
@@ -128,8 +128,8 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
 
         // Save the library
         $this->aLibraries[$sLibraryName] = [
-            'question' => $bIsQuestion,
-            'message' => $bIsMessage,
+            'confirm' => $bIsConfirm,
+            'alert' => $bIsAlert,
             'modal' => $bIsModal,
             'used' => false,
         ];
@@ -159,10 +159,10 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      */
     public function setConfirmLibrary(string $sLibraryName)
     {
-        if(!isset($this->aLibraries[$sLibraryName]) || !$this->aLibraries[$sLibraryName]['question'])
+        if(!isset($this->aLibraries[$sLibraryName]) || !$this->aLibraries[$sLibraryName]['confirm'])
         {
             $sMessage = $this->xTranslator->trans('errors.dialog.library',
-                ['type' => 'question', 'name' => $sLibraryName]);
+                ['type' => 'confirm', 'name' => $sLibraryName]);
             throw new SetupException($sMessage);
         }
         $this->sConfirmLibrary = $sLibraryName;
@@ -189,10 +189,10 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      */
     public function setAlertLibrary(string $sLibraryName)
     {
-        if(!isset($this->aLibraries[$sLibraryName]) || !$this->aLibraries[$sLibraryName]['message'])
+        if(!isset($this->aLibraries[$sLibraryName]) || !$this->aLibraries[$sLibraryName]['alert'])
         {
             $sMessage = $this->xTranslator->trans('errors.dialog.library',
-                ['type' => 'message', 'name' => $sLibraryName]);
+                ['type' => 'alert', 'name' => $sLibraryName]);
             throw new SetupException($sMessage);
         }
         $this->sAlertLibrary = $sLibraryName;
@@ -268,14 +268,14 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
             $this->setModalLibrary($sLibraryName);
             $this->aLibraries[$sLibraryName]['used'] = true;
         }
-        // Set the default message library
-        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.message', '')))
+        // Set the default alert library
+        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.alert', '')))
         {
             $this->setAlertLibrary($sLibraryName);
             $this->aLibraries[$sLibraryName]['used'] = true;
         }
-        // Set the default question library
-        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.question', '')))
+        // Set the default confirm library
+        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.confirm', '')))
         {
             $this->setConfirmLibrary($sLibraryName);
             $this->aLibraries[$sLibraryName]['used'] = true;

@@ -41,12 +41,12 @@ Configuration
 
 This package defines 3 config options in the `default` section to set the default library to be used.
 - modal: the default library for modal dialogs
-- message: the default library for messages
-- question: the default library for questions
+- alert: the default library for alerts
+- confirm: the default library for questions
 
 The `lib.use` option allows to load additional libraries into the page, if they are used in the application.
 
-The `question` section defines options for the question dialog.
+The `confirm` section defines options for the confirm dialog.
 
 The `lib.uri` option defines the URI where to download the libraries files from.
 
@@ -56,16 +56,16 @@ Specific options can also be set for each library.
     'dialogs' => [
         'default' => [
             'modal' => 'bootstrap',  // Default library for modal dialogs
-            'message' => 'jconfirm', // Default library for messages
-            'question' => 'noty',    // Default library for questions
+            'alert' => 'jconfirm', // Default library for alerts
+            'confirm' => 'noty',    // Default library for questions
         ],
         'lib' => [
             'uri' => 'https://cdn.jaxon-php.org/libs',
             'use' => ['pgwjs', 'toastr'], // Additional libraries in use
         ],
         // Confirm options
-        'question' => [
-            'title' => 'Question',   // The question dialog
+        'confirm' => [
+            'title' => 'Confirm',   // The confirm dialog
             'yes' => 'Oh Yes',       // The text of the Yes button
             'no' => 'No way',        // The text of the No button
         ],
@@ -402,7 +402,7 @@ interface ModalInterface
 }
 ```
 
-For notifications messages.
+For notifications alerts.
 
 ```php
 interface AlertInterface
@@ -441,8 +441,8 @@ Or declared in the `dialog` section of the Jaxon configuration.
     'dialogs' => [
         'default' => [
             'modal' => 'myplugin',    // Default library for modal dialogs
-            'message' => 'myplugin',  // Default library for messages
-            'question' => 'myplugin', // Default library for questions
+            'alert' => 'myplugin',  // Default library for alerts
+            'confirm' => 'myplugin', // Default library for confirm questions
         ],
         'lib' => [
             'ext' => [
