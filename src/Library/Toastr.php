@@ -14,13 +14,11 @@
 
 namespace Jaxon\Dialogs\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 
-class Toastr implements MessageInterface
+class Toastr extends AbstractDialogLibrary implements MessageInterface
 {
-    use DialogLibraryTrait;
-
     /**
      * @const The library name
      */

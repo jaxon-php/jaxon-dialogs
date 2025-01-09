@@ -14,15 +14,14 @@
 
 namespace Jaxon\Dialogs\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
 use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class Bootstrap implements ModalInterface, MessageInterface, QuestionInterface
+class Bootstrap extends AbstractDialogLibrary
+    implements ModalInterface, MessageInterface, QuestionInterface
 {
-    use DialogLibraryTrait;
-
     /**
      * @const The library name
      */

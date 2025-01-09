@@ -14,15 +14,13 @@
 
 namespace Jaxon\Dialogs\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
 use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class Alertify implements ModalInterface, MessageInterface, QuestionInterface
+class Alertify extends AbstractDialogLibrary implements ModalInterface, MessageInterface, QuestionInterface
 {
-    use DialogLibraryTrait;
-
     /**
      * @const The library name
      */

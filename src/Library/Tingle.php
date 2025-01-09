@@ -14,13 +14,11 @@
 
 namespace Jaxon\Dialogs\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
 use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
 
-class Tingle implements ModalInterface
+class Tingle extends AbstractDialogLibrary implements ModalInterface
 {
-    use DialogLibraryTrait;
-
     /**
      * @const The library name
      */

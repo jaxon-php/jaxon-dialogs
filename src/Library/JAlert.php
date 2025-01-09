@@ -14,14 +14,12 @@
 
 namespace Jaxon\Dialogs\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait;
+use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
 use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
 use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
 
-class JAlert implements MessageInterface, QuestionInterface
+class JAlert extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
 {
-    use DialogLibraryTrait;
-
     /**
      * @const The library name
      */
