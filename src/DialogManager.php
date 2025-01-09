@@ -247,7 +247,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      */
     protected function registerLibraries()
     {
-        $aLibraries = $this->xConfigManager->getOption('dialogs.lib.ext', []);
+        $aLibraries = $this->xConfigManager->getAppOption('dialogs.lib.ext', []);
         foreach($aLibraries as $sLibraryName => $sClassName)
         {
             $this->registerLibrary($sClassName, $sLibraryName);
@@ -263,19 +263,19 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
     protected function setDefaultLibraries()
     {
         // Set the default modal library
-        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.modal', '')))
+        if(($sLibraryName = $this->xConfigManager->getAppOption('dialogs.default.modal', '')))
         {
             $this->setModalLibrary($sLibraryName);
             $this->aLibraries[$sLibraryName]['used'] = true;
         }
         // Set the default alert library
-        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.alert', '')))
+        if(($sLibraryName = $this->xConfigManager->getAppOption('dialogs.default.alert', '')))
         {
             $this->setAlertLibrary($sLibraryName);
             $this->aLibraries[$sLibraryName]['used'] = true;
         }
         // Set the default confirm library
-        if(($sLibraryName = $this->xConfigManager->getOption('dialogs.default.confirm', '')))
+        if(($sLibraryName = $this->xConfigManager->getAppOption('dialogs.default.confirm', '')))
         {
             $this->setConfirmLibrary($sLibraryName);
             $this->aLibraries[$sLibraryName]['used'] = true;
@@ -290,7 +290,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
     protected function setUsedLibraries()
     {
         // Set the other libraries in use
-        $aLibraries = $this->xConfigManager->getOption('dialogs.lib.use', []);
+        $aLibraries = $this->xConfigManager->getAppOption('dialogs.lib.use', []);
         foreach($aLibraries as $sLibraryName)
         {
             if(isset($this->aLibraries[$sLibraryName])) // Make sure the library exists

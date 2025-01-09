@@ -66,7 +66,7 @@ function _register()
     $xDi->set(Alert::class, fn() => new Alert());
 
     // Listener for app config changes.
-    $jaxon->config()->addLibEventListener(DialogManager::class);
+    $jaxon->config()->addAppEventListener(DialogManager::class);
 
     // Register the plugin
     $jaxon->registerPlugin(DialogPlugin::class, DialogPlugin::NAME, 900);

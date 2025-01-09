@@ -43,7 +43,7 @@ class LibraryHelper
         // Set the library name
         $this->sName = $xDialogLibrary->getName();
         // Set the default URI.
-        $sDefaultUri = $xConfigManager->getOption('dialogs.lib.uri', $xDialogLibrary->getUri());
+        $sDefaultUri = $xConfigManager->getAppOption('dialogs.lib.uri', $xDialogLibrary->getUri());
         // Set the library URI.
         $this->sUri = rtrim($this->getOption('uri', $sDefaultUri), '/');
     }
@@ -59,7 +59,7 @@ class LibraryHelper
     public function getOption(string $sOptionName, $xDefault = null)
     {
         $sOptionName = 'dialogs.' . $this->sName . '.' . $sOptionName;
-        return $this->xConfigManager->getOption($sOptionName, $xDefault);
+        return $this->xConfigManager->getAppOption($sOptionName, $xDefault);
     }
 
     /**
@@ -72,7 +72,7 @@ class LibraryHelper
     public function hasOption(string $sOptionName): bool
     {
         $sOptionName = 'dialogs.' . $this->sName . '.' . $sOptionName;
-        return $this->xConfigManager->hasOption($sOptionName);
+        return $this->xConfigManager->hasAppOption($sOptionName);
     }
 
     /**
@@ -104,7 +104,7 @@ class LibraryHelper
         $sScript = '';
         foreach($aOptions as $sShortName => $sFullName)
         {
-            $value = $this->xConfigManager->getOption($sFullName);
+            $value = $this->xConfigManager->getAppOption($sFullName);
             if(is_string($value))
             {
                 $value = "'$value'";
