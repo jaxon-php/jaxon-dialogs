@@ -1,5 +1,7 @@
+[![Build Status](https://github.com/jaxon-php/jaxon-dialogs/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/jaxon-php/jaxon-dialogs/actions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jaxon-php/jaxon-dialogs/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/jaxon-php/jaxon-dialogs/?branch=main)
 [![StyleCI](https://styleci.io/repos/60390067/shield?branch=main)](https://styleci.io/repos/60390067)
+[![codecov](https://codecov.io/gh/jaxon-php/jaxon-dialogs/branch/main/graph/badge.svg?token=MKqDVnW7eJ)](https://codecov.io/gh/jaxon-php/jaxon-dialogs)
 
 [![Latest Stable Version](https://poser.pugx.org/jaxon-php/jaxon-dialogs/v/stable)](https://packagist.org/packages/jaxon-php/jaxon-dialogs)
 [![Total Downloads](https://poser.pugx.org/jaxon-php/jaxon-dialogs/downloads)](https://packagist.org/packages/jaxon-php/jaxon-dialogs)
