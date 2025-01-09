@@ -1,9 +1,9 @@
 <?php
 
 /**
- * TingleLibrary.php
+ * JQueryConfirmLibrary.php
  *
- * Adapter for the Tingle library.
+ * Adapter for the JQuery-Confirm library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,17 +12,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library;
+namespace Jaxon\Dialogs\Dialog\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
-use Jaxon\Plugin\Response\Dialog\Library\ModalInterface;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\App\Dialog\Library\AlertInterface;
+use Jaxon\App\Dialog\Library\ConfirmInterface;
+use Jaxon\App\Dialog\Library\ModalInterface;
 
-class Tingle extends AbstractDialogLibrary implements ModalInterface
+class JQueryConfirm extends AbstractLibrary
+    implements ModalInterface, AlertInterface, ConfirmInterface
 {
     /**
      * @const The library name
      */
-    const NAME = 'tingle';
+    const NAME = 'jconfirm';
 
     /**
      * @inheritDoc
@@ -37,7 +40,7 @@ class Tingle extends AbstractDialogLibrary implements ModalInterface
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
+        return 'https://cdn.jsdelivr.net/npm/jquery-confirm@3.3.4/dist';
     }
 
     /**
@@ -45,7 +48,7 @@ class Tingle extends AbstractDialogLibrary implements ModalInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('tingle.min.js');
+        return $this->helper()->getJsCode('jquery-confirm.min.js');
     }
 
     /**
@@ -53,14 +56,14 @@ class Tingle extends AbstractDialogLibrary implements ModalInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('tingle.min.css');
+        return $this->helper()->getCssCode('jquery-confirm.min.css');
     }
 
     /**
      * @inheritDoc
      */
-    public function getScript(): string
+    public function getReadyScript(): string
     {
-        return $this->helper()->render('tingle.js');
+        return $this->helper()->render('jqueryconfirm.js');
     }
 }

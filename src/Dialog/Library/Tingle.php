@@ -1,9 +1,9 @@
 <?php
 
 /**
- * NotyLibrary.php
+ * TingleLibrary.php
  *
- * Adapter for the Noty library.
+ * Adapter for the Tingle library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,18 +12,17 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library;
+namespace Jaxon\Dialogs\Dialog\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
-use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\App\Dialog\Library\ModalInterface;
 
-class Noty extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class Tingle extends AbstractLibrary implements ModalInterface
 {
     /**
      * @const The library name
      */
-    const NAME = 'noty';
+    const NAME = 'tingle';
 
     /**
      * @inheritDoc
@@ -38,7 +37,7 @@ class Noty extends AbstractDialogLibrary implements MessageInterface, QuestionIn
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/noty@3.1.4/lib';
+        return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
     }
 
     /**
@@ -46,7 +45,7 @@ class Noty extends AbstractDialogLibrary implements MessageInterface, QuestionIn
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('noty.min.js');
+        return $this->helper()->getJsCode('tingle.min.js');
     }
 
     /**
@@ -54,20 +53,14 @@ class Noty extends AbstractDialogLibrary implements MessageInterface, QuestionIn
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('noty.min.css') . '
-<style>
-    .noty_buttons button {
-        margin-right: 10px;
-    }
-</style>
-';
+        return $this->helper()->getCssCode('tingle.min.css');
     }
 
     /**
      * @inheritDoc
      */
-    public function getScript(): string
+    public function getReadyScript(): string
     {
-         return $this->helper()->render('noty.js');
+        return $this->helper()->render('tingle.js');
     }
 }

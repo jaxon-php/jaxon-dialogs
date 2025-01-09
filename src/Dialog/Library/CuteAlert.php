@@ -12,13 +12,13 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library;
+namespace Jaxon\Dialogs\Dialog\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
-use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\App\Dialog\Library\AlertInterface;
+use Jaxon\App\Dialog\Library\ConfirmInterface;
 
-class CuteAlert extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class CuteAlert extends AbstractLibrary implements AlertInterface, ConfirmInterface
 {
     /**
      * @const The library name
@@ -60,7 +60,7 @@ class CuteAlert extends AbstractDialogLibrary implements MessageInterface, Quest
     /**
      * @inheritDoc
      */
-    public function getScript(): string
+    public function getReadyScript(): string
     {
         return $this->helper()->render('cutealert.js');
     }

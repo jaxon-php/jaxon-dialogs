@@ -1,9 +1,9 @@
 <?php
 
 /**
- * ToastrLibrary.php
+ * BootstrapLibrary.php
  *
- * Adapter for the Toastr library.
+ * Adapter for the Bootstrap library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,17 +12,20 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library;
+namespace Jaxon\Dialogs\Dialog\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
-use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\App\Dialog\Library\AlertInterface;
+use Jaxon\App\Dialog\Library\ConfirmInterface;
+use Jaxon\App\Dialog\Library\ModalInterface;
 
-class Toastr extends AbstractDialogLibrary implements MessageInterface
+class Bootstrap extends AbstractLibrary
+    implements ModalInterface, AlertInterface, ConfirmInterface
 {
     /**
      * @const The library name
      */
-    const NAME = 'toastr';
+    const NAME = 'bootstrap';
 
     /**
      * @inheritDoc
@@ -35,17 +38,9 @@ class Toastr extends AbstractDialogLibrary implements MessageInterface
     /**
      * @inheritDoc
      */
-    public function getVersion(): string
-    {
-        return 'latest';
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getUri(): string
     {
-        return '//cdnjs.cloudflare.com/ajax/libs/toastr.js';
+        return 'https://cdn.jsdelivr.net/npm/bootstrap3-dialog@1.35.4/dist';
     }
 
     /**
@@ -53,7 +48,7 @@ class Toastr extends AbstractDialogLibrary implements MessageInterface
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('js/toastr.min.js');
+        return $this->helper()->getJsCode('js/bootstrap-dialog.min.js');
     }
 
     /**
@@ -61,14 +56,14 @@ class Toastr extends AbstractDialogLibrary implements MessageInterface
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('css/toastr.min.css');
+        return $this->helper()->getCssCode('css/bootstrap-dialog.min.css');
     }
 
     /**
      * @inheritDoc
      */
-    public function getScript(): string
+    public function getReadyScript(): string
     {
-        return $this->helper()->render('toastr.js');
+        return $this->helper()->render('bootstrap.js');
     }
 }

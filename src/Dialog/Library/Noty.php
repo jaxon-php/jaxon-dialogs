@@ -1,9 +1,9 @@
 <?php
 
 /**
- * JAlertLibrary.php
+ * NotyLibrary.php
  *
- * Adapter for the jAlert library.
+ * Adapter for the Noty library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,18 +12,18 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library;
+namespace Jaxon\Dialogs\Dialog\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
-use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\App\Dialog\Library\AlertInterface;
+use Jaxon\App\Dialog\Library\ConfirmInterface;
 
-class JAlert extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class Noty extends AbstractLibrary implements AlertInterface, ConfirmInterface
 {
     /**
      * @const The library name
      */
-    const NAME = 'jalert';
+    const NAME = 'noty';
 
     /**
      * @inheritDoc
@@ -38,7 +38,7 @@ class JAlert extends AbstractDialogLibrary implements MessageInterface, Question
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/jAlert@4.9.1/dist';
+        return 'https://cdn.jsdelivr.net/npm/noty@3.1.4/lib';
     }
 
     /**
@@ -46,7 +46,7 @@ class JAlert extends AbstractDialogLibrary implements MessageInterface, Question
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('jAlert.min.js');
+        return $this->helper()->getJsCode('noty.min.js');
     }
 
     /**
@@ -54,14 +54,20 @@ class JAlert extends AbstractDialogLibrary implements MessageInterface, Question
      */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('jAlert.min.css');
+        return $this->helper()->getCssCode('noty.min.css') . '
+<style>
+    .noty_buttons button {
+        margin-right: 10px;
+    }
+</style>
+';
     }
 
     /**
      * @inheritDoc
      */
-    public function getScript(): string
+    public function getReadyScript(): string
     {
-        return $this->helper()->render('jalert.js');
+         return $this->helper()->render('noty.js');
     }
 }

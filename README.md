@@ -330,8 +330,8 @@ Adding a new library
 
 In order to add a new javascript library to this plugin, a new class needs to be defined and registered.
 
-The class must implement the `Jaxon\Plugin\Response\Dialog\Library\LibraryInterface` interface, and at least one of the
-`Jaxon\Plugin\Response\Dialog\Library\LibraryInterface`, `Jaxon\Plugin\Response\Dialog\Library\LibraryInterface`, or `Jaxon\Plugin\Response\Dialog\Library\LibraryInterface`
+The class must implement the `Jaxon\App\Dialog\Library\LibraryInterface` interface, and at least one of the
+`Jaxon\App\Dialog\Library\AlertInterface`, `Jaxon\App\Dialog\Library\ConfirmInterface`, or `Jaxon\App\Dialog\Library\ModalInterface`
 interfaces, depending on the features it provides.
 
 ### Interfaces
@@ -390,102 +390,36 @@ The `getJs()` and `getCss()` methods return the HTML header code for loading jav
 The `getScript()` method returns the javascript code to be executed after the page is loaded to initialize the library.
 
 Depending on the javascript library features, the class must implement one or more of the following three interfaces.
+These interfaces are empty, and thay just give an indication of which features are implemented in the js code of the library.
 
 For windows and modal dialogs.
 
 ```php
 interface ModalInterface
 {
-    /**
-     * Show a modal dialog.
-     *
-     * @param string $sTitle The title of the dialog
-     * @param string $sContent The content of the dialog
-     * @param array $aButtons The buttons of the dialog
-     * @param array $aOptions The options of the dialog
-     *
-     * @return void
-     */
-    public function show(string $sTitle, string $sContent, array $aButtons, array $aOptions = []);
-
-    /**
-     * Hide the modal dialog.
-     *
-     * @return void
-     */
-    public function hide();
 }
 ```
 
-For notifications dialogs.
+For notifications messages.
 
 ```php
-interface MessageInterface
+interface AlertInterface
 {
-    /**
-     * Show a success message.
-     *
-     * @param string $sMessage    The text of the message
-     * @param string $sTitle    The title of the message
-     *
-     * @return string
-     */
-    public function success(string $sMessage, string $sTitle = ''): string;
-
-    /**
-     * Show an information message.
-     *
-     * @param string $sMessage    The text of the message
-     * @param string $sTitle    The title of the message
-     *
-     * @return string
-     */
-    public function info(string $sMessage, string $sTitle = ''): string;
-
-    /**
-     * Show a warning message.
-     *
-     * @param string $sMessage    The text of the message
-     * @param string $sTitle    The title of the message
-     *
-     * @return string
-     */
-    public function warning(string $sMessage, string $sTitle = ''): string;
-
-    /**
-     * Show an error message.
-     *
-     * @param string $sMessage    The text of the message
-     * @param string $sTitle    The title of the message
-     *
-     * @return string
-     */
-    public function error(string $sMessage, string $sTitle = ''): string;
 }
 ```
 
-For confirmation dialogs.
+For confirmation questions.
 
 ```php
-interface QuestionInterface
+interface ConfirmInterface
 {
-    /**
-     * Return a script which makes a call only if the user answers yes to the given question
-     *
-     * @param string  $sQuestion
-     * @param string  $sYesScript
-     * @param string  $sNoScript
-     *
-     * @return string
-     */
-    public function confirm(string $sQuestion, string $sYesScript, string $sNoScript): string;
 }
 ```
 
 ### Helper
 
-The `Jaxon\Plugin\Response\Dialog\Library\DialogLibraryTrait` provides default implementations for some methods of the
-`Jaxon\Plugin\Response\Dialog\Library\LibraryInterface` interface, as well as a `Jaxon\Plugin\Response\Dialog\Library\DialogLibraryHelper` object,
+The `Jaxon\App\Dialog\Library\AbstractDialogLibrary` bas class provides default implementations for some methods of the
+`Jaxon\App\Dialog\Library\LibraryInterface` interface, as well as a `Jaxon\App\Dialog\Library\DialogLibraryHelper` object,
 returned by the `helper()` method, which gives access to the dialog config options, and templates.
 
 ### Registration
@@ -495,7 +429,8 @@ After it is defined, the library class needs to be configured and registered bef
 The class can be registered when starting the library.
 
 ```php
-jaxon()->dialog()->registerLibrary(\Path\To\My\Plugin::class, 'myplugin');
+use function Jaxon\Dialogs\dialog;
+dialog()->registerLibrary(\Path\To\My\Plugin::class, 'myplugin');
 ```
 
 Or declared in the `dialog` section of the Jaxon configuration.

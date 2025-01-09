@@ -1,9 +1,9 @@
 <?php
 
 /**
- * SweetAlertLibrary.php
+ * ToastrLibrary.php
  *
- * Adapter for the SweetAlert library.
+ * Adapter for the Toastr library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -12,18 +12,17 @@
  * @link https://github.com/jaxon-php/jaxon-dialogs
  */
 
-namespace Jaxon\Dialogs\Library;
+namespace Jaxon\Dialogs\Dialog\Library;
 
-use Jaxon\Plugin\Response\Dialog\Library\AbstractDialogLibrary;
-use Jaxon\Plugin\Response\Dialog\Library\MessageInterface;
-use Jaxon\Plugin\Response\Dialog\Library\QuestionInterface;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\App\Dialog\Library\AlertInterface;
 
-class SweetAlert extends AbstractDialogLibrary implements MessageInterface, QuestionInterface
+class Toastr extends AbstractLibrary implements AlertInterface
 {
     /**
      * @const The library name
      */
-    const NAME = 'sweetalert';
+    const NAME = 'toastr';
 
     /**
      * @inheritDoc
@@ -38,7 +37,7 @@ class SweetAlert extends AbstractDialogLibrary implements MessageInterface, Ques
      */
     public function getUri(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
+        return '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest';
     }
 
     /**
@@ -46,14 +45,22 @@ class SweetAlert extends AbstractDialogLibrary implements MessageInterface, Ques
      */
     public function getJs(): string
     {
-        return $this->helper()->getJsCode('sweetalert.min.js');
+        return $this->helper()->getJsCode('js/toastr.min.js');
     }
 
     /**
      * @inheritDoc
      */
-    public function getScript(): string
+    public function getCss(): string
     {
-        return $this->helper()->render('sweetalert.js');
+        return $this->helper()->getCssCode('css/toastr.min.css');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReadyScript(): string
+    {
+        return $this->helper()->render('toastr.js');
     }
 }
