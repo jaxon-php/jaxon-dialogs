@@ -2,7 +2,13 @@
  * Class: jaxon.dialog.lib.noty
  */
 
-jaxon.dialog.lib.register('noty', (self, { labels }) => {
+jaxon.dialog.lib.register('noty', (self, { labels, options = {} }) => {
+    // Dialogs options
+    const {
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     const xTypes = {
         success: 'success',
         info: 'information',
@@ -21,6 +27,7 @@ jaxon.dialog.lib.register('noty', (self, { labels }) => {
      */
     self.alert = (type, text, title) => {
         new Noty({
+            ...alertOptions,
             text,
             type: xTypes[type] ?? xTypes.info,
             layout: 'topCenter',
@@ -38,6 +45,7 @@ jaxon.dialog.lib.register('noty', (self, { labels }) => {
      */
     self.confirm = (question, title, yesCallback, noCallback) => {
         const noty = new Noty({
+            ...confirmOptions,
             theme: 'relax',
             text: question,
             layout: 'topCenter',

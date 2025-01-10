@@ -2,7 +2,14 @@
  * Class: jaxon.dialog.lib.jconfirm
  */
 
-jaxon.dialog.lib.register('jconfirm', (self, { js, types, labels }) => {
+jaxon.dialog.lib.register('jconfirm', (self, { js, types, labels, options = {} }) => {
+    // Dialogs options
+    const {
+        modal: modalOptions = {},
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     /**
      * @var {object}
      */
@@ -27,11 +34,13 @@ jaxon.dialog.lib.register('jconfirm', (self, { js, types, labels }) => {
         // Add buttons
         const xButtons = {};
         buttons.forEach(({ title: text, class: btnClass, click }, btnIndex) => {
-            const handler = types.isObject(click) ? () => js.execExpr(click) : () => self.hide();
+            const handler = !types.isObject(click) ? () => self.hide() :
+                () => { js.execExpr(click); return false; };
             xButtons['btn' + btnIndex] = { text, btnClass, action: handler };
         });
 
         dialog.dom = $.confirm({
+            ...modalOptions,
             title,
             content,
             ...options,
@@ -50,11 +59,7 @@ jaxon.dialog.lib.register('jconfirm', (self, { js, types, labels }) => {
      * @returns {void}
      */
     self.hide = () => {
-        if(!dialog.dom)
-        {
-            return;
-        }
-        dialog.dom.close();
+        !dialog.dom || dialog.dom.close();
         dialog.dom = null;
     };
 
@@ -82,6 +87,7 @@ jaxon.dialog.lib.register('jconfirm', (self, { js, types, labels }) => {
      * @returns {void}
      */
     self.alert = (type, text, title) => $.alert({
+        ...alertOptions,
         content: text,
         title,
         type: xTypes[type] ?? xTypes.info,
@@ -97,6 +103,7 @@ jaxon.dialog.lib.register('jconfirm', (self, { js, types, labels }) => {
      * @returns {void}
      */
     self.confirm = (question, title, yesCallback, noCallback) => $.confirm({
+        ...confirmOptions,
         title,
         content: question,
         buttons: {

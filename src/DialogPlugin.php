@@ -19,6 +19,8 @@ use Jaxon\Exception\SetupException;
 use Jaxon\Plugin\AbstractPlugin;
 
 use function array_reduce;
+use function count;
+use function json_encode;
 use function trim;
 
 class DialogPlugin extends AbstractPlugin
@@ -56,11 +58,6 @@ class DialogPlugin extends AbstractPlugin
     {
         // The version number is used as hash
         return '4.0.0';
-    }
-
-    public function getUri(): string
-    {
-        return '';
     }
 
     /**
@@ -103,12 +100,38 @@ class DialogPlugin extends AbstractPlugin
     }
 
     /**
-     * @inheritDoc
+     * @return string
      */
-    public function getReadyScript(): string
+    private function getOptionsJs(): string
+    {
+        $aJsOptions = [];
+        foreach($this->getLibraries() as $xLibrary)
+        {
+            $aLibOptions = $xLibrary->helper()->getJsOptions();
+            if(count($aLibOptions) > 0)
+            {
+                $aJsOptions[$xLibrary->getName()] = $aLibOptions;
+            }
+        }
+        return count($aJsOptions) === 0 ? '' :
+            "jaxon.dialog.lib.options(" . json_encode($aJsOptions) . ");\n\n";
+    }
+
+    /**
+     * @return string
+     */
+    private function _getReadyScript(): string
     {
         return array_reduce($this->getLibraries(), function($sCode, $xLibrary) {
             return $sCode . trim($xLibrary->getReadyScript()) . "\n\n";
         }, '');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getReadyScript(): string
+    {
+        return $this->getOptionsJs() . $this->_getReadyScript();
     }
 }

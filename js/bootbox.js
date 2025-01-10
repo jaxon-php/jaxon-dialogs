@@ -3,48 +3,20 @@
  * Class: jaxon.dialog.lib.bootbox
  */
 
-jaxon.dialog.lib.register('bootbox', (self, { dom, js, types, jq, labels }) => {
+jaxon.dialog.lib.register('bootbox', (self, { dom, js, types, jq, labels, options = {} }) => {
+    // Dialogs options
+    const {
+        modal: modalOptions = {},
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     /**
      * @var {object}
      */
     const dialog = {
         dom: null,
         container: 'bootbox-container',
-    };
-
-    // Append the dialog container to the page HTML code.
-    dom.ready(() => {
-        if(!jq('#' + dialog.container).length)
-        {
-            jq('body').append('<div id="' + dialog.container + '"></div>');
-        }
-    });
-
-    const dialogHtml = (title, content, buttons) => {
-        return `
-    <div id="styledModal" class="modal modal-styled">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title">${title}</h3>
-                </div>
-                <div class="modal-body">
-${content}
-                </div>
-                <div class="modal-footer">` +
-            buttons.map(({ title, class: btnClass, click }, btnIndex) => {
-                return types.isObject(click) ?
-`
-                    <button type="button" class="${btnClass}" id="bootbox-dlg-btn${btnIndex}">${title}</button>` :
-`
-                    <button type="button" class="${btnClass}" data-dismiss="modal">${title}</button>`;
-            }).reduce((sButtons, sButton) => sButtons + sButton, '') +
-`
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->`;
     };
 
     /**
@@ -59,15 +31,21 @@ ${content}
      *
      * @returns {object}
      */
-    self.show = (title, content, buttons, { width }, jsElement) => {
-        jq('#' + dialog.container).html(dialogHtml(title, content, buttons));
-        dialog.dom = jq('#styledModal');
-        dialog.dom.modal('show');
-        width && jq('.modal-dialog').css('width', `${width}px`);
-        // Set the buttons onclick handlers
-        buttons.forEach(({ click }, btnIndex) => {
-            types.isObject(click) &&
-                jq(`#bootbox-dlg-btn${btnIndex}`).click(() => js.execExpr(click));
+    self.show = (title, content, buttons, options, jsElement) => {
+        dialog.dom = bootbox.dialog({
+            ...modalOptions,
+            ...options,
+            title,
+            message: content,
+            buttons: buttons
+                .map(({ title: label, class: btnClass, click }) => ({
+                    label,
+                    btnClass: btnClass,
+                    callback: !types.isObject(click) ? undefined : () => {
+                        js.execExpr(click);
+                        return false; // Do not close the dialog.
+                    },
+                })),
         });
         // Pass the js content element to the callback.
         jsElement(dialog.dom.get(0));
@@ -102,10 +80,10 @@ ${content}
      * @returns {void}
      */
     self.alert = (type, text, title) => {
-        const html = '<div class="alert alert-' + (xTypes[type] ?? xTypes.info) +
+        const message = '<div class="alert alert-' + (xTypes[type] ?? xTypes.info) +
             '" style="margin-top:15px;margin-bottom:-15px;">' +
             (!title ? '' : '<strong>' + title + '</strong><br/>') + text + '</div>';
-        bootbox.alert(html);
+        bootbox.alert({ ...alertOptions, message });
     };
 
     /**
@@ -117,6 +95,7 @@ ${content}
      * @returns {void}
      */
     self.confirm = (question, title, yesCallback, noCallback) => bootbox.confirm({
+        ...confirmOptions,
         title: title,
         message: question,
         buttons: {

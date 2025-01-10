@@ -2,7 +2,13 @@
  * Class: jaxon.dialog.lib.cute
  */
 
-jaxon.dialog.lib.register('cute', (self, { labels }) => {
+jaxon.dialog.lib.register('cute', (self, { labels, options = {} }) => {
+    // Dialogs options
+    const {
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     const xTypes = {
         success: 'success',
         info: 'info',
@@ -20,7 +26,12 @@ jaxon.dialog.lib.register('cute', (self, { labels }) => {
      * @returns {void}
      */
     self.alert = (type, text, title) => {
-        cuteAlert({ message: text, title: title ?? '&nbsp;', type: xTypes[type] ?? xTypes.info });
+        cuteAlert({
+            ...alertOptions,
+            message: text,
+            title: title ?? '&nbsp;',
+            type: xTypes[type] ?? xTypes.info,
+        });
     };
 
     /**
@@ -33,6 +44,7 @@ jaxon.dialog.lib.register('cute', (self, { labels }) => {
      */
     self.confirm = (question, title, yesCallback, noCallback) => {
         cuteAlert({
+            ...confirmOptions,
             title,
             type: 'question',
             message: question,

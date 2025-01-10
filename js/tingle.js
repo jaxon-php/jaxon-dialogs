@@ -2,7 +2,12 @@
  * Class: jaxon.dialog.lib.tingle
  */
 
-jaxon.dialog.lib.register('tingle', (self, { js, types }) => {
+jaxon.dialog.lib.register('tingle', (self, { js, types, options = {} }) => {
+    // Dialogs options
+    const {
+        modal: modalOptions = {},
+    } = options;
+
     /**
      * @var {object}
      */
@@ -24,6 +29,7 @@ jaxon.dialog.lib.register('tingle', (self, { js, types }) => {
     self.show = (title, content, buttons, options, jsElement) => {
         self.hide();
         dialog.dom = new tingle.modal({
+            ...modalOptions,
             footer: true,
             stickyFooter: false,
             closeMethods: ['overlay', 'button', 'escape'],

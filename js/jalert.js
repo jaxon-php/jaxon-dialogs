@@ -2,7 +2,13 @@
  * Class: jaxon.dialog.lib.jalert
  */
 
-jaxon.dialog.lib.register('jalert', (self, { labels }) => {
+jaxon.dialog.lib.register('jalert', (self, { labels, options = {} }) => {
+    // Dialogs options
+    const {
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     const xTypes = {
         success: 'green',
         info: 'blue',
@@ -19,9 +25,12 @@ jaxon.dialog.lib.register('jalert', (self, { labels }) => {
      *
      * @returns {void}
      */
-    self.alert = (type, text, title) => {
-        $.jAlert({ content: text, title, theme: xTypes[type] ?? xTypes.info })
-    };
+    self.alert = (type, text, title) => $.jAlert({
+        ...alertOptions,
+        content: text,
+        title,
+        theme: xTypes[type] ?? xTypes.info,
+    });
 
     /**
      * @param {string} question The question to ask
@@ -31,15 +40,14 @@ jaxon.dialog.lib.register('jalert', (self, { labels }) => {
      *
      * @returns {void}
      */
-    self.confirm = (question, title, yesCallback, noCallback) => {
-        $.jAlert({
-            title,
-            type: "confirm",
-            confirmQuestion: question,
-            confirmBtnText: labels.yes,
-            denyBtnText: labels.no,
-            onConfirm: yesCallback,
-            onDeny: noCallback ?? (() => {}),
-        });
-    };
+    self.confirm = (question, title, yesCallback, noCallback) => $.jAlert({
+        ...confirmOptions,
+        title,
+        type: "confirm",
+        confirmQuestion: question,
+        confirmBtnText: labels.yes,
+        denyBtnText: labels.no,
+        onConfirm: yesCallback,
+        onDeny: noCallback ?? (() => {}),
+    });
 });

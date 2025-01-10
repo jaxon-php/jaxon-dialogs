@@ -3,7 +3,14 @@
  * Class: jaxon.dialog.lib.alertify
  */
 
-jaxon.dialog.lib.register('alertify', (self, { js, types, labels }) => {
+jaxon.dialog.lib.register('alertify', (self, { js, types, labels, options = {} }) => {
+    // Dialogs options
+    const {
+        modal: modalOptions = {},
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     /**
      * @var {object}
      */
@@ -21,10 +28,11 @@ jaxon.dialog.lib.register('alertify', (self, { js, types, labels }) => {
                 setup: function() {
                     return {
                         options: {
-                            title: dialog.title,
                             resizable: false,
                             maximizable: false,
                             ...dialog.options,
+                            ...modalOptions,
+                            title: dialog.title,
                         },
                         buttons: dialog.buttons.map(({ title: text, class: btnClass }) =>
                             ({ text, attrs: { class: btnClass } })),

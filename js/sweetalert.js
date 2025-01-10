@@ -2,7 +2,13 @@
  * Class: jaxon.dialog.lib.sweetalert
  */
 
-jaxon.dialog.lib.register('sweetalert', (self, { labels }) => {
+jaxon.dialog.lib.register('sweetalert', (self, { labels, options = {} }) => {
+    // Dialogs options
+    const {
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     const xTypes = {
         success: 'success',
         info: 'info',
@@ -20,7 +26,7 @@ jaxon.dialog.lib.register('sweetalert', (self, { labels }) => {
      * @returns {void}
      */
     self.alert = (type, text, title) => {
-        swal({ text, title: title ?? '', icon: xTypes[type] ?? xTypes.info });
+        swal({ ...alertOptions, text, title: title ?? '', icon: xTypes[type] ?? xTypes.info });
     };
 
     /**
@@ -33,6 +39,7 @@ jaxon.dialog.lib.register('sweetalert', (self, { labels }) => {
      */
     self.confirm = (question, title, yesCallback, noCallback) => {
         swal({
+            ...confirmOptions,
             icon: "warning",
             title,
             text: question,

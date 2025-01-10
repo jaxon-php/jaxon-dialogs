@@ -2,7 +2,12 @@
  * Class: jaxon.dialog.lib.toastr
  */
 
-jaxon.dialog.lib.register('toastr', (self) => {
+jaxon.dialog.lib.register('toastr', (self, { options = {} }) => {
+    // Dialogs options
+    const {
+        alert: alertOptions = {},
+    } = options;
+
     const xTypes = {
         success: 'success',
         info: 'info',
@@ -21,6 +26,6 @@ jaxon.dialog.lib.register('toastr', (self) => {
      */
     self.alert = (type, text, title) => {
         const func = xTypes[type] ?? xTypes.info;
-        toastr[func](text, title);
+        toastr[func](text, title, alertOptions);
     };
 });

@@ -3,7 +3,14 @@
  * Class: jaxon.dialog.lib.bootstrap
  */
 
-jaxon.dialog.lib.register('bootstrap', (self, { js, types, labels }) => {
+jaxon.dialog.lib.register('bootstrap', (self, { js, types, labels, options = {} }) => {
+    // Dialogs options
+    const {
+        modal: modalOptions = {},
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
     /**
      * Show the modal dialog
      *
@@ -17,6 +24,8 @@ jaxon.dialog.lib.register('bootstrap', (self, { js, types, labels }) => {
      */
     self.show = (title, content, buttons, options, jsElement) => {
         dialog = BootstrapDialog.show({
+            ...modalOptions,
+            ...options,
             title,
             message: content,
             buttons: buttons.map(({ title: label, class: cssClass, click }) => {
@@ -56,8 +65,12 @@ jaxon.dialog.lib.register('bootstrap', (self, { js, types, labels }) => {
      *
      * @returns {void}
      */
-    self.alert = (type, text, title) =>
-        BootstrapDialog.alert({ title, type: xTypes[type] ?? xTypes.info, message: text });
+    self.alert = (type, text, title) => BootstrapDialog.alert({
+        ...alertOptions,
+        title,
+        type: xTypes[type] ?? xTypes.info,
+        message: text,
+    });
 
     /**
      * @param {string} question The question to ask
@@ -68,6 +81,7 @@ jaxon.dialog.lib.register('bootstrap', (self, { js, types, labels }) => {
      * @returns {void}
      */
     self.confirm = (question, title, yesCallback, noCallback) => BootstrapDialog.confirm({
+        ...confirmOptions,
         title,
         message: question,
         btnOKLabel: labels.yes,

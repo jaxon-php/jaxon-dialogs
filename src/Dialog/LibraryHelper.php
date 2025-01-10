@@ -6,12 +6,8 @@ use Jaxon\App\Config\ConfigManager;
 use Jaxon\App\Dialog\Library\LibraryInterface;
 use Jaxon\Utils\Template\TemplateEngine;
 
-use function is_bool;
-use function is_numeric;
-use function is_string;
-use function json_encode;
+use function is_array;
 use function rtrim;
-use function str_repeat;
 use function trim;
 
 class LibraryHelper
@@ -58,7 +54,7 @@ class LibraryHelper
      */
     public function getOption(string $sOptionName, $xDefault = null)
     {
-        $sOptionName = 'dialogs.' . $this->sName . '.' . $sOptionName;
+        $sOptionName = "dialogs.{$this->sName}.$sOptionName";
         return $this->xConfigManager->getAppOption($sOptionName, $xDefault);
     }
 
@@ -71,8 +67,7 @@ class LibraryHelper
      */
     public function hasOption(string $sOptionName): bool
     {
-        $sOptionName = 'dialogs.' . $this->sName . '.' . $sOptionName;
-        return $this->xConfigManager->hasAppOption($sOptionName);
+        return $this->xConfigManager->hasAppOption("dialogs.{$this->sName}.$sOptionName");
     }
 
     /**
@@ -85,41 +80,18 @@ class LibraryHelper
     public function getOptionNames(string $sPrefix): array
     {
         // The options names are relative to the plugin in Dialogs configuration
-        return $this->xConfigManager->getOptionNames('dialogs.' . $this->sName . '.' . $sPrefix);
+        return $this->xConfigManager->getOptionNames("dialogs.{$this->sName}.$sPrefix");
     }
 
     /**
-     * Get the names of the options matching a given prefix
+     * Get the options of the js library
      *
-     * @param string $sVarPrefix
-     * @param string $sKeyPrefix
-     * @param int $nSpaces
-     *
-     * @return string
+     * @return array
      */
-    public function getOptionScript(string $sVarPrefix, string $sKeyPrefix, int $nSpaces = 4): string
+    public function getJsOptions(): array
     {
-        $aOptions = $this->getOptionNames($sKeyPrefix);
-        $sSpaces = str_repeat(' ', $nSpaces);
-        $sScript = '';
-        foreach($aOptions as $sShortName => $sFullName)
-        {
-            $value = $this->xConfigManager->getAppOption($sFullName);
-            if(is_string($value))
-            {
-                $value = "'$value'";
-            }
-            elseif(is_bool($value))
-            {
-                $value = ($value ? 'true' : 'false');
-            }
-            elseif(!is_numeric($value))
-            {
-                $value = json_encode($value);
-            }
-            $sScript .= "\n" . $sSpaces . $sVarPrefix . $sShortName . ' = ' . $value . ';';
-        }
-        return $sScript;
+        $xOptions = $this->xConfigManager->getAppOption("dialogs.{$this->sName}.options", []);
+        return is_array($xOptions) ? $xOptions : [];
     }
 
     /**
@@ -172,6 +144,6 @@ class LibraryHelper
      */
     public function render(string $sTemplate, array $aVars = []): string
     {
-        return $this->xTemplateEngine->render('jaxon::dialogs::' . $sTemplate, $aVars);
+        return $this->xTemplateEngine->render("jaxon::dialogs::$sTemplate", $aVars);
     }
 }

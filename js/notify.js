@@ -2,7 +2,12 @@
  * Class: jaxon.dialog.lib.notify
  */
 
-jaxon.dialog.lib.register('notify', (self) => {
+jaxon.dialog.lib.register('notify', (self, { options = {} }) => {
+    // Dialogs options
+    const {
+        alert: alertOptions = {},
+    } = options;
+
     const xTypes = {
         success: 'success',
         info: 'info',
@@ -20,6 +25,10 @@ jaxon.dialog.lib.register('notify', (self) => {
      * @returns {void}
      */
     self.alert = (type, text, title) => {
-        $.notify(text, { className: xTypes[type] ?? xTypes.info, position: "top center" });
+        $.notify(text, {
+            ...alertOptions,
+            className: xTypes[type] ?? xTypes.info,
+            position: "top center",
+        });
     };
 });
