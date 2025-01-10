@@ -114,7 +114,7 @@ class DialogPlugin extends AbstractPlugin
             }
         }
         return count($aJsOptions) === 0 ? '' :
-            "jaxon.dialog.lib.options(" . json_encode($aJsOptions) . ");\n\n";
+            "jaxon.dialog.options(" . json_encode($aJsOptions) . ");\n\n";
     }
 
     /**

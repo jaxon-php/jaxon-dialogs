@@ -118,11 +118,11 @@ class DialogTest extends TestCase
         jaxon()->app()->setOption('dialogs.lib.use', ['bootbox', 'cute', 'jalert']);
 
         $sScriptCode = jaxon()->getScript();
-        $this->assertStringContainsString("jaxon.dialog.lib.register", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.lib.register('bootstrap'", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.lib.register('bootbox'", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.lib.register('cute'", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.lib.register('jalert'", $sScriptCode);
+        $this->assertStringContainsString("jaxon.dialog.register", $sScriptCode);
+        $this->assertStringContainsString("jaxon.dialog.register('bootstrap'", $sScriptCode);
+        $this->assertStringContainsString("jaxon.dialog.register('bootbox'", $sScriptCode);
+        $this->assertStringContainsString("jaxon.dialog.register('cute'", $sScriptCode);
+        $this->assertStringContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
     }
 
     /**
