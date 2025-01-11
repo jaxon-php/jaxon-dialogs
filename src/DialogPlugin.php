@@ -15,6 +15,7 @@
 
 namespace Jaxon\Dialogs;
 
+use Jaxon\App\Config\ConfigManager;
 use Jaxon\App\I18n\Translator;
 use Jaxon\Exception\SetupException;
 use Jaxon\Plugin\AbstractPlugin;
@@ -39,11 +40,12 @@ class DialogPlugin extends AbstractPlugin
     /**
      * The constructor
      *
+     * @param ConfigManager $xConfigManager
      * @param Translator $xTranslator
      * @param DialogManager $xDialogManager
      */
-    public function __construct(private Translator $xTranslator,
-        private DialogManager $xDialogManager)
+    public function __construct(private ConfigManager $xConfigManager,
+        private Translator $xTranslator, private DialogManager $xDialogManager)
     {}
 
     /**
@@ -108,22 +110,23 @@ class DialogPlugin extends AbstractPlugin
     private function getOptionsJs(): string
     {
         $aOptions = [
-            'lang' => $this->xTranslator->translations('labels'),
+            'labels' => $this->xTranslator->translations('labels'),
+            'defaults' => $this->xConfigManager->getAppOption('dialogs.default', []),
         ];
-        $aLibOptions = [];
+        $aLibrariesOptions = [];
         foreach($this->getLibraries() as $xLibrary)
         {
             $aLibOptions = $xLibrary->helper()->getJsOptions();
             if(count($aLibOptions) > 0)
             {
-                $aLibOptions[$xLibrary->getName()] = $aLibOptions;
+                $aLibrariesOptions[$xLibrary->getName()] = $aLibOptions;
             }
         }
-        if(count($aLibOptions) > 0)
+        if(count($aLibrariesOptions) > 0)
         {
-            $aOptions['libs'] = $aLibOptions;
+            $aOptions['options'] = $aLibrariesOptions;
         }
-        return "jaxon.dialog.options(" . json_encode($aOptions) . ");\n\n";
+        return "jaxon.dialog.config(" . json_encode($aOptions) . ");\n\n";
     }
 
     /**
