@@ -1,8 +1,8 @@
 /**
- * Class: jaxon.dialog.lib.toastr
+ * Class: jaxon.dialog.libs.toastr
  */
 
-jaxon.dialog.lib.register('toastr', (self, { options = {} }) => {
+jaxon.dialog.register('toastr', (self, options) => {
     // Dialogs options
     const {
         alert: alertOptions = {},
@@ -18,14 +18,15 @@ jaxon.dialog.lib.register('toastr', (self, { options = {} }) => {
     /**
      * Show an alert message
      *
-     * @param {string} type The message type
-     * @param {string} text The message text
-     * @param {string} title The message title
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.message The alert message
+     * @param {string} alert.title The alert title
      *
      * @returns {void}
      */
-    self.alert = (type, text, title) => {
+    self.alert = ({ type, message, title }) => {
         const func = xTypes[type] ?? xTypes.info;
-        toastr[func](text, title, alertOptions);
+        toastr[func](message, title, alertOptions);
     };
 });

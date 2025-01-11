@@ -1,8 +1,8 @@
 /**
- * Class: jaxon.dialog.lib.tingle
+ * Class: jaxon.dialog.libs.tingle
  */
 
-jaxon.dialog.lib.register('tingle', (self, { js, types, options = {} }) => {
+jaxon.dialog.register('tingle', (self, options, utils) => {
     // Dialogs options
     const {
         modal: modalOptions = {},
@@ -18,15 +18,16 @@ jaxon.dialog.lib.register('tingle', (self, { js, types, options = {} }) => {
     /**
      * Show the modal dialog
      *
-     * @param {string} title The dialog title
-     * @param {string} content The dialog HTML content
-     * @param {array} buttons The dialog buttons
-     * @param {array} options The dialog options
+     * @param {object} dialog The dialog parameters
+     * @param {string} dialog.title The dialog title
+     * @param {string} dialog.content The dialog HTML content
+     * @param {array} dialog.buttons The dialog buttons
+     * @param {array} dialog.options The dialog options
      * @param {function} jsElement A callback to call with the dialog js content element
      *
      * @returns {object}
      */
-    self.show = (title, content, buttons, options, jsElement) => {
+    self.show = ({ title, content, buttons, options }, jsElement) => {
         self.hide();
         dialog.dom = new tingle.modal({
             ...modalOptions,
@@ -39,8 +40,8 @@ jaxon.dialog.lib.register('tingle', (self, { js, types, options = {} }) => {
         dialog.dom.setContent('<h2>' + title + '</h2>' + content);
         // Add buttons
         buttons.forEach(({ title, class: btnClass, click }) => {
-            const handler = types.isObject(click) ?
-                () => js.execExpr(click) : () => self.hide();
+            const handler = utils.isObject(click) ?
+                () => utils.js(click) : () => self.hide();
             dialog.dom.addFooterBtn(title, btnClass, handler);
         });
         // Open the modal

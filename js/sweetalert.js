@@ -1,10 +1,11 @@
 /**
- * Class: jaxon.dialog.lib.sweetalert
+ * Class: jaxon.dialog.libs.sweetalert
  */
 
-jaxon.dialog.lib.register('sweetalert', (self, { labels, options = {} }) => {
+jaxon.dialog.register('sweetalert', (self, options) => {
     // Dialogs options
     const {
+        labels,
         alert: alertOptions = {},
         confirm: confirmOptions = {},
     } = options;
@@ -19,36 +20,42 @@ jaxon.dialog.lib.register('sweetalert', (self, { labels, options = {} }) => {
     /**
      * Show an alert message
      *
-     * @param {string} type The message type
-     * @param {string} text The message text
-     * @param {string} title The message title
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.message The alert message
+     * @param {string} alert.title The alert title
      *
      * @returns {void}
      */
-    self.alert = (type, text, title) => {
-        swal({ ...alertOptions, text, title: title ?? '', icon: xTypes[type] ?? xTypes.info });
-    };
+    self.alert = ({ type, message, title }) => swal({
+        ...alertOptions,
+        text: message,
+        title: title ?? '',
+        icon: xTypes[type] ?? xTypes.info,
+    });
 
     /**
-     * @param {string} question The question to ask
-     * @param {string} title The question title
-     * @param {callback} yesCallback The function to call if the answer is yes
-     * @param {callback} noCallback The function to call if the answer is no
+     * Ask a confirm question to the user.
+     *
+     * @param {object} confirm The confirm parameters
+     * @param {string} confirm.question The question to ask
+     * @param {string} confirm.title The question title
+     * @param {object} callback The confirm callbacks
+     * @param {callback} callback.yes The function to call if the answer is yes
+     * @param {callback=} callback.no The function to call if the answer is no
      *
      * @returns {void}
      */
-    self.confirm = (question, title, yesCallback, noCallback) => {
-        swal({
-            ...confirmOptions,
-            icon: "warning",
-            title,
-            text: question,
-            buttons: [labels.no, labels.yes],
-        }).then((res) => {
-            if(res)
-                yesCallback();
-            else if((noCallback))
-                noCallback();
-        });
-    };
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => swal({
+        ...confirmOptions,
+        icon: "warning",
+        title,
+        text: question,
+        buttons: [labels.no, labels.yes],
+    }).then((res) => {
+        if(res)
+            yesCb();
+        else if((noCb))
+            noCb();
+    });
 });

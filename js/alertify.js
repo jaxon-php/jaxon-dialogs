@@ -1,11 +1,12 @@
 /*
  * Alertify dialogs plugin
- * Class: jaxon.dialog.lib.alertify
+ * Class: jaxon.dialog.libs.alertify
  */
 
-jaxon.dialog.lib.register('alertify', (self, { js, types, labels, options = {} }) => {
+jaxon.dialog.register('alertify', (self, options, utils) => {
     // Dialogs options
     const {
+        labels,
         modal: modalOptions = {},
         alert: alertOptions = {},
         confirm: confirmOptions = {},
@@ -54,13 +55,13 @@ jaxon.dialog.lib.register('alertify', (self, { js, types, labels, options = {} }
                 },
                 callback:function(closeEvent) {
                     const button = dialog.buttons[closeEvent.index];
-                    if (!button  || !types.isObject(button.click)) {
+                    if (!button  || !utils.isObject(button.click)) {
                         return; // The dialog will be closed.
                     }
                     // Prevent the dialog from closing.
                     closeEvent.cancel = true;
                     // Execute the button onclick handler.
-                    js.execExpr(button.click);
+                    utils.js(button.click);
                 },
             };
         }, false);
@@ -69,15 +70,16 @@ jaxon.dialog.lib.register('alertify', (self, { js, types, labels, options = {} }
     /**
      * Show the modal dialog
      *
-     * @param {string} title The dialog title
-     * @param {string} content The dialog HTML content
-     * @param {array} buttons The dialog buttons
-     * @param {array} options The dialog options
+     * @param {object} dialog The dialog parameters
+     * @param {string} dialog.title The dialog title
+     * @param {string} dialog.content The dialog HTML content
+     * @param {array} dialog.buttons The dialog buttons
+     * @param {array} dialog.options The dialog options
      * @param {function} jsElement A callback to call with the dialog js content element
      *
      * @returns {object}
      */
-    self.show = (title, content, buttons, options, jsElement) => {
+    self.show = ({ title, content, buttons, options }, jsElement) => {
         dialog.title = title;
         dialog.buttons = buttons;
         dialog.options = options;
@@ -105,23 +107,27 @@ jaxon.dialog.lib.register('alertify', (self, { js, types, labels, options = {} }
     /**
      * Show an alert message
      *
-     * @param {string} type The message type
-     * @param {string} text The message text
-     * @param {string} title The message title
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.message The alert message
      *
      * @returns {void}
      */
-    self.alert = (type, text, title) => alertify.notify(text, xTypes[type] ?? xTypes.info);
+    self.alert = ({ type, message }) => alertify.notify(message, xTypes[type] ?? xTypes.info);
 
     /**
-     * @param {string} question The question to ask
-     * @param {string} title The question title
-     * @param {callback} yesCallback The function to call if the answer is yes
-     * @param {callback} noCallback The function to call if the answer is no
+     * Ask a confirm question to the user.
+     *
+     * @param {object} confirm The confirm parameters
+     * @param {string} confirm.question The question to ask
+     * @param {string} confirm.title The question title
+     * @param {object} callback The confirm callbacks
+     * @param {callback} callback.yes The function to call if the answer is yes
+     * @param {callback=} callback.no The function to call if the answer is no
      *
      * @returns {void}
      */
-    self.confirm = (question, title, yesCallback, noCallback) => alertify
-        .confirm(title ?? '&nbsp;', question, yesCallback, noCallback)
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => alertify
+        .confirm(title ?? '&nbsp;', question, yesCb, noCb)
         .set('labels', { ok: labels.yes, cancel: labels.no });
 });

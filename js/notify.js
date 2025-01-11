@@ -1,8 +1,8 @@
 /**
- * Class: jaxon.dialog.lib.notify
+ * Class: jaxon.dialog.libs.notify
  */
 
-jaxon.dialog.lib.register('notify', (self, { options = {} }) => {
+jaxon.dialog.register('notify', (self, options) => {
     // Dialogs options
     const {
         alert: alertOptions = {},
@@ -18,14 +18,14 @@ jaxon.dialog.lib.register('notify', (self, { options = {} }) => {
     /**
      * Show an alert message
      *
-     * @param {string} type The message type
-     * @param {string} text The message text
-     * @param {string} title The message title
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.message The alert message
      *
      * @returns {void}
      */
-    self.alert = (type, text, title) => {
-        $.notify(text, {
+    self.alert = ({ type, message }) => {
+        $.notify(message, {
             ...alertOptions,
             className: xTypes[type] ?? xTypes.info,
             position: "top center",
