@@ -5,28 +5,21 @@ namespace Jaxon\Dialogs\Tests\TestDialog;
 require_once __DIR__ . '/../src/dialog.php';
 
 use Jaxon\Jaxon;
-use Jaxon\Dialogs\Dialog\Library\Alert;
-use Jaxon\Dialogs\Dialog\Library\Bootbox;
-use Jaxon\Dialogs\Dialog\Library\Bootstrap;
-use Jaxon\Dialogs\Dialog\Library\CuteAlert;
 use Jaxon\Exception\RequestException;
 use Jaxon\Exception\SetupException;
-use Jaxon\Utils\Http\UriException;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-
 use Dialog;
 use TestDialogLibrary;
 
-use function get_class;
 use function Jaxon\jaxon;
 use function Jaxon\rq;
 use function Jaxon\pm;
 use function Jaxon\Dialogs\dialog;
 use function Jaxon\Dialogs\_register;
 
-class DialogTest extends TestCase
+class CallTest extends TestCase
 {
     /**
      * @throws SetupException
@@ -47,82 +40,6 @@ class DialogTest extends TestCase
     {
         jaxon()->reset();
         parent::tearDown();
-    }
-
-    public function testDialogSettings()
-    {
-        $this->assertEquals('', dialog()->getConfirmLibrary()->getName());
-        $this->assertEquals(Alert::class, get_class(dialog()->getConfirmLibrary()));
-        $this->assertEquals(Alert::class, get_class(dialog()->getAlertLibrary()));
-        $this->assertEquals(null, dialog()->getModalLibrary());
-
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
-        $this->assertEquals(Bootstrap::class, get_class(dialog()->getConfirmLibrary()));
-        $this->assertEquals(Bootstrap::class, get_class(dialog()->getAlertLibrary()));
-        $this->assertEquals(Bootstrap::class, get_class(dialog()->getModalLibrary()));
-
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootbox');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootbox');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootbox');
-        $this->assertEquals(Bootbox::class, get_class(dialog()->getConfirmLibrary()));
-        $this->assertEquals(Bootbox::class, get_class(dialog()->getAlertLibrary()));
-        $this->assertEquals(Bootbox::class, get_class(dialog()->getModalLibrary()));
-    }
-
-    public function testDialogOptions()
-    {
-        jaxon()->app()->setOption('dialogs.default.alert', 'cute');
-        $xAlertLibrary = dialog()->getAlertLibrary();
-        $this->assertEquals(CuteAlert::class, get_class($xAlertLibrary));
-    }
-
-    public function testDialogDefaultMethods()
-    {
-        jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
-        $xConfirmLibrary = dialog()->getConfirmLibrary();
-        $this->assertEquals('', $xConfirmLibrary->getUri());
-        $this->assertEquals('', $xConfirmLibrary->getJs());
-        $this->assertEquals('', $xConfirmLibrary->getScript());
-        $this->assertEquals('', $xConfirmLibrary->getReadyScript());
-
-        $xDialogPlugin = jaxon()->di()->getDialogPlugin();
-    }
-
-    public function testDialogJsCode()
-    {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootbox', 'bootstrap', 'cute']);
-        $sJsCode = jaxon()->js();
-        $this->assertStringContainsString('bootbox.min.js', $sJsCode);
-        $this->assertStringContainsString('bootstrap-dialog.min.js', $sJsCode);
-        $this->assertStringContainsString('cute-alert.js', $sJsCode);
-    }
-
-    public function testDialogCssCode()
-    {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootstrap', 'cute']);
-        $sCssCode = jaxon()->css();
-        $this->assertStringContainsString('bootstrap-dialog.min.css', $sCssCode);
-        $this->assertStringContainsString('cute-alert/style.css', $sCssCode);
-    }
-
-    /**
-     * @throws UriException
-     */
-    public function testDialogScriptCode()
-    {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootbox', 'cute', 'jalert']);
-
-        $sScriptCode = jaxon()->getScript();
-        $this->assertStringContainsString("jaxon.dialog.register", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.register('bootstrap'", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.register('bootbox'", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.register('cute'", $sScriptCode);
-        $this->assertStringContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
     }
 
     /**
@@ -550,32 +467,5 @@ class DialogTest extends TestCase
             rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseError("No confirm")->__toString()
         );
-    }
-
-    /**
-     * @throws SetupException
-     */
-    public function testErrorRegisterIncorrectDialogClass()
-    {
-        $this->expectException(SetupException::class);
-        dialog()->registerLibrary(Dialog::class, 'incorrect');
-    }
-
-    public function testErrorSetWrongAlertLibrary()
-    {
-        $this->expectException(SetupException::class);
-        jaxon()->app()->setOption('dialogs.default.alert', 'incorrect');
-    }
-
-    public function testErrorSetWrongModalLibrary()
-    {
-        $this->expectException(SetupException::class);
-        jaxon()->app()->setOption('dialogs.default.modal', 'incorrect');
-    }
-
-    public function testErrorSetWrongConfirmLibrary()
-    {
-        $this->expectException(SetupException::class);
-        jaxon()->app()->setOption('dialogs.default.confirm', 'incorrect');
     }
 }
