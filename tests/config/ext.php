@@ -1,7 +1,5 @@
 <?php
 
-use TestDialogLibrary;
-
 return [
     'app' => [
         'dialogs' => [
