@@ -62,7 +62,7 @@ class DialogPlugin extends AbstractPlugin
     public function getHash(): string
     {
         // The version number is used as hash
-        return '4.0.0';
+        return '5.0.0';
     }
 
     /**

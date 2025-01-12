@@ -60,3 +60,16 @@ class TestDialogLibrary extends AbstractLibrary implements LibraryInterface, Con
         return self::NAME;
     }
 }
+
+interface TestInterface
+{
+    public function do();
+}
+
+class ClassWithInterface implements TestInterface
+{
+    public function do()
+    {
+        // Do something
+    }
+}

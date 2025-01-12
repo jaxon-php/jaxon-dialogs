@@ -5,17 +5,15 @@ namespace Jaxon\Dialogs\Tests\TestDialog;
 require_once __DIR__ . '/../src/dialog.php';
 
 use Jaxon\Jaxon;
+use Jaxon\Dialogs\DialogPlugin;
 use Jaxon\Dialogs\Dialog\Library\Alert;
 use Jaxon\Dialogs\Dialog\Library\Bootbox;
 use Jaxon\Dialogs\Dialog\Library\Bootstrap;
-use Jaxon\Dialogs\Dialog\Library\CuteAlert;
-use Jaxon\Exception\RequestException;
 use Jaxon\Exception\SetupException;
 use Jaxon\Utils\Http\UriException;
-use Nyholm\Psr7Server\ServerRequestCreator;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 
+use ClassWithInterface;
 use Dialog;
 use TestDialogLibrary;
 
@@ -35,7 +33,6 @@ class SetupTest extends TestCase
         jaxon()->setOption('core.prefix.class', '');
         jaxon()->setOption('core.request.uri', 'http://example.test/path');
         jaxon()->register(Jaxon::CALLABLE_CLASS, Dialog::class);
-        dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
     }
 
     /**
@@ -71,21 +68,47 @@ class SetupTest extends TestCase
 
     public function testDialogOptions()
     {
-        jaxon()->app()->setOption('dialogs.default.alert', 'cute');
-        $xAlertLibrary = dialog()->getAlertLibrary();
-        $this->assertEquals(CuteAlert::class, get_class($xAlertLibrary));
+        jaxon()->app()->setup(__DIR__ . '/../config/dialog.php');
+        $this->assertStringContainsString('toast-top-center', jaxon()->script());
+
+        /** @var DialogPlugin */
+        $xDialogPlugin = jaxon()->di()->g(DialogPlugin::class);
+        $this->assertStringContainsString('5.0.0', $xDialogPlugin->getHash());
     }
 
     public function testDialogDefaultMethods()
     {
+        dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
+        // Registering a library twice should not cause any issue.
+        dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
         jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
         $xConfirmLibrary = dialog()->getConfirmLibrary();
         $this->assertEquals('', $xConfirmLibrary->getUri());
         $this->assertEquals('', $xConfirmLibrary->getJs());
         $this->assertEquals('', $xConfirmLibrary->getScript());
         $this->assertEquals('', $xConfirmLibrary->getReadyScript());
+    }
 
-        $xDialogPlugin = jaxon()->di()->getDialogPlugin();
+    public function testExtDialogLibrary()
+    {
+        dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
+        jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
+        $this->assertEquals(TestDialogLibrary::class, get_class(dialog()->getConfirmLibrary()));
+    }
+
+    public function testExtDialogLibraryConfigSet()
+    {
+        jaxon()->app()->setOption('dialogs.lib.ext', [
+            TestDialogLibrary::NAME => TestDialogLibrary::class,
+        ]);
+        jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
+        $this->assertEquals(TestDialogLibrary::class, get_class(dialog()->getConfirmLibrary()));
+    }
+
+    public function testExtDialogLibraryConfigFile()
+    {
+        jaxon()->app()->setup(__DIR__ . '/../config/ext.php');
+        $this->assertEquals(TestDialogLibrary::class, get_class(dialog()->getConfirmLibrary()));
     }
 
     public function testDialogJsCode()
@@ -245,6 +268,12 @@ class SetupTest extends TestCase
     {
         $this->expectException(SetupException::class);
         dialog()->registerLibrary(Dialog::class, 'incorrect');
+    }
+
+    public function testErrorRegisterIncorrectDialogClassWithInterface()
+    {
+        $this->expectException(SetupException::class);
+        dialog()->registerLibrary(ClassWithInterface::class, 'incorrect');
     }
 
     public function testErrorSetWrongAlertLibrary()

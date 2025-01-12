@@ -71,19 +71,6 @@ class LibraryHelper
     }
 
     /**
-     * Get the names of the options matching a given prefix
-     *
-     * @param string $sPrefix The prefix to match
-     *
-     * @return array
-     */
-    public function getOptionNames(string $sPrefix): array
-    {
-        // The options names are relative to the plugin in Dialogs configuration
-        return $this->xConfigManager->getOptionNames("dialogs.{$this->sName}.$sPrefix");
-    }
-
-    /**
      * Get the options of the js library
      *
      * @return array
