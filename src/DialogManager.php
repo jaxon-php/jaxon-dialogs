@@ -21,11 +21,11 @@ use Jaxon\App\Dialog\Library\LibraryInterface;
 use Jaxon\App\Dialog\Library\ModalInterface;
 use Jaxon\App\Dialog\Manager\LibraryRegistryInterface;
 use Jaxon\App\I18n\Translator;
+use Jaxon\Config\Config;
 use Jaxon\Dialogs\Dialog\LibraryHelper;
 use Jaxon\Dialogs\Dialog\Library\Alert;
 use Jaxon\Di\Container;
 use Jaxon\Exception\SetupException;
-use Jaxon\Utils\Config\Config;
 use Jaxon\Utils\Template\TemplateEngine;
 
 use function array_map;
