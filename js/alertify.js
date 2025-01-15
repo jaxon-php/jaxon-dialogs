@@ -18,6 +18,7 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
     const dialog = {
         // name: 'jaxon_dialog',
         instance: null,
+        count: 1,
     };
 
     /**
@@ -33,8 +34,13 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
      * @returns {object}
      */
     self.show = ({ title, content, buttons, options }, jsElement) => {
+        /*
+         * Warning: a new dialog factory will be registered each time a dialog is displayed.
+         * Todo: Free the unused factories.
+         */
+        const dialogName = `jaxon_dialog${dialog.count++}`;
         // Create the dialog factory.
-        alertify.dialog('jaxon_dialog', function factory() {
+        alertify.dialog(dialogName, function factory() {
             return {
                 main: function(message) {
                     this.message = message;
@@ -84,7 +90,7 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
         dialog.buttons = buttons;
         dialog.options = options;
         dialog.jsElement = jsElement;
-        alertify.jaxon_dialog(content);
+        alertify[dialogName](content);
     };
 
     /**
@@ -93,8 +99,6 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
      * @returns {void}
      */
     self.hide = () => {
-        // Delete the previous dialog factory.
-        alertify.jaxon_dialog = undefined;
         dialog.instance && dialog.instance.close();
         dialog.instance = null;
     };

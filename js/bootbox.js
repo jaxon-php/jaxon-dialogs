@@ -33,20 +33,28 @@ jaxon.dialog.register('bootbox', (self, options, utils) => {
      * @returns {object}
      */
     self.show = ({ title, content, buttons, options }, jsElement) => {
+        let btnIndex = 1;
+        const oButtons = {};
+        buttons.forEach(({ title: label, class: btnClass, click }) => {
+            if (!utils.isObject(click)) {
+                oButtons.cancel = {label, className: 'btn-danger' };
+                return;
+            }
+            oButtons[`btn${btnIndex++}`] = {
+                label,
+                btnClass,
+                callback: !utils.isObject(click) ? undefined : () => {
+                    utils.js(click);
+                    return false; // Do not close the dialog.
+                },
+            };
+        });
         dialog.dom = bootbox.dialog({
             ...modalOptions,
             ...options,
             title,
             message: content,
-            buttons: buttons
-                .map(({ title: label, class: btnClass, click }) => ({
-                    label,
-                    btnClass: btnClass,
-                    callback: !utils.isObject(click) ? undefined : () => {
-                        utils.js(click);
-                        return false; // Do not close the dialog.
-                    },
-                })),
+            buttons: oButtons,
         });
         // Pass the js content element to the callback.
         jsElement(dialog.dom.get(0));

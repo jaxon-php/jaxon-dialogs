@@ -56,7 +56,13 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     public function getCss(): string
     {
         return $this->helper()->getCssCode('css/alertify.min.css') . "\n" .
-            $this->helper()->getCssCode('css/themes/default.min.css');
+            $this->helper()->getCssCode('css/themes/default.min.css') . '
+<style>
+    .ajs-footer .ajs-buttons .btn {
+        margin-right: 10px;
+    }
+</style>
+';
     }
 
     /**
