@@ -35,14 +35,14 @@ jaxon.dialog.register('bootbox', (self, options, utils) => {
     self.show = ({ title, content, buttons, options }, jsElement) => {
         let btnIndex = 1;
         const oButtons = {};
-        buttons.forEach(({ title: label, class: btnClass, click }) => {
+        buttons.forEach(({ title: label, class: className, click }) => {
             if (!utils.isObject(click)) {
                 oButtons.cancel = {label, className: 'btn-danger' };
                 return;
             }
             oButtons[`btn${btnIndex++}`] = {
                 label,
-                btnClass,
+                className,
                 callback: !utils.isObject(click) ? undefined : () => {
                     utils.js(click);
                     return false; // Do not close the dialog.
