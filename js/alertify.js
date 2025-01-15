@@ -20,7 +20,20 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
         instance: null,
     };
 
-    if(!alertify.jaxon_dialog) {
+    /**
+     * Show the modal dialog
+     *
+     * @param {object} dialog The dialog parameters
+     * @param {string} dialog.title The dialog title
+     * @param {string} dialog.content The dialog HTML content
+     * @param {array} dialog.buttons The dialog buttons
+     * @param {array} dialog.options The dialog options
+     * @param {function} jsElement A callback to call with the dialog js content element
+     *
+     * @returns {object}
+     */
+    self.show = ({ title, content, buttons, options }, jsElement) => {
+        // Create the dialog factory.
         alertify.dialog('jaxon_dialog', function factory() {
             return {
                 main: function(message) {
@@ -65,21 +78,8 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
                 },
             };
         }, false);
-    }
 
-    /**
-     * Show the modal dialog
-     *
-     * @param {object} dialog The dialog parameters
-     * @param {string} dialog.title The dialog title
-     * @param {string} dialog.content The dialog HTML content
-     * @param {array} dialog.buttons The dialog buttons
-     * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
-     *
-     * @returns {object}
-     */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+        // Show the dialog.
         dialog.title = title;
         dialog.buttons = buttons;
         dialog.options = options;
@@ -93,6 +93,8 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
      * @returns {void}
      */
     self.hide = () => {
+        // Delete the previous dialog factory.
+        alertify.jaxon_dialog = undefined;
         dialog.instance && dialog.instance.close();
         dialog.instance = null;
     };
