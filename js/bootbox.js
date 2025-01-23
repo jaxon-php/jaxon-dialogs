@@ -17,7 +17,6 @@ jaxon.dialog.register('bootbox', (self, options, utils) => {
      */
     const dialog = {
         dom: null,
-        container: 'bootbox-container',
     };
 
     /**
@@ -43,7 +42,7 @@ jaxon.dialog.register('bootbox', (self, options, utils) => {
             oButtons[`btn${btnIndex++}`] = {
                 label,
                 className,
-                callback: !utils.isObject(click) ? undefined : () => {
+                callback: () => {
                     utils.js(click);
                     return false; // Do not close the dialog.
                 },

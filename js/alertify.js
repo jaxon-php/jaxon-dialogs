@@ -8,17 +8,17 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
     const {
         labels,
         modal: modalOptions = {},
-        alert: alertOptions = {},
-        confirm: confirmOptions = {},
+        // alert: alertOptions = {},
+        // confirm: confirmOptions = {},
     } = options;
 
     /**
      * @var {object}
      */
     const dialog = {
-        // name: 'jaxon_dialog',
         instance: null,
-        count: 1,
+        name: 'jaxon_dialog',
+        index: 1,
     };
 
     /**
@@ -38,7 +38,7 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
          * Warning: a new dialog factory will be registered each time a dialog is displayed.
          * Todo: Free the unused factories.
          */
-        const dialogName = `jaxon_dialog${dialog.count++}`;
+        const dialogName = `${dialog.name}${dialog.index++}`;
         // Create the dialog factory.
         alertify.dialog(dialogName, function factory() {
             return {

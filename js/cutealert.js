@@ -27,14 +27,12 @@ jaxon.dialog.register('cute', (self, options) => {
      *
      * @returns {void}
      */
-    self.alert = ({ type, message, title }) => {
-        cuteAlert({
-            ...alertOptions,
-            message,
-            title: title ?? '&nbsp;',
-            type: xTypes[type] ?? xTypes.info,
-        });
-    };
+    self.alert = ({ type, message, title }) => cuteAlert({
+        ...alertOptions,
+        message,
+        title: title ?? '&nbsp;',
+        type: xTypes[type] ?? xTypes.info,
+    });
 
     /**
      * Ask a confirm question to the user.
@@ -48,23 +46,21 @@ jaxon.dialog.register('cute', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => {
-        cuteAlert({
-            ...confirmOptions,
-            title,
-            type: 'question',
-            message: question,
-            confirmText: labels.yes,
-            cancelText: labels.no,
-        }).then(e => {
-            if(e === 'confirm')
-            {
-                yesCb();
-            }
-            else if((noCb))
-            {
-                noCb();
-            }
-        });
-    };
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => cuteAlert({
+        ...confirmOptions,
+        title,
+        type: 'question',
+        message: question,
+        confirmText: labels.yes,
+        cancelText: labels.no,
+    }).then(e => {
+        if(e === 'confirm')
+        {
+            yesCb();
+        }
+        else if((noCb))
+        {
+            noCb();
+        }
+    });
 });
