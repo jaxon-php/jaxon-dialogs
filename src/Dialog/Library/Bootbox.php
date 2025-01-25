@@ -27,6 +27,13 @@ class Bootbox extends AbstractLibrary implements ModalInterface, AlertInterface,
     const NAME = 'bootbox';
 
     /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['bootbox.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -40,21 +47,5 @@ class Bootbox extends AbstractLibrary implements ModalInterface, AlertInterface,
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/bootbox@6.0.0/dist';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('bootbox.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('bootbox.js');
     }
 }

@@ -28,6 +28,20 @@ class JQueryConfirm extends AbstractLibrary
     const NAME = 'jconfirm';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['jquery-confirm.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['jquery-confirm.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -41,29 +55,5 @@ class JQueryConfirm extends AbstractLibrary
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/jquery-confirm@3.3.4/dist';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('jquery-confirm.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('jquery-confirm.min.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('jqueryconfirm.js');
     }
 }

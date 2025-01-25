@@ -26,6 +26,13 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
     const NAME = 'sweetalert';
 
     /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['sweetalert.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -39,21 +46,5 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('sweetalert.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('sweetalert.js');
     }
 }

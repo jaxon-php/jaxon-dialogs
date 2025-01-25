@@ -25,6 +25,13 @@ class Notify extends AbstractLibrary implements AlertInterface
     const NAME = 'notify';
 
     /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['notify.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -38,21 +45,5 @@ class Notify extends AbstractLibrary implements AlertInterface
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/notify-js-legacy@0.4.1';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('notify.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('notify.js');
     }
 }

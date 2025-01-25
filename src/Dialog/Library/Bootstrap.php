@@ -28,6 +28,20 @@ class Bootstrap extends AbstractLibrary
     const NAME = 'bootstrap';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['css/bootstrap-dialog.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['js/bootstrap-dialog.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -41,29 +55,5 @@ class Bootstrap extends AbstractLibrary
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/bootstrap3-dialog@1.35.4/dist';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('js/bootstrap-dialog.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('css/bootstrap-dialog.min.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('bootstrap.js');
     }
 }

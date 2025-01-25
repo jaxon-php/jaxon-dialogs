@@ -25,6 +25,20 @@ class Tingle extends AbstractLibrary implements ModalInterface
     const NAME = 'tingle';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['tingle.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['tingle.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -38,29 +52,5 @@ class Tingle extends AbstractLibrary implements ModalInterface
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('tingle.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('tingle.min.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('tingle.js');
     }
 }

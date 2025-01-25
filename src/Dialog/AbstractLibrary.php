@@ -26,6 +26,20 @@ abstract class AbstractLibrary
     private $xHelper = null;
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = [];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = [];
+
+    /**
      * Get the library name
      *
      * @return string
@@ -59,7 +73,7 @@ abstract class AbstractLibrary
      */
     public function getJs(): string
     {
-        return '';
+        return $this->helper()->getJs($this->aJsFiles);
     }
 
     /**
@@ -69,7 +83,7 @@ abstract class AbstractLibrary
      */
     public function getCss(): string
     {
-        return '';
+        return $this->helper()->getCss($this->aCssFiles);
     }
 
     /**
@@ -79,7 +93,7 @@ abstract class AbstractLibrary
      */
     public function getScript(): string
     {
-        return '';
+        return $this->helper()->getScript();
     }
 
     /**

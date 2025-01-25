@@ -26,6 +26,20 @@ class Noty extends AbstractLibrary implements AlertInterface, ConfirmInterface
     const NAME = 'noty';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['noty.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['noty.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -44,30 +58,14 @@ class Noty extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @inheritDoc
      */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('noty.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('noty.min.css') . '
+        return parent::getCss() . '
 <style>
     .noty_buttons button {
         margin-right: 10px;
     }
 </style>
 ';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-         return $this->helper()->render('noty.js');
     }
 }

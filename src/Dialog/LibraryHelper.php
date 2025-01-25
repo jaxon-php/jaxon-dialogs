@@ -6,12 +6,22 @@ use Jaxon\App\Config\ConfigManager;
 use Jaxon\App\Dialog\Library\LibraryInterface;
 use Jaxon\Utils\Template\TemplateEngine;
 
+use function array_filter;
+use function array_map;
+use function implode;
 use function is_array;
 use function rtrim;
 use function trim;
 
 class LibraryHelper
 {
+    /**
+     * Default library URL
+     *
+     * @var string
+     */
+    const JS_LIB_URL = 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-dialogs@main/js';
+
     /**
      * The name of the library
      *
@@ -94,17 +104,86 @@ class LibraryHelper
     }
 
     /**
+     * @param string $sOption The assets option name
+     * @param array $aFiles The asset files
+     *
+     * @return array
+     */
+    private function getUris(string $sOption, array $aFiles): array
+    {
+        $aFiles = array_map(fn($sFile) =>
+            $this->getAssetUri($sOption, $sFile), $aFiles);
+        return array_filter($aFiles, fn($sFile) => $sFile !== null);
+    }
+
+    /**
+     * @param string $sUri
+     *
+     * @return string
+     */
+    private function getJsTag(string $sUri): string
+    {
+        return '<script type="text/javascript" src="' . $sUri . '"></script>';
+    }
+
+    /**
+     * Get the javascript HTML header code
+     *
+     * @param array $aFiles The js files
+     *
+     * @return string
+     */
+    public function getJs(array $aFiles): string
+    {
+        $aFiles = $this->getUris('assets.js', $aFiles);
+        if($this->xConfigManager->getOption('js.app.export', false))
+        {
+            // Add the library script file to the list.
+            $sJsFileName = !$this->xConfigManager->getOption('js.app.minify', false) ?
+                "{$this->sName}.js" : "{$this->sName}.min.js";
+            $aFiles[] = self::JS_LIB_URL . "/$sJsFileName";
+        }
+
+        $aFiles = array_map(fn($sUri) => $this->getJsTag($sUri), $aFiles);
+        return implode("\n", $aFiles);
+    }
+
+    /**
      * Get the javascript HTML header code
      *
      * @param string $sFile The javascript file name
      *
      * @return string
      */
-    public function getJsCode(string $sFile): string
+    public function getJsHtml(string $sFile): string
     {
         // If this 'assets.js' option is defined and evaluates to false, then the asset is not displayed.
         $sUri = $this->getAssetUri('assets.js', $sFile);
-        return !$sUri ? '' : '<script type="text/javascript" src="' . $sUri . '"></script>';
+        return !$sUri ? '' : $this->getJsTag($sUri);
+    }
+
+    /**
+     * @param string $sUri
+     *
+     * @return string
+     */
+    private function getCssTag(string $sUri): string
+    {
+        return '<link rel="stylesheet" href="' . $sUri . '" />';
+    }
+
+    /**
+     * Get the CSS HTML header code
+     *
+     * @param array $aFiles The CSS files
+     *
+     * @return string
+     */
+    public function getCss(array $aFiles): string
+    {
+        $aFiles = $this->getUris('assets.css', $aFiles);
+        $aFiles = array_map(fn($sUri) => $this->getCssTag($sUri), $aFiles);
+        return implode("\n", $aFiles);
     }
 
     /**
@@ -114,23 +193,22 @@ class LibraryHelper
      *
      * @return string
      */
-    public function getCssCode(string $sFile): string
+    public function getCssHtml(string $sFile): string
     {
         // If this 'assets.css' option is defined and evaluates to false, then the asset is not displayed.
         $sUri = $this->getAssetUri('assets.css', $sFile);
-        return !$sUri ? '' : '<link rel="stylesheet" href="' . $sUri . '" />';
+        return !$sUri ? '' : $this->getCssTag($sUri);
     }
 
     /**
-     * Render a template
-     *
-     * @param string $sTemplate The name of template to be rendered
-     * @param array $aVars The template vars
+     * Get the library script code
      *
      * @return string
      */
-    public function render(string $sTemplate, array $aVars = []): string
+
+    public function getScript(): string
     {
-        return $this->xTemplateEngine->render("jaxon::dialogs::$sTemplate", $aVars);
+        return !$this->xConfigManager->getOption('js.app.export', false) ?
+            $this->xTemplateEngine->render("jaxon::dialogs::{$this->sName}.js") : '';
     }
 }

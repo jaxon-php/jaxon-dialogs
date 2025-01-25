@@ -27,6 +27,20 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     const NAME = 'alertify';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['css/alertify.min.css', 'css/themes/default.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['alertify.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -45,31 +59,14 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     /**
      * @inheritDoc
      */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('alertify.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getCss(): string
     {
-        return $this->helper()->getCssCode('css/alertify.min.css') . "\n" .
-            $this->helper()->getCssCode('css/themes/default.min.css') . '
+        return parent::getCss() . '
 <style>
     .ajs-footer .ajs-buttons .btn {
         margin-right: 10px;
     }
 </style>
 ';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('alertify.js');
     }
 }

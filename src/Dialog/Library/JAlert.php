@@ -26,6 +26,20 @@ class JAlert extends AbstractLibrary implements AlertInterface, ConfirmInterface
     const NAME = 'jalert';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['jAlert.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['jAlert.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -39,29 +53,5 @@ class JAlert extends AbstractLibrary implements AlertInterface, ConfirmInterface
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/npm/jAlert@4.9.1/dist';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('jAlert.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('jAlert.min.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('jalert.js');
     }
 }

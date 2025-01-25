@@ -26,6 +26,20 @@ class CuteAlert extends AbstractLibrary implements AlertInterface, ConfirmInterf
     const NAME = 'cute';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['style.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['cute-alert.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -39,29 +53,5 @@ class CuteAlert extends AbstractLibrary implements AlertInterface, ConfirmInterf
     public function getUri(): string
     {
         return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0-beta.9/dist/libs/cute-alert';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('cute-alert.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('style.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('cutealert.js');
     }
 }

@@ -25,6 +25,20 @@ class Toastr extends AbstractLibrary implements AlertInterface
     const NAME = 'toastr';
 
     /**
+     * The css files
+     *
+     * @var array
+     */
+    protected $aCssFiles = ['css/toastr.min.css'];
+
+    /**
+     * The js files
+     *
+     * @var array
+     */
+    protected $aJsFiles = ['js/toastr.min.js'];
+
+    /**
      * @inheritDoc
      */
     public function getName(): string
@@ -38,29 +52,5 @@ class Toastr extends AbstractLibrary implements AlertInterface
     public function getUri(): string
     {
         return '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->helper()->getJsCode('js/toastr.min.js');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->helper()->getCssCode('css/toastr.min.css');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->helper()->render('toastr.js');
     }
 }
