@@ -133,7 +133,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => alertify
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => alertify
         .confirm(title ?? '&nbsp;', question, yesCb, noCb)
         .set('labels', { ok: labels.yes, cancel: labels.no });
 }));

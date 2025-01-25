@@ -133,7 +133,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => alertify
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => alertify
         .confirm(title ?? '&nbsp;', question, yesCb, noCb)
         .set('labels', { ok: labels.yes, cancel: labels.no });
 }));
@@ -248,7 +248,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => bootbox.confirm({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => bootbox.confirm({
         ...confirmOptions,
         title: title,
         message: question,
@@ -257,11 +257,8 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
             confirm: {label: labels.yes}
         },
         callback: (res) => {
-            if(res)
-                yesCb();
-            else if((noCb))
-                noCb();
-        }
+            res ? yesCb() : noCb();
+        },
     });
 }));
 
@@ -355,18 +352,15 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap', (self, options, utils) 
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => BootstrapDialog.confirm({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => BootstrapDialog.confirm({
         ...confirmOptions,
         title,
         message: question,
         btnOKLabel: labels.yes,
         btnCancelLabel: labels.no,
         callback: (res) => {
-            if(res)
-                yesCb();
-            else if(noCb !== undefined)
-                noCb();
-        }
+            res ? yesCb() : noCb();
+        },
     });
 }));
 
@@ -419,22 +413,15 @@ jaxon.dom.ready(() => jaxon.dialog.register('cute', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => cuteAlert({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => cuteAlert({
         ...confirmOptions,
         title,
         type: 'question',
         message: question,
         confirmText: labels.yes,
         cancelText: labels.no,
-    }).then(e => {
-        if(e === 'confirm')
-        {
-            yesCb();
-        }
-        else if((noCb))
-        {
-            noCb();
-        }
+    }).then(res => {
+        res === 'confirm' ? yesCb() : noCb();
     });
 }));
 
@@ -487,7 +474,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => $.jAlert({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => $.jAlert({
         ...confirmOptions,
         title,
         type: "confirm",
@@ -495,7 +482,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jalert', (self, options) => {
         confirmBtnText: labels.yes,
         denyBtnText: labels.no,
         onConfirm: yesCb,
-        onDeny: noCb ?? (() => {}),
+        onDeny: noCb,
     });
 }));
 
@@ -611,7 +598,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => $.confirm({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => $.confirm({
         ...confirmOptions,
         title,
         content: question,
@@ -623,7 +610,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
             },
             no: {
                 text: labels.no,
-                action: noCb ?? (() => {}),
+                action: noCb,
             },
         },
     });
@@ -716,7 +703,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('noty', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => {
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => {
         const noty = new Noty({
             ...confirmOptions,
             theme: 'relax',
@@ -729,7 +716,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('noty', (self, options) => {
                 }, {'data-status': 'ok'}),
                 Noty.button(labels.no, 'btn btn-error', () => {
                     noty.close();
-                    noCb && noCb();
+                    noCb();
                 }),
             ],
         });
@@ -786,17 +773,14 @@ jaxon.dom.ready(() => jaxon.dialog.register('sweetalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => swal({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => swal({
         ...confirmOptions,
         icon: "warning",
         title,
         text: question,
         buttons: [labels.no, labels.yes],
     }).then((res) => {
-        if(res)
-            yesCb();
-        else if((noCb))
-            noCb();
+        res ? yesCb() : noCb();
     });
 }));
 

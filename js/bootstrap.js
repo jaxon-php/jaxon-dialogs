@@ -87,17 +87,14 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap', (self, options, utils) 
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => BootstrapDialog.confirm({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => BootstrapDialog.confirm({
         ...confirmOptions,
         title,
         message: question,
         btnOKLabel: labels.yes,
         btnCancelLabel: labels.no,
         callback: (res) => {
-            if(res)
-                yesCb();
-            else if(noCb !== undefined)
-                noCb();
-        }
+            res ? yesCb() : noCb();
+        },
     });
 }));

@@ -46,16 +46,13 @@ jaxon.dom.ready(() => jaxon.dialog.register('sweetalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => swal({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => swal({
         ...confirmOptions,
         icon: "warning",
         title,
         text: question,
         buttons: [labels.no, labels.yes],
     }).then((res) => {
-        if(res)
-            yesCb();
-        else if((noCb))
-            noCb();
+        res ? yesCb() : noCb();
     });
 }));

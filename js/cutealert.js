@@ -46,21 +46,14 @@ jaxon.dom.ready(() => jaxon.dialog.register('cute', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => cuteAlert({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => cuteAlert({
         ...confirmOptions,
         title,
         type: 'question',
         message: question,
         confirmText: labels.yes,
         cancelText: labels.no,
-    }).then(e => {
-        if(e === 'confirm')
-        {
-            yesCb();
-        }
-        else if((noCb))
-        {
-            noCb();
-        }
+    }).then(res => {
+        res === 'confirm' ? yesCb() : noCb();
     });
 }));

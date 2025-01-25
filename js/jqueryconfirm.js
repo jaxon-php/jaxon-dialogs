@@ -109,7 +109,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => $.confirm({
+    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => $.confirm({
         ...confirmOptions,
         title,
         content: question,
@@ -121,7 +121,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
             },
             no: {
                 text: labels.no,
-                action: noCb ?? (() => {}),
+                action: noCb,
             },
         },
     });
