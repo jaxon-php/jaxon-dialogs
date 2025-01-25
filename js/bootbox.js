@@ -3,7 +3,7 @@
  * Class: jaxon.dialog.libs.bootbox
  */
 
-jaxon.dialog.register('bootbox', (self, options, utils) => {
+jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -122,4 +122,4 @@ jaxon.dialog.register('bootbox', (self, options, utils) => {
                 noCb();
         }
     });
-});
+}));

@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.sweetalert
  */
 
-jaxon.dialog.register('sweetalert', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('sweetalert', (self, options) => {
     // Dialogs options
     const {
         labels,
@@ -58,4 +58,4 @@ jaxon.dialog.register('sweetalert', (self, options) => {
         else if((noCb))
             noCb();
     });
-});
+}));

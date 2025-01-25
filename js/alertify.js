@@ -3,7 +3,7 @@
  * Class: jaxon.dialog.libs.alertify
  */
 
-jaxon.dialog.register('alertify', (self, options, utils) => {
+jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -136,4 +136,4 @@ jaxon.dialog.register('alertify', (self, options, utils) => {
     self.confirm = ({ question, title}, { yes: yesCb, no: noCb }) => alertify
         .confirm(title ?? '&nbsp;', question, yesCb, noCb)
         .set('labels', { ok: labels.yes, cancel: labels.no });
-});
+}));

@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.tingle
  */
 
-jaxon.dialog.register('tingle', (self, options, utils) => {
+jaxon.dom.ready(() => jaxon.dialog.register('tingle', (self, options, utils) => {
     // Dialogs options
     const {
         modal: modalOptions = {},
@@ -65,4 +65,4 @@ jaxon.dialog.register('tingle', (self, options, utils) => {
         dialog.dom.destroy();
         dialog.dom = null;
     };
-});
+}));

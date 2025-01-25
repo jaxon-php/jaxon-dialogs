@@ -53,7 +53,7 @@ class Bootbox extends AbstractLibrary implements ModalInterface, AlertInterface,
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('bootbox.js');
     }

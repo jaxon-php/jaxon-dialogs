@@ -3,7 +3,7 @@
  * Class: jaxon.dialog.libs.bootstrap
  */
 
-jaxon.dialog.register('bootstrap', (self, options, utils) => {
+jaxon.dom.ready(() => jaxon.dialog.register('bootstrap', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -100,4 +100,4 @@ jaxon.dialog.register('bootstrap', (self, options, utils) => {
                 noCb();
         }
     });
-});
+}));

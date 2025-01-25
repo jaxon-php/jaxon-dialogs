@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.cute
  */
 
-jaxon.dialog.register('cute', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('cute', (self, options) => {
     // Dialogs options
     const {
         labels,
@@ -63,4 +63,4 @@ jaxon.dialog.register('cute', (self, options) => {
             noCb();
         }
     });
-});
+}));

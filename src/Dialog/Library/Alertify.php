@@ -68,7 +68,7 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('alertify.js');
     }

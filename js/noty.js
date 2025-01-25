@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.noty
  */
 
-jaxon.dialog.register('noty', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('noty', (self, options) => {
     // Dialogs options
     const {
         labels,
@@ -67,4 +67,4 @@ jaxon.dialog.register('noty', (self, options) => {
         });
         noty.show();
     };
-});
+}));

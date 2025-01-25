@@ -52,7 +52,7 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('sweetalert.js');
     }

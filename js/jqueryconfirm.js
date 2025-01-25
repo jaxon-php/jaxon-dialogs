@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.jconfirm
  */
 
-jaxon.dialog.register('jconfirm', (self, options, utils) => {
+jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -125,4 +125,4 @@ jaxon.dialog.register('jconfirm', (self, options, utils) => {
             },
         },
     });
-});
+}));

@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.jalert
  */
 
-jaxon.dialog.register('jalert', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('jalert', (self, options) => {
     // Dialogs options
     const {
         labels,
@@ -56,4 +56,4 @@ jaxon.dialog.register('jalert', (self, options) => {
         onConfirm: yesCb,
         onDeny: noCb ?? (() => {}),
     });
-});
+}));

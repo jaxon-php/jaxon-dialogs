@@ -60,7 +60,7 @@ class JAlert extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('jalert.js');
     }

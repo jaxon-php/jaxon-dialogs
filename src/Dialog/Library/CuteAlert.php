@@ -60,7 +60,7 @@ class CuteAlert extends AbstractLibrary implements AlertInterface, ConfirmInterf
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('cutealert.js');
     }

@@ -62,7 +62,7 @@ class JQueryConfirm extends AbstractLibrary
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('jqueryconfirm.js');
     }

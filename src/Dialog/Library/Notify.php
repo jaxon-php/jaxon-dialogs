@@ -51,7 +51,7 @@ class Notify extends AbstractLibrary implements AlertInterface
     /**
      * @inheritDoc
      */
-    public function getReadyScript(): string
+    public function getScript(): string
     {
         return $this->helper()->render('notify.js');
     }

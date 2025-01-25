@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.notify
  */
 
-jaxon.dialog.register('notify', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('notify', (self, options) => {
     // Dialogs options
     const {
         alert: alertOptions = {},
@@ -31,4 +31,4 @@ jaxon.dialog.register('notify', (self, options) => {
             position: "top center",
         });
     };
-});
+}));
