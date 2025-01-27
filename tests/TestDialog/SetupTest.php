@@ -86,7 +86,7 @@ class SetupTest extends TestCase
         $this->assertEquals('', $xConfirmLibrary->getUri());
         $this->assertEquals('', $xConfirmLibrary->getJs());
         $this->assertEquals('', $xConfirmLibrary->getScript());
-        $this->assertEquals('', $xConfirmLibrary->getReadyScript());
+        $this->assertEquals(null, $xConfirmLibrary->getJsCode());
     }
 
     public function testExtDialogLibrary()

@@ -21,7 +21,7 @@ use Jaxon\Dialogs\Dialog\AbstractLibrary;
 use Jaxon\Dialogs\Dialog\LibraryHelper;
 use Jaxon\Exception\SetupException;
 use Jaxon\Plugin\AbstractPlugin;
-use Jaxon\Plugin\Code\Scripts;
+use Jaxon\Plugin\Code\JsCode;
 use Closure;
 
 use function array_filter;
@@ -161,19 +161,19 @@ class DialogPlugin extends AbstractPlugin
      * @inheritDoc
      * @throws SetupException
      */
-    public function getScripts(): Scripts
+    public function getJsCode(): JsCode
     {
-        $xScripts = new Scripts();
-        $xScripts->sJsBefore = $this->getConfigScript();
+        $xJsCode = new JsCode();
+        $xJsCode->sJsBefore = $this->getConfigScript();
 
         $aCodes = [];
         foreach($this->getHelpers() as $xHelper)
         {
             $aCodes[] = $xHelper->getScript();
-            $xScripts->aFiles = array_merge($xScripts->aFiles, $xHelper->getFiles());
+            $xJsCode->aFiles = array_merge($xJsCode->aFiles, $xHelper->getFiles());
         }
-        $xScripts->sJs = $this->getCode($aCodes);
+        $xJsCode->sJs = $this->getCode($aCodes);
 
-        return $xScripts;
+        return $xJsCode;
     }
 }

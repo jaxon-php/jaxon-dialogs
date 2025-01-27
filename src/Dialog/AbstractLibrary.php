@@ -14,7 +14,7 @@
 
 namespace Jaxon\Dialogs\Dialog;
 
-use Jaxon\Plugin\Code\Scripts;
+use Jaxon\Plugin\Code\JsCode;
 
 use function Jaxon\Dialogs\dialog;
 
@@ -101,12 +101,12 @@ abstract class AbstractLibrary
     /**
      * Get the javascript code to be executed on page load
      *
-     * @return Scripts|null
+     * @return JsCode|null
      */
-    public function getScripts(): ?Scripts
+    public function getJsCode(): ?JsCode
     {
-        $xScripts = new Scripts();
-        $xScripts->sJs = $this->helper()->getScript();
-        return $xScripts;
+        $xJsCode = new JsCode();
+        $xJsCode->sJs = $this->helper()->getScript();
+        return $xJsCode;
     }
 }
