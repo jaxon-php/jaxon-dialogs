@@ -17,11 +17,17 @@ namespace Jaxon\Dialogs;
 
 use Jaxon\App\Config\ConfigManager;
 use Jaxon\App\I18n\Translator;
+use Jaxon\Dialogs\Dialog\AbstractLibrary;
+use Jaxon\Dialogs\Dialog\LibraryHelper;
 use Jaxon\Exception\SetupException;
 use Jaxon\Plugin\AbstractPlugin;
+use Jaxon\Plugin\Code\Scripts;
+use Closure;
 
-use function array_reduce;
+use function array_filter;
+use function array_map;
 use function count;
+use function implode;
 use function json_encode;
 use function trim;
 
@@ -66,7 +72,7 @@ class DialogPlugin extends AbstractPlugin
     }
 
     /**
-     * @return array
+     * @return AbstractLibrary[]
      */
     private function getLibraries(): array
     {
@@ -74,13 +80,40 @@ class DialogPlugin extends AbstractPlugin
     }
 
     /**
+     * @return LibraryHelper[]
+     */
+    private function getHelpers(): array
+    {
+        return array_map(fn($xLibrary) => $xLibrary->helper(), $this->getLibraries());
+    }
+
+    /**
+     * @param array $aCodes
+     *
+     * @return string
+     */
+    private function getCode(array $aCodes): string
+    {
+        $aCodes = array_filter($aCodes, fn($sScript) => $sScript !== '');
+        return implode("\n", $aCodes);
+    }
+
+    /**
+     * @param Closure $fGetCode
+     *
+     * @return string
+     */
+    private function getLibCodes(Closure $fGetCode): string
+    {
+        return $this->getCode(array_map($fGetCode, $this->getLibraries()));
+    }
+
+    /**
      * @inheritDoc
      */
     public function getJs(): string
     {
-        return array_reduce($this->getLibraries(), function($sCode, $xLibrary) {
-            return $sCode . $xLibrary->getJs() . "\n\n";
-        }, '');
+        return $this->getLibCodes(fn($xLibrary) => trim($xLibrary->getJs()));
     }
 
     /**
@@ -88,26 +121,21 @@ class DialogPlugin extends AbstractPlugin
      */
     public function getCss(): string
     {
-        return array_reduce($this->getLibraries(), function($sCode, $xLibrary) {
-            return $sCode . trim($xLibrary->getCss()) . "\n\n";
-        }, '');
+        return $this->getLibCodes(fn($xLibrary) => trim($xLibrary->getCss()));
     }
 
     /**
      * @inheritDoc
-     * @throws SetupException
      */
     public function getScript(): string
     {
-        return array_reduce($this->getLibraries(), function($sCode, $xLibrary) {
-            return $sCode . trim($xLibrary->getScript()) . "\n\n";
-        }, '');
+        return $this->getLibCodes(fn($xLibrary) => trim($xLibrary->getScript()));
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    private function getOptionsJs(): string
+    private function getConfigScript(): string
     {
         $aOptions = [
             'labels' => $this->xTranslator->translations('labels'),
@@ -130,20 +158,22 @@ class DialogPlugin extends AbstractPlugin
     }
 
     /**
-     * @return string
-     */
-    private function _getReadyScript(): string
-    {
-        return array_reduce($this->getLibraries(), function($sCode, $xLibrary) {
-            return $sCode . trim($xLibrary->getReadyScript()) . "\n\n";
-        }, '');
-    }
-
-    /**
      * @inheritDoc
+     * @throws SetupException
      */
-    public function getReadyScript(): string
+    public function getScripts(): Scripts
     {
-        return $this->getOptionsJs() . $this->_getReadyScript();
+        $xScripts = new Scripts();
+        $xScripts->sJsBefore = $this->getConfigScript();
+
+        $aCodes = [];
+        foreach($this->getHelpers() as $xHelper)
+        {
+            $aCodes[] = $xHelper->getScript();
+            $xScripts->aFiles = array_merge($xScripts->aFiles, $xHelper->getFiles());
+        }
+        $xScripts->sJs = $this->getCode($aCodes);
+
+        return $xScripts;
     }
 }

@@ -3,6 +3,7 @@
 namespace Jaxon\Dialogs\Dialog;
 
 use Jaxon\App\Config\ConfigManager;
+use Jaxon\App\Config\ConfigTrait;
 use Jaxon\App\Dialog\Library\LibraryInterface;
 use Jaxon\Utils\Template\TemplateEngine;
 
@@ -15,6 +16,8 @@ use function trim;
 
 class LibraryHelper
 {
+    use ConfigTrait;
+
     /**
      * Default library URL
      *
@@ -49,9 +52,17 @@ class LibraryHelper
         // Set the library name
         $this->sName = $xDialogLibrary->getName();
         // Set the default URI.
-        $sDefaultUri = $xConfigManager->getAppOption('dialogs.lib.uri', $xDialogLibrary->getUri());
+        $sDefaultUri = $this->getAppOption('dialogs.lib.uri', $xDialogLibrary->getUri());
         // Set the library URI.
         $this->sUri = rtrim($this->getOption('uri', $sDefaultUri), '/');
+    }
+
+    /**
+     * @return ConfigManager
+     */
+    protected function config(): ConfigManager
+    {
+        return $this->xConfigManager;
     }
 
     /**
@@ -65,7 +76,7 @@ class LibraryHelper
     public function getOption(string $sOptionName, $xDefault = null)
     {
         $sOptionName = "dialogs.{$this->sName}.$sOptionName";
-        return $this->xConfigManager->getAppOption($sOptionName, $xDefault);
+        return $this->getAppOption($sOptionName, $xDefault);
     }
 
     /**
@@ -77,7 +88,7 @@ class LibraryHelper
      */
     public function hasOption(string $sOptionName): bool
     {
-        return $this->xConfigManager->hasAppOption("dialogs.{$this->sName}.$sOptionName");
+        return $this->hasAppOption("dialogs.{$this->sName}.$sOptionName");
     }
 
     /**
@@ -87,7 +98,7 @@ class LibraryHelper
      */
     public function getJsOptions(): array
     {
-        $xOptions = $this->xConfigManager->getAppOption("dialogs.{$this->sName}.options", []);
+        $xOptions = $this->getAppOption("dialogs.{$this->sName}.options", []);
         return is_array($xOptions) ? $xOptions : [];
     }
 
@@ -136,14 +147,6 @@ class LibraryHelper
     public function getJs(array $aFiles): string
     {
         $aFiles = $this->getUris('assets.js', $aFiles);
-        if($this->xConfigManager->getOption('js.app.export', false))
-        {
-            // Add the library script file to the list.
-            $sJsFileName = !$this->xConfigManager->getOption('js.app.minify', false) ?
-                "{$this->sName}.js" : "{$this->sName}.min.js";
-            $aFiles[] = self::JS_LIB_URL . "/$sJsFileName";
-        }
-
         $aFiles = array_map(fn($sUri) => $this->getJsTag($sUri), $aFiles);
         return implode("\n", $aFiles);
     }
@@ -208,7 +211,24 @@ class LibraryHelper
 
     public function getScript(): string
     {
-        return !$this->xConfigManager->getOption('js.app.export', false) ?
+        return !$this->getLibOption('js.app.export', false) ?
             $this->xTemplateEngine->render("jaxon::dialogs::{$this->sName}.js") : '';
+    }
+
+    /**
+     * Get the javascript HTML header code
+     *
+     * @return array
+     */
+    public function getFiles(): array
+    {
+        if(!$this->getLibOption('js.app.export', false))
+        {
+            return [];
+        }
+
+        $sJsFileName = !$this->getLibOption('js.app.minify', false) ?
+            "{$this->sName}.js" : "{$this->sName}.min.js";
+        return [self::JS_LIB_URL . "/$sJsFileName"];
     }
 }
