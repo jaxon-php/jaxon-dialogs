@@ -147,6 +147,76 @@ class SetupTest extends TestCase
         $this->assertStringContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
     }
 
+    /**
+     * @throws UriException
+     */
+    public function testDialogScriptFile()
+    {
+        jaxon()->setOptions([
+            'export' => true,
+            'minify' => false,
+            'file' => 'app',
+            'dir' => __DIR__ . '/../js',
+            'uri' => 'http://localhost',
+        ], 'js.app');
+        jaxon()->app()->setOptions([
+            'default' => [
+                'modal' => 'bootstrap',
+                'alert' => 'bootstrap',
+                'confirm' => 'bootstrap',
+            ],
+            'lib' => [
+                'use' => ['bootbox', 'cute', 'jalert'],
+            ],
+        ], 'dialogs');
+
+        $sScriptCode = jaxon()->getScript();
+        $this->assertStringNotContainsString("jaxon.dialog.register('bootstrap'", $sScriptCode);
+        $this->assertStringNotContainsString("jaxon.dialog.register('bootbox'", $sScriptCode);
+        $this->assertStringNotContainsString("jaxon.dialog.register('cute'", $sScriptCode);
+        $this->assertStringNotContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
+
+        $this->assertStringContainsString('/js/bootstrap.js', $sScriptCode);
+        $this->assertStringContainsString('/js/bootbox.js', $sScriptCode);
+        $this->assertStringContainsString('/js/cute.js', $sScriptCode);
+        $this->assertStringContainsString('/js/jalert.js', $sScriptCode);
+    }
+
+    /**
+     * @throws UriException
+     */
+    public function testDialogScriptMinFile()
+    {
+        jaxon()->setOptions([
+            'export' => true,
+            'minify' => true,
+            'file' => 'app',
+            'dir' => __DIR__ . '/../js',
+            'uri' => 'http://localhost',
+        ], 'js.app');
+        jaxon()->app()->setOptions([
+            'default' => [
+                'modal' => 'bootstrap',
+                'alert' => 'bootstrap',
+                'confirm' => 'bootstrap',
+            ],
+            'lib' => [
+                'use' => ['bootbox', 'cute', 'jalert'],
+            ],
+        ], 'dialogs');
+
+        $sScriptCode = jaxon()->getScript();
+        $this->assertStringNotContainsString("jaxon.dialog.register('bootstrap'", $sScriptCode);
+        $this->assertStringNotContainsString("jaxon.dialog.register('bootbox'", $sScriptCode);
+        $this->assertStringNotContainsString("jaxon.dialog.register('cute'", $sScriptCode);
+        $this->assertStringNotContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
+
+        $this->assertStringContainsString('/js/bootstrap.min.js', $sScriptCode);
+        $this->assertStringContainsString('/js/bootbox.min.js', $sScriptCode);
+        $this->assertStringContainsString('/js/cute.min.js', $sScriptCode);
+        $this->assertStringContainsString('/js/jalert.min.js', $sScriptCode);
+    }
+
     public function testAlertifyLibrary()
     {
         jaxon()->app()->setOption('dialogs.lib.use', ['alertify']);

@@ -152,20 +152,6 @@ class LibraryHelper
     }
 
     /**
-     * Get the javascript HTML header code
-     *
-     * @param string $sFile The javascript file name
-     *
-     * @return string
-     */
-    public function getJsHtml(string $sFile): string
-    {
-        // If this 'assets.js' option is defined and evaluates to false, then the asset is not displayed.
-        $sUri = $this->getAssetUri('assets.js', $sFile);
-        return !$sUri ? '' : $this->getJsTag($sUri);
-    }
-
-    /**
      * @param string $sUri
      *
      * @return string
@@ -187,20 +173,6 @@ class LibraryHelper
         $aFiles = $this->getUris('assets.css', $aFiles);
         $aFiles = array_map(fn($sUri) => $this->getCssTag($sUri), $aFiles);
         return implode("\n", $aFiles);
-    }
-
-    /**
-     * Get the CSS HTML header code
-     *
-     * @param string $sFile The CSS file name
-     *
-     * @return string
-     */
-    public function getCssHtml(string $sFile): string
-    {
-        // If this 'assets.css' option is defined and evaluates to false, then the asset is not displayed.
-        $sUri = $this->getAssetUri('assets.css', $sFile);
-        return !$sUri ? '' : $this->getCssTag($sUri);
     }
 
     /**
