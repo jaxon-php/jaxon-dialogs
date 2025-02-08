@@ -18,7 +18,9 @@ const files = {
         libs: [
             'alertify',
             'bootbox',
-            'bootstrap',
+            'bootstrap3',
+            'bootstrap4',
+            'bootstrap5',
             'cute',
             'jalert',
             'jconfirm',

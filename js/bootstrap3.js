@@ -1,9 +1,9 @@
 /*
- * Bootstrap dialogs plugin
- * Class: jaxon.dialog.libs.bootstrap
+ * Bootstrap 3 dialogs plugin
+ * Class: jaxon.dialog.libs.bootstrap3
  */
 
-jaxon.dom.ready(() => jaxon.dialog.register('bootstrap', (self, options, utils) => {
+jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils) => {
     // Dialogs options
     const {
         labels,

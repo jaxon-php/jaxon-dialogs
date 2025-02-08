@@ -2,7 +2,6 @@
 
 namespace Jaxon\Dialogs;
 
-use Jaxon\App\Config\ConfigEventManager;
 use Jaxon\App\Config\ConfigManager;
 use Jaxon\App\Dialog\Manager\LibraryRegistryInterface;
 use Jaxon\App\I18n\Translator;
@@ -40,7 +39,9 @@ function _register()
         $aLibraries = [
             Dialog\Library\Alertify::class, // Alertify
             Dialog\Library\Bootbox::class, // Bootbox
-            Dialog\Library\Bootstrap::class, // Bootstrap
+            Dialog\Library\Bootstrap3::class, // Bootstrap 3
+            Dialog\Library\Bootstrap4::class, // Bootstrap 4
+            Dialog\Library\Bootstrap5::class, // Bootstrap 5
             Dialog\Library\Toastr::class, // Toastr
             Dialog\Library\JAlert::class, // JAlert
             Dialog\Library\Tingle::class, // Tingle
@@ -67,7 +68,6 @@ function _register()
 
     // Listener for app config changes.
     $jaxon->config()->addAppEventListener(DialogManager::class);
-
     // Register the plugin
     $jaxon->registerPlugin(DialogPlugin::class, DialogPlugin::NAME, 900);
 }

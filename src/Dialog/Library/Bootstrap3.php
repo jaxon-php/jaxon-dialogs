@@ -1,9 +1,9 @@
 <?php
 
 /**
- * BootstrapLibrary.php
+ * Bootstrap3.php
  *
- * Adapter for the Bootstrap library.
+ * Adapter for the Bootstrap 3 library.
  *
  * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
@@ -19,13 +19,13 @@ use Jaxon\App\Dialog\Library\AlertInterface;
 use Jaxon\App\Dialog\Library\ConfirmInterface;
 use Jaxon\App\Dialog\Library\ModalInterface;
 
-class Bootstrap extends AbstractLibrary
+class Bootstrap3 extends AbstractLibrary
     implements ModalInterface, AlertInterface, ConfirmInterface
 {
     /**
      * @const The library name
      */
-    const NAME = 'bootstrap';
+    const NAME = 'bootstrap3';
 
     /**
      * The css files

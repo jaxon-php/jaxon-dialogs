@@ -29,14 +29,14 @@ class Toastr extends AbstractLibrary implements AlertInterface
      *
      * @var array
      */
-    protected $aCssFiles = ['css/toastr.min.css'];
+    protected $aCssFiles = ['build/toastr.min.css'];
 
     /**
      * The js files
      *
      * @var array
      */
-    protected $aJsFiles = ['js/toastr.min.js'];
+    protected $aJsFiles = ['toastr.min.js'];
 
     /**
      * @inheritDoc
@@ -51,6 +51,6 @@ class Toastr extends AbstractLibrary implements AlertInterface
      */
     public function getUri(): string
     {
-        return '//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest';
+        return 'https://cdn.jsdelivr.net/npm/toastr@2.1.4';
     }
 }

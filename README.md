@@ -227,15 +227,45 @@ Example with jQuery selector.
 Supported libraries
 -------------------
 
-This package currently supports 14 javascript libraries, each implementing one or more interfaces.
+This package currently supports the following javascript libraries, each implementing one or more interfaces.
 
-#### XDialog
+#### Alertify
 
-https://xxjapp.github.io/xdialog/
+https://alertifyjs.com/
 
-- Dialog id: xdialog
+- Dialog id: bootbox
 - Implements: Modal, Alert, Confirm
-- Version: 3.4.0
+- Version: 1.14.0
+
+#### Bootbox
+
+https://bootboxjs.com/
+
+- Dialog id: bootbox
+- Implements: Modal, Alert, Confirm
+- Version: 6.0.0
+
+#### Bootstrap 5
+
+https://getbootstrap.com/docs/5.2/components/modal/
+
+- Dialog id: bootstrap5
+- Implements: Modal
+
+#### Bootstrap 4
+
+https://getbootstrap.com/docs/4.0/components/modal/
+
+- Dialog id: bootstrap4
+- Implements: Modal
+
+#### Bootstrap 3
+
+https://nakupanda.github.io/bootstrap3-dialog
+
+- Dialog id: bootstrap3
+- Implements: Modal, Alert, Confirm
+- Version: 1.35.4
 
 #### CuteAlert
 
@@ -243,75 +273,14 @@ https://github.com/gustavosmanc/cute-alert
 
 - Dialog id: cute
 - Implements: Alert, Confirm
-- Version:
 
-#### Bootbox
+#### jAlert
 
-http://bootboxjs.com
-
-- Dialog id: bootbox
-- Implements: Modal, Alert, Confirm
-- Version: 4.3.0
-
-jAlert: https://htmlguyllc.github.io/jAlert/
+https://htmlguyllc.github.io/jAlert/
 
 - Dialog id: jalert
 - Implements: Alert, Confirm
-- Version: 4.5.1
-
-#### PgwJS
-
-http://pgwjs.com/pgwmodal/
-
-- Dialog id: pgwjs
-- Implements: Modal
-- Version: 2.0.0
-
-#### Toastr
-
-https://codeseven.github.io/toastr/
-
-- Dialog id: toastr
-- Implements: Alert
-- Version: 2.1.3
-
-Tingle: https://tingle.robinparisi.com/
-
-- Dialog id: tingle
-- Implements: Modal
-- Version: 0.8.4
-
-Noty: https://ned.im/noty/
-
-- Dialog id: noty
-- Implements: Alert, Confirm
-- Version: 2.3.11
-
-Notify: https://notifyjs.jpillora.com/
-
-- Dialog id: notify
-- Implements: Alert
-- Versions: 0.4.2
-
-Overhang: https://paulkr.github.io/overhang.js/ (requires jQuery and jQuery UI)
-
-- Dialog id: overhang
-- Implements: Alert, Confirm
-- Version:
-
-PNotify: https://sciactive.com/pnotify/ (requires jQuery and jQuery UI)
-
-- Dialog id: pnotify
-- Implements: Alert, Confirm
-- Version: 3.0.0
-
-#### Sweet Alert
-
-Sweet Alert: https://sweetalert.js.org/
-
-- Dialog id: sweetalert
-- Implements: Alert, Confirm
-- Version: 1.1.1
+- Version: 4.9.1
 
 #### JQuery-Confirm
 
@@ -319,13 +288,47 @@ https://craftpip.github.io/jquery-confirm/
 
 - Dialog id: jconfirm
 - Implements: Modal, Alert, Confirm
-- Versions: 3.0.1, 3.3.0, 3.3.1, 3.3.2
+- Version: 3.3.4
 
-Bootstrap 3 Dialog: https://nakupanda.github.io/bootstrap3-dialog
+#### Notify
 
-- Dialog id: bootstrap
-- Implements: Modal, Alert, Confirm
-- Versions: 1.35.3
+https://notifyjs.jpillora.com/
+
+- Dialog id: notify
+- Implements: Alert
+- Versions: 0.4.1
+
+#### Noty
+
+https://ned.im/noty/
+
+- Dialog id: noty
+- Implements: Alert, Confirm
+- Version: 3.1.4
+
+#### Sweet Alert
+
+Sweet Alert: https://sweetalert.js.org/
+
+- Dialog id: sweetalert
+- Implements: Alert, Confirm
+- Version: 2.1.2
+
+#### Tingle
+
+https://tingle.robinparisi.com/
+
+- Dialog id: tingle
+- Implements: Modal
+- Version: 0.16.0
+
+#### Toastr
+
+https://codeseven.github.io/toastr/
+
+- Dialog id: toastr
+- Implements: Alert
+- Version: 2.1.4
 
 Adding a new library
 --------------------
