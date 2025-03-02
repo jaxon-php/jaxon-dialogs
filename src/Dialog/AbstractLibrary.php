@@ -5,7 +5,7 @@
  *
  * Base class for javascript dialog libraries.
  *
- * @package jaxon-core
+ * @package jaxon-dialogs
  * @author Thierry Feuzeu <thierry.feuzeu@gmail.com>
  * @copyright 2016 Thierry Feuzeu <thierry.feuzeu@gmail.com>
  * @license https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause License
