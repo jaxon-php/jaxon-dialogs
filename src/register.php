@@ -50,6 +50,7 @@ function _register()
             Dialog\Library\SweetAlert::class, // SweetAlert
             Dialog\Library\JQueryConfirm::class, // JQuery Confirm
             Dialog\Library\CuteAlert::class, // CuteAlert
+            Dialog\Library\Notyf::class, // Notyf
         ];
         foreach($aLibraries as $sClass)
         {
