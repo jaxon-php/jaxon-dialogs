@@ -26,6 +26,7 @@ const files = {
             'jconfirm',
             'notify',
             'noty',
+            'notyf',
             'sweetalert',
             'tingle',
             'toastr',
