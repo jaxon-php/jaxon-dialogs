@@ -48,7 +48,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('noty', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => {
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
         const noty = new Noty({
             ...confirmOptions,
             theme: 'relax',

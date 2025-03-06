@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JQueryConfirmLibrary.php
+ * JQueryConfirm.php
  *
  * Adapter for the JQuery-Confirm library.
  *

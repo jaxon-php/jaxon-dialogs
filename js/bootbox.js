@@ -107,7 +107,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => bootbox.confirm({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => bootbox.confirm({
         ...confirmOptions,
         title: title,
         message: question,

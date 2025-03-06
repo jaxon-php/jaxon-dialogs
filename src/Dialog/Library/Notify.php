@@ -1,7 +1,7 @@
 <?php
 
 /**
- * NotifyLibrary.php
+ * Notify.php
  *
  * Adapter for the Notify library.
  *

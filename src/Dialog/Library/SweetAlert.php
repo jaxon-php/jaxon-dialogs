@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SweetAlertLibrary.php
+ * SweetAlert.php
  *
  * Adapter for the SweetAlert library.
  *

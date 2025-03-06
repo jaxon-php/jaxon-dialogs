@@ -1,7 +1,7 @@
 <?php
 
 /**
- * NotyLibrary.php
+ * Noty.php
  *
  * Adapter for the Noty library.
  *

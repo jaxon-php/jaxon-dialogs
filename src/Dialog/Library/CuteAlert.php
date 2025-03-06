@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CuteAlertLibrary.php
+ * CuteAlert.php
  *
  * Adapter for the CuteAlert library.
  *

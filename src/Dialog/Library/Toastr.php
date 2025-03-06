@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ToastrLibrary.php
+ * Toastr.php
  *
  * Adapter for the Toastr library.
  *

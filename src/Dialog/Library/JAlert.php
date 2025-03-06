@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JAlertLibrary.php
+ * JAlert.php
  *
  * Adapter for the jAlert library.
  *

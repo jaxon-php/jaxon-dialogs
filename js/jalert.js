@@ -46,7 +46,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => $.jAlert({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => $.jAlert({
         ...confirmOptions,
         title,
         type: "confirm",

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TingleLibrary.php
+ * Tingle.php
  *
  * Adapter for the Tingle library.
  *

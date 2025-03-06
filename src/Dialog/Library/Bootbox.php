@@ -1,7 +1,7 @@
 <?php
 
 /**
- * BootboxLibrary.php
+ * Bootbox.php
  *
  * Adapter for the Bootbox library.
  *

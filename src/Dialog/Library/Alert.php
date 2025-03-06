@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AlertLibrary.php
+ * Alert.php
  *
  * Implements the dialog alert and confirm features using the js alert and confirm functions.
  *
