@@ -51,6 +51,9 @@ function _register()
             Dialog\Library\JQueryConfirm::class, // JQuery Confirm
             Dialog\Library\CuteAlert::class, // CuteAlert
             Dialog\Library\Notyf::class, // Notyf
+            Dialog\Library\Quantum::class, // QuantumAlert
+            Dialog\Library\Butterup::class, // Butterup
+            Dialog\Library\IziToast::class, // IziToast
         ];
         foreach($aLibraries as $sClass)
         {
