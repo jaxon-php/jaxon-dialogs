@@ -61,7 +61,7 @@ Specific options can also be set for each library.
         ],
         'lib' => [
             'uri' => 'https://cdn.jaxon-php.org/libs',
-            'use' => ['pgwjs', 'toastr'], // Additional libraries in use
+            'use' => ['cute', 'toastr'], // Additional libraries in use
         ],
         // Confirm options
         'confirm' => [
@@ -261,17 +261,31 @@ https://getbootstrap.com/docs/4.0/components/modal/
 
 #### Bootstrap 3
 
-https://nakupanda.github.io/bootstrap3-dialog
+https://nakupanda.github.io/bootstrap3-dialog/
 
 - Dialog id: bootstrap3
 - Implements: Modal, Alert, Confirm
 - Version: 1.35.4
 
+#### Butterup
+
+https://butteruptoast.com
+
+- Dialog id: butterup
+- Implements: Alert, Confirm
+
 #### CuteAlert
 
-https://github.com/gustavosmanc/cute-alert
+https://github.com/gustavosmanc/cute-alert/
 
 - Dialog id: cute
+- Implements: Alert, Confirm
+
+#### IziToast
+
+https://marcelodolza.github.io/iziToast/
+
+- Dialog id: izitoast
 - Implements: Alert, Confirm
 
 #### jAlert
@@ -305,6 +319,20 @@ https://ned.im/noty/
 - Dialog id: noty
 - Implements: Alert, Confirm
 - Version: 3.1.4
+
+#### Notyf
+
+https://carlosroso.com/notyf/
+
+- Dialog id: notyf
+- Implements: Alert, Confirm
+
+#### Quantum
+
+https://quantumalert.cosmogic.com/
+
+- Dialog id: quantum
+- Implements: Alert, Confirm
 
 #### Sweet Alert
 
