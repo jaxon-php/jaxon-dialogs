@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.quantum
  */
 
-jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -16,15 +16,6 @@ jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
     };
 
     jaxon.dialog.quantum = {};
-    const createRandomString = (length) => {
-        const chars = "abcdefghijklmnopqrstuvwxyz";
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    };
-      
 
     /**
      * Show an alert message
@@ -55,25 +46,27 @@ jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
      */
     self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
         // Create functions with random names for callbacks.
-        const yesCbName = createRandomString(16);
-        const noCbName = createRandomString(16);
-        jaxon.dialog.quantum[yesCbName] = () => {
-            // Remove after calling.
-            jaxon.dialog.quantum[yesCbName] = undefined;
-            close_qual(); // Close the confirm dialog.
-            // The close_qual() is called after a 250ms timeout.
-            // We set a 300ms timeout to make sure the callback is called after.
-            setTimeout(() => yesCb(), 300);
-        };
-        jaxon.dialog.quantum[noCbName] = () => {
-            // Remove after calling.
-            jaxon.dialog.quantum[noCbName] = undefined;
-            close_qual(); // Close the confirm dialog.
-            // The close_qual() is called after a 250ms timeout.
-            // We set a 300ms timeout to make sure the callback is called after.
-            setTimeout(() => noCb(), 300);
+        const sCbName = utils.createUniqueId(16);
+        // Make the callbacks globally accessible.
+        jaxon.dialog.quantum[sCbName] = {
+            yes: () => {
+                // Remove after calling.
+                delete jaxon.dialog.quantum[sCbName];
+                close_qual(); // Close the confirm dialog.
+                // The close_qual() function closes the dialog after a 250ms timeout.
+                // We set a 300ms timeout to make sure the callback is called after.
+                setTimeout(() => yesCb(), 300);
+            },
+            no: () => {
+                // Remove after calling.
+                delete jaxon.dialog.quantum[sCbName];
+                close_qual(); // Close the confirm dialog.
+                // The close_qual() function closes the dialog after a 250ms timeout.
+                // We set a 300ms timeout to make sure the callback is called after.
+                setTimeout(() => noCb(), 300);
+            },
         };
         Qual.confirm(title, question, succ, labels.yes, labels.no,
-            'jaxon.dialog.quantum.' + yesCbName, 'jaxon.dialog.quantum.' + noCbName);
+            `jaxon.dialog.quantum.${sCbName}.yes`, `jaxon.dialog.quantum.${sCbName}.no`);
     };
 }));

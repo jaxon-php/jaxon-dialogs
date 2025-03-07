@@ -2,7 +2,7 @@
  * Class: jaxon.dialog.libs.butterup
  */
 
-jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -36,6 +36,10 @@ jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
             icon: true,
             dismissable: true,
             ...alertOptions,
+            onRender: (toast) => {
+                // Give a custom id to the toast.
+                toast.id = 'butterupToast-' + utils.createUniqueId(10);
+            },
         });
     };
 
@@ -68,6 +72,8 @@ jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
             dismissable: false,
             ...confirmOptions,
             onRender: (toast) => {
+                // Give a custom id to the toast.
+                toast.id = 'butterupToast-' + utils.createUniqueId(10);
                 // Save the id of the confirm toast.
                 toastOptions.id = toast.id;
             },
