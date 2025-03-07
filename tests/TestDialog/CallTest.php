@@ -74,9 +74,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibrarySuccess()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -132,9 +134,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryWarning()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -190,9 +194,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryInfo()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -248,9 +254,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryError()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -279,9 +287,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryShow()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -310,9 +320,11 @@ class CallTest extends TestCase
      */
     public function testBootboxLibraryShow()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootbox');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootbox');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootbox');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -340,10 +352,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryShowWith()
     {
-        // Choose the bootstrap library in the options, and use the bootbox in the class.
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -371,9 +384,11 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryHide()
     {
-        jaxon()->app()->setOption('dialogs.default.modal', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.alert', 'bootstrap');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'bootstrap');
+        jaxon()->app()->setOptions([
+            'modal' => 'alertify',
+            'alert' => 'alertify',
+            'confirm' => 'alertify',
+        ], 'dialogs.default');
         // The server request
         jaxon()->di()->set(ServerRequestInterface::class, function($c) {
             return $c->g(ServerRequestCreator::class)
@@ -421,8 +436,10 @@ class CallTest extends TestCase
     public function testConfirmMessageInfo()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOption('dialogs.default.alert', 'cute');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'noty');
+        jaxon()->app()->setOptions([
+            'alert' => 'cute',
+            'confirm' => 'noty',
+        ], 'dialogs.default');
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
@@ -439,8 +456,10 @@ class CallTest extends TestCase
     public function testConfirmMessageWarning()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOption('dialogs.default.alert', 'cute');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'noty');
+        jaxon()->app()->setOptions([
+            'alert' => 'cute',
+            'confirm' => 'noty',
+        ], 'dialogs.default');
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
@@ -457,8 +476,10 @@ class CallTest extends TestCase
     public function testConfirmMessageError()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOption('dialogs.default.alert', 'cute');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'noty');
+        jaxon()->app()->setOptions([
+            'alert' => 'cute',
+            'confirm' => 'noty',
+        ], 'dialogs.default');
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
