@@ -186,7 +186,7 @@ class SetupTest extends TestCase
         $this->assertStringNotContainsString("jaxon.dialog.register('cute'", $sScriptCode);
         $this->assertStringNotContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
 
-        $this->assertStringContainsString('/js/bootstrap.js', $sScriptCode);
+        $this->assertStringContainsString('/js/alertify.js', $sScriptCode);
         $this->assertStringContainsString('/js/bootbox.js', $sScriptCode);
         $this->assertStringContainsString('/js/cute.js', $sScriptCode);
         $this->assertStringContainsString('/js/jalert.js', $sScriptCode);
@@ -221,7 +221,7 @@ class SetupTest extends TestCase
         $this->assertStringNotContainsString("jaxon.dialog.register('cute'", $sScriptCode);
         $this->assertStringNotContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
 
-        $this->assertStringContainsString('/js/bootstrap.min.js', $sScriptCode);
+        $this->assertStringContainsString('/js/alertify.min.js', $sScriptCode);
         $this->assertStringContainsString('/js/bootbox.min.js', $sScriptCode);
         $this->assertStringContainsString('/js/cute.min.js', $sScriptCode);
         $this->assertStringContainsString('/js/jalert.min.js', $sScriptCode);
@@ -366,8 +366,8 @@ class SetupTest extends TestCase
     {
         jaxon()->app()->setOption('dialogs.lib.use', ['toastr']);
 
-        $this->assertStringContainsString('js/toastr.min.js', jaxon()->js());
-        $this->assertStringContainsString('css/toastr.min.css', jaxon()->css());
+        $this->assertStringContainsString('toastr.min.js', jaxon()->js());
+        $this->assertStringContainsString('build/toastr.min.css', jaxon()->css());
         $this->assertStringContainsString("jaxon.dialog.register('toastr'", jaxon()->script());
     }
 
