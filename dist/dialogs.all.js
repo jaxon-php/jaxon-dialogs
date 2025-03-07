@@ -133,7 +133,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => alertify
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => alertify
         .confirm(title ?? '&nbsp;', question, yesCb, noCb)
         .set('labels', { ok: labels.yes, cancel: labels.no });
 }));
@@ -248,7 +248,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => bootbox.confirm({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => bootbox.confirm({
         ...confirmOptions,
         title: title,
         message: question,
@@ -352,7 +352,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils)
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => BootstrapDialog.confirm({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => BootstrapDialog.confirm({
         ...confirmOptions,
         title,
         message: question,
@@ -586,7 +586,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('cute', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => cuteAlert({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => cuteAlert({
         ...confirmOptions,
         title,
         type: 'question',
@@ -647,7 +647,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => $.jAlert({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => $.jAlert({
         ...confirmOptions,
         title,
         type: "confirm",
@@ -771,7 +771,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => $.confirm({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => $.confirm({
         ...confirmOptions,
         title,
         content: question,
@@ -876,7 +876,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('noty', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => {
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
         const noty = new Noty({
             ...confirmOptions,
             theme: 'relax',
@@ -1024,7 +1024,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('sweetalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title}, { yes: yesCb, no: noCb = () => {} }) => swal({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => swal({
         ...confirmOptions,
         icon: "warning",
         title,
@@ -1136,5 +1136,265 @@ jaxon.dom.ready(() => jaxon.dialog.register('toastr', (self, options) => {
     self.alert = ({ type, message, title }) => {
         const func = xTypes[type] ?? xTypes.info;
         toastr[func](message, title, alertOptions);
+    };
+}));
+
+
+/**
+ * Class: jaxon.dialog.libs.butterup
+ */
+
+jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
+    // Dialogs options
+    const {
+        labels,
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
+    const xTypes = {
+        success: 'success',
+        info: 'info',
+        warning: 'warning',
+        error: 'error',
+    };
+
+    /**
+     * Show an alert message
+     *
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.title The alert title
+     * @param {string} alert.message The alert message
+     *
+     * @returns {void}
+     */
+    self.alert = ({ type, title, message }) => {
+        butterup.toast({
+            type: xTypes[type] ?? xTypes.info,
+            title,
+            message,
+            location: 'top-center',
+            icon: true,
+            dismissable: true,
+            ...alertOptions,
+        });
+    };
+
+    /**
+     * Ask a confirm question to the user.
+     *
+     * @param {object} confirm The confirm parameters
+     * @param {string} confirm.question The question to ask
+     * @param {string} confirm.title The question title
+     * @param {object} callback The confirm callbacks
+     * @param {callback} callback.yes The function to call if the answer is yes
+     * @param {callback=} callback.no The function to call if the answer is no
+     *
+     * @returns {void}
+     */
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
+        const toastOptions = {
+            id: '', // The id of the confirm toast.
+            life: butterup.options.toastLife, // Save the toastLife value.
+        };
+        // Set the toast life to a higher value, so the confirm dialog is not dismissed too early.
+        // Todo: disable the dismissable timeout.
+        butterup.options.toastLife = 60000;
+
+        butterup.toast({
+            title,
+            message: question,
+            location: 'top-center',
+            icon: false,
+            dismissable: false,
+            ...confirmOptions,
+            onRender: (toast) => {
+                // Save the id of the confirm toast.
+                toastOptions.id = toast.id;
+            },
+            primaryButton: {
+                text: labels.yes,
+                onClick: () => {
+                    // Close the confirm toast.
+                    butterup.despawnToast(toastOptions.id);
+                    yesCb();
+                },
+            },
+            secondaryButton: {
+                text: labels.no,
+                onClick: () => {
+                    // Close the confirm toast.
+                    butterup.despawnToast(toastOptions.id);
+                    noCb();
+                },
+            },
+        });
+
+        // Restore the initial toastLife value.
+        butterup.options.toastLife = toastOptions.life;
+    };
+}));
+
+
+/**
+ * Class: jaxon.dialog.libs.quantum
+ */
+
+jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
+    // Dialogs options
+    const {
+        labels,
+    } = options;
+
+    const xTypes = {
+        success: 'success',
+        info: 'info',
+        warning: 'warning',
+        error: 'error',
+    };
+
+    jaxon.dialog.quantum = {};
+    const createRandomString = (length) => {
+        const chars = "abcdefghijklmnopqrstuvwxyz";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    };
+      
+
+    /**
+     * Show an alert message
+     *
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.title The alert title
+     * @param {string} alert.message The alert message
+     *
+     * @returns {void}
+     */
+    self.alert = ({ type, title, message }) => {
+        type = xTypes[type] ?? xTypes.info;
+        Qual[type](title, message);
+    };
+
+    /**
+     * Ask a confirm question to the user.
+     *
+     * @param {object} confirm The confirm parameters
+     * @param {string} confirm.question The question to ask
+     * @param {string} confirm.title The question title
+     * @param {object} callback The confirm callbacks
+     * @param {callback} callback.yes The function to call if the answer is yes
+     * @param {callback=} callback.no The function to call if the answer is no
+     *
+     * @returns {void}
+     */
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
+        // Create functions with random names for callbacks.
+        const yesCbName = createRandomString(16);
+        const noCbName = createRandomString(16);
+        jaxon.dialog.quantum[yesCbName] = () => {
+            // Remove after calling.
+            jaxon.dialog.quantum[yesCbName] = undefined;
+            close_qual(); // Close the confirm dialog.
+            // The close_qual() is called after a 250ms timeout.
+            // We set a 300ms timeout to make sure the callback is called after.
+            setTimeout(() => yesCb(), 300);
+        };
+        jaxon.dialog.quantum[noCbName] = () => {
+            // Remove after calling.
+            jaxon.dialog.quantum[noCbName] = undefined;
+            close_qual(); // Close the confirm dialog.
+            // The close_qual() is called after a 250ms timeout.
+            // We set a 300ms timeout to make sure the callback is called after.
+            setTimeout(() => noCb(), 300);
+        };
+        Qual.confirm(title, question, succ, labels.yes, labels.no,
+            'jaxon.dialog.quantum.' + yesCbName, 'jaxon.dialog.quantum.' + noCbName);
+    };
+}));
+
+
+/**
+ * Class: jaxon.dialog.libs.izitoast
+ */
+
+jaxon.dom.ready(() => jaxon.dialog.register('izitoast', (self, options) => {
+    // Dialogs options
+    const {
+        labels,
+        alert: alertOptions = {},
+        confirm: confirmOptions = {},
+    } = options;
+
+    const xTypes = {
+        success: 'success',
+        info: 'info',
+        warning: 'warning',
+        error: 'error',
+    };
+
+    /**
+     * Show an alert message
+     *
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.title The alert title
+     * @param {string} alert.message The alert message
+     *
+     * @returns {void}
+     */
+    self.alert = ({ type, title, message }) => {
+        type = xTypes[type] ?? xTypes.info;
+        iziToast[type]({
+            title,
+            message,
+            position: 'topCenter',
+            ...alertOptions,
+        });
+    };
+
+    /**
+     * Ask a confirm question to the user.
+     *
+     * @param {object} confirm The confirm parameters
+     * @param {string} confirm.question The question to ask
+     * @param {string} confirm.title The question title
+     * @param {object} callback The confirm callbacks
+     * @param {callback} callback.yes The function to call if the answer is yes
+     * @param {callback=} callback.no The function to call if the answer is no
+     *
+     * @returns {void}
+     */
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
+        iziToast.question({
+            timeout: 20000,
+            close: false,
+            overlay: true,
+            displayMode: 'once',
+            id: 'question',
+            zindex: 999,
+            title,
+            message: question,
+            position: 'topCenter',
+            ...confirmOptions,
+            buttons: [[
+                `<button><b>${labels.yes}</b></button>`,
+                (instance, toast) => {
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    yesCb();
+                },
+                true,
+            ], [
+                `<button>${labels.no}</button>`,
+                (instance, toast) => {
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    noCb();
+                },
+            ]],
+        });
     };
 }));

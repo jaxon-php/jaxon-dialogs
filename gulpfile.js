@@ -30,6 +30,9 @@ const files = {
             'sweetalert',
             'tingle',
             'toastr',
+            'butterup',
+            'quantum',
+            'izitoast',
         ],
     },
     dist: {
