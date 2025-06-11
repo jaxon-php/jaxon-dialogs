@@ -133,8 +133,6 @@ Example.
         $options = ['width' => 500];
         // Show the dialog
         $this->response->dialog->show("Modal Dialog", $content, $buttons, $options);
-
-        return $this->response;
     }
 ```
 
@@ -172,11 +170,10 @@ Example.
         if(!$this->validator->valid($formValues))
         {
             $this->response->dialog->error("Invalid input", "Error");
-            return $this->response;
+            return;
         }
         $this->repository->save($formValues);
         $this->response->dialog->success("Data saved!", "Success");
-        return $this->response;
     }
 ```
 
