@@ -230,7 +230,7 @@ This package currently supports the following javascript libraries, each impleme
 
 https://alertifyjs.com/
 
-- Dialog id: bootbox
+- Dialog id: alertify
 - Implements: Modal, Alert, Confirm
 - Version: 1.14.0
 
