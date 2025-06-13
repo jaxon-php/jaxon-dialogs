@@ -74,7 +74,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibrarySuccess()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -134,7 +134,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryWarning()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -194,7 +194,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryInfo()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -254,7 +254,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryError()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -287,7 +287,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryShow()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -320,7 +320,7 @@ class CallTest extends TestCase
      */
     public function testBootboxLibraryShow()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -352,7 +352,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryShowWith()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -384,7 +384,7 @@ class CallTest extends TestCase
      */
     public function testDialogLibraryHide()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -418,8 +418,8 @@ class CallTest extends TestCase
     public function testConfirmMessageSuccess()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOption('dialogs.default.alert', 'cute');
-        jaxon()->app()->setOption('dialogs.default.confirm', 'noty');
+        jaxon()->setAppOption('dialogs.default.alert', 'cute');
+        jaxon()->setAppOption('dialogs.default.confirm', 'noty');
         $this->assertEquals(
             'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
@@ -436,7 +436,7 @@ class CallTest extends TestCase
     public function testConfirmMessageInfo()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'alert' => 'cute',
             'confirm' => 'noty',
         ], 'dialogs.default');
@@ -456,7 +456,7 @@ class CallTest extends TestCase
     public function testConfirmMessageWarning()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'alert' => 'cute',
             'confirm' => 'noty',
         ], 'dialogs.default');
@@ -476,7 +476,7 @@ class CallTest extends TestCase
     public function testConfirmMessageError()
     {
         jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'alert' => 'cute',
             'confirm' => 'noty',
         ], 'dialogs.default');

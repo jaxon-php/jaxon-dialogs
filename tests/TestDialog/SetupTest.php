@@ -51,7 +51,7 @@ class SetupTest extends TestCase
         $this->assertEquals(Alert::class, get_class(dialog()->getAlertLibrary()));
         $this->assertEquals(null, dialog()->getModalLibrary());
 
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'alertify',
             'alert' => 'alertify',
             'confirm' => 'alertify',
@@ -60,7 +60,7 @@ class SetupTest extends TestCase
         $this->assertEquals(Alertify::class, get_class(dialog()->getAlertLibrary()));
         $this->assertEquals(Alertify::class, get_class(dialog()->getModalLibrary()));
 
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'modal' => 'bootbox',
             'alert' => 'bootbox',
             'confirm' => 'bootbox',
@@ -85,7 +85,7 @@ class SetupTest extends TestCase
         dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
         // Registering a library twice should not cause any issue.
         dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
-        jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
+        jaxon()->setAppOption('dialogs.default.confirm', TestDialogLibrary::NAME);
         $xConfirmLibrary = dialog()->getConfirmLibrary();
         $this->assertEquals('', $xConfirmLibrary->getUri());
         $this->assertEquals('', $xConfirmLibrary->getJs());
@@ -98,16 +98,16 @@ class SetupTest extends TestCase
     public function testExtDialogLibrary()
     {
         dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
-        jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
+        jaxon()->setAppOption('dialogs.default.confirm', TestDialogLibrary::NAME);
         $this->assertEquals(TestDialogLibrary::class, get_class(dialog()->getConfirmLibrary()));
     }
 
     public function testExtDialogLibraryConfigSet()
     {
-        jaxon()->app()->setOption('dialogs.lib.ext', [
+        jaxon()->setAppOption('dialogs.lib.ext', [
             TestDialogLibrary::NAME => TestDialogLibrary::class,
         ]);
-        jaxon()->app()->setOption('dialogs.default.confirm', TestDialogLibrary::NAME);
+        jaxon()->setAppOption('dialogs.default.confirm', TestDialogLibrary::NAME);
         $this->assertEquals(TestDialogLibrary::class, get_class(dialog()->getConfirmLibrary()));
     }
 
@@ -119,7 +119,7 @@ class SetupTest extends TestCase
 
     public function testDialogJsCode()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootbox', 'alertify', 'cute']);
+        jaxon()->setAppOption('dialogs.lib.use', ['bootbox', 'alertify', 'cute']);
         $sJsCode = jaxon()->js();
         $this->assertStringContainsString('bootbox.min.js', $sJsCode);
         $this->assertStringContainsString('alertify.min.js', $sJsCode);
@@ -128,7 +128,7 @@ class SetupTest extends TestCase
 
     public function testDialogCssCode()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['alertify', 'cute']);
+        jaxon()->setAppOption('dialogs.lib.use', ['alertify', 'cute']);
         $sCssCode = jaxon()->css();
         $this->assertStringContainsString('alertify.min.css', $sCssCode);
         $this->assertStringContainsString('cute-alert/style.css', $sCssCode);
@@ -139,7 +139,7 @@ class SetupTest extends TestCase
      */
     public function testDialogScriptCode()
     {
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'default' => [
                 'modal' => 'alertify',
                 'alert' => 'alertify',
@@ -169,7 +169,7 @@ class SetupTest extends TestCase
             'dir' => __DIR__ . '/../js',
             'uri' => 'http://localhost',
         ], 'js.app');
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'default' => [
                 'modal' => 'alertify',
                 'alert' => 'alertify',
@@ -204,7 +204,7 @@ class SetupTest extends TestCase
             'dir' => __DIR__ . '/../js',
             'uri' => 'http://localhost',
         ], 'js.app');
-        jaxon()->app()->setOptions([
+        jaxon()->setAppOptions([
             'default' => [
                 'modal' => 'alertify',
                 'alert' => 'alertify',
@@ -229,7 +229,7 @@ class SetupTest extends TestCase
 
     public function testAlertifyLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['alertify']);
+        jaxon()->setAppOption('dialogs.lib.use', ['alertify']);
 
         $this->assertStringContainsString('alertify.min.js', jaxon()->js());
         $this->assertStringContainsString('css/alertify.min.css', jaxon()->css());
@@ -239,7 +239,7 @@ class SetupTest extends TestCase
 
     public function testBootboxLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootbox']);
+        jaxon()->setAppOption('dialogs.lib.use', ['bootbox']);
 
         $this->assertStringContainsString('bootbox.min.js', jaxon()->js());
         $this->assertStringContainsString("jaxon.dialog.register('bootbox'", jaxon()->script());
@@ -247,28 +247,28 @@ class SetupTest extends TestCase
 
     public function testBootstrap3Library()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootstrap3']);
+        jaxon()->setAppOption('dialogs.lib.use', ['bootstrap3']);
 
         $this->assertStringContainsString("jaxon.dialog.register('bootstrap3'", jaxon()->script());
     }
 
     public function testBootstrap4Library()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootstrap4']);
+        jaxon()->setAppOption('dialogs.lib.use', ['bootstrap4']);
 
         $this->assertStringContainsString("jaxon.dialog.register('bootstrap4'", jaxon()->script());
     }
 
     public function testBootstrap5Library()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['bootstrap5']);
+        jaxon()->setAppOption('dialogs.lib.use', ['bootstrap5']);
 
         $this->assertStringContainsString("jaxon.dialog.register('bootstrap5'", jaxon()->script());
     }
 
     public function testButterupLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['butterup']);
+        jaxon()->setAppOption('dialogs.lib.use', ['butterup']);
 
         $this->assertStringContainsString('butterup.min.js', jaxon()->js());
         $this->assertStringContainsString('butterup.min.css', jaxon()->css());
@@ -277,7 +277,7 @@ class SetupTest extends TestCase
 
     public function testCuteAlertLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['cute']);
+        jaxon()->setAppOption('dialogs.lib.use', ['cute']);
 
         $this->assertStringContainsString('cute-alert/cute-alert.js', jaxon()->js());
         $this->assertStringContainsString('cute-alert/style.css', jaxon()->css());
@@ -286,7 +286,7 @@ class SetupTest extends TestCase
 
     public function testIziToastLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['izitoast']);
+        jaxon()->setAppOption('dialogs.lib.use', ['izitoast']);
 
         $this->assertStringContainsString('js/iziToast.min.js', jaxon()->js());
         $this->assertStringContainsString('css/iziToast.min.css', jaxon()->css());
@@ -295,7 +295,7 @@ class SetupTest extends TestCase
 
     public function testJAlertLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['jalert']);
+        jaxon()->setAppOption('dialogs.lib.use', ['jalert']);
 
         $this->assertStringContainsString('jAlert.min.js', jaxon()->js());
         $this->assertStringContainsString('jAlert.min.css', jaxon()->css());
@@ -304,7 +304,7 @@ class SetupTest extends TestCase
 
     public function testJQueryConfirmLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['jconfirm']);
+        jaxon()->setAppOption('dialogs.lib.use', ['jconfirm']);
 
         $this->assertStringContainsString('jquery-confirm.min.js', jaxon()->js());
         $this->assertStringContainsString('jquery-confirm.min.css', jaxon()->css());
@@ -313,7 +313,7 @@ class SetupTest extends TestCase
 
     public function testNotifyLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['notify']);
+        jaxon()->setAppOption('dialogs.lib.use', ['notify']);
 
         $this->assertStringContainsString('notify.min.js', jaxon()->js());
         $this->assertStringContainsString("jaxon.dialog.register('notify'", jaxon()->script());
@@ -321,7 +321,7 @@ class SetupTest extends TestCase
 
     public function testNotyLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['noty']);
+        jaxon()->setAppOption('dialogs.lib.use', ['noty']);
 
         $this->assertStringContainsString('noty.min.js', jaxon()->js());
         $this->assertStringContainsString('noty.min.css', jaxon()->css());
@@ -330,7 +330,7 @@ class SetupTest extends TestCase
 
     public function testNotyfLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['notyf']);
+        jaxon()->setAppOption('dialogs.lib.use', ['notyf']);
 
         $this->assertStringContainsString('notyf.min.js', jaxon()->js());
         $this->assertStringContainsString('notyf.min.css', jaxon()->css());
@@ -339,7 +339,7 @@ class SetupTest extends TestCase
 
     public function testQuantumLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['quantum']);
+        jaxon()->setAppOption('dialogs.lib.use', ['quantum']);
 
         $this->assertStringContainsString('minfile/quantumalert.js', jaxon()->js());
         $this->assertStringContainsString("jaxon.dialog.register('quantum'", jaxon()->script());
@@ -347,7 +347,7 @@ class SetupTest extends TestCase
 
     public function testSweetAlertLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['sweetalert']);
+        jaxon()->setAppOption('dialogs.lib.use', ['sweetalert']);
 
         $this->assertStringContainsString('sweetalert.min.js', jaxon()->js());
         $this->assertStringContainsString("jaxon.dialog.register('sweetalert'", jaxon()->script());
@@ -355,7 +355,7 @@ class SetupTest extends TestCase
 
     public function testTingleLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['tingle']);
+        jaxon()->setAppOption('dialogs.lib.use', ['tingle']);
 
         $this->assertStringContainsString('tingle.min.js', jaxon()->js());
         $this->assertStringContainsString('tingle.min.css', jaxon()->css());
@@ -364,7 +364,7 @@ class SetupTest extends TestCase
 
     public function testToastrLibrary()
     {
-        jaxon()->app()->setOption('dialogs.lib.use', ['toastr']);
+        jaxon()->setAppOption('dialogs.lib.use', ['toastr']);
 
         $this->assertStringContainsString('toastr.min.js', jaxon()->js());
         $this->assertStringContainsString('build/toastr.min.css', jaxon()->css());
@@ -389,18 +389,18 @@ class SetupTest extends TestCase
     public function testErrorSetWrongAlertLibrary()
     {
         $this->expectException(SetupException::class);
-        jaxon()->app()->setOption('dialogs.default.alert', 'incorrect');
+        jaxon()->setAppOption('dialogs.default.alert', 'incorrect');
     }
 
     public function testErrorSetWrongModalLibrary()
     {
         $this->expectException(SetupException::class);
-        jaxon()->app()->setOption('dialogs.default.modal', 'incorrect');
+        jaxon()->setAppOption('dialogs.default.modal', 'incorrect');
     }
 
     public function testErrorSetWrongConfirmLibrary()
     {
         $this->expectException(SetupException::class);
-        jaxon()->app()->setOption('dialogs.default.confirm', 'incorrect');
+        jaxon()->setAppOption('dialogs.default.confirm', 'incorrect');
     }
 }
