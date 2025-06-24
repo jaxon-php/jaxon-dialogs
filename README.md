@@ -31,8 +31,8 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 
 ```json
 "require": {
-    "jaxon-php/jaxon-core": "^4.0",
-    "jaxon-php/jaxon-dialogs": "^4.0"
+    "jaxon-php/jaxon-core": "^5.0",
+    "jaxon-php/jaxon-dialogs": "^5.0"
 }
 ```
 
