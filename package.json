@@ -1,6 +1,6 @@
 {
   "name": "jaxon-dialogs",
-  "version": "5.0.0-beta.2",
+  "version": "5.0.0",
   "description": "Modals, alerts and confirmation dialogs for Jaxon with various javascript libraries.",
   "main": "dialogs.all.js",
   "repository": {
