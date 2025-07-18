@@ -25,7 +25,7 @@ class Bootstrap3 extends AbstractLibrary
     /**
      * @const The library name
      */
-    const NAME = 'bootstrap3';
+    public const NAME = 'bootstrap3';
 
     /**
      * The css files

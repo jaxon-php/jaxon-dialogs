@@ -23,7 +23,7 @@ class Noty extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @const The library name
      */
-    const NAME = 'noty';
+    public const NAME = 'noty';
 
     /**
      * The css files

@@ -24,7 +24,7 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     /**
      * @const The library name
      */
-    const NAME = 'alertify';
+    public const NAME = 'alertify';
 
     /**
      * The css files

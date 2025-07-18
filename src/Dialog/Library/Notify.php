@@ -22,7 +22,7 @@ class Notify extends AbstractLibrary implements AlertInterface
     /**
      * @const The library name
      */
-    const NAME = 'notify';
+    public const NAME = 'notify';
 
     /**
      * The js files

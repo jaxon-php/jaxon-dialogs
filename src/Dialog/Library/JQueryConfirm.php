@@ -25,7 +25,7 @@ class JQueryConfirm extends AbstractLibrary
     /**
      * @const The library name
      */
-    const NAME = 'jconfirm';
+    public const NAME = 'jconfirm';
 
     /**
      * The css files

@@ -23,7 +23,7 @@ class CuteAlert extends AbstractLibrary implements AlertInterface, ConfirmInterf
     /**
      * @const The library name
      */
-    const NAME = 'cute';
+    public const NAME = 'cute';
 
     /**
      * The css files

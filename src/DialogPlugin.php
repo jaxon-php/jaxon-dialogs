@@ -36,7 +36,7 @@ class DialogPlugin extends AbstractPlugin
     /**
      * @const The plugin name
      */
-    const NAME = 'dialog_code';
+    public const NAME = 'dialog_code';
 
     /**
      * @var array

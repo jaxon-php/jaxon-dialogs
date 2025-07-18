@@ -55,7 +55,8 @@ abstract class AbstractLibrary
      */
     public function helper(): LibraryHelper
     {
-        return $this->xHelper ?: $this->xHelper = dialog()->getLibraryHelper($this->getName());
+        return $this->xHelper ?:
+            $this->xHelper = dialog()->getLibraryHelper($this->getName());
     }
 
     /**

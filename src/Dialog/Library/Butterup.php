@@ -23,7 +23,7 @@ class Butterup extends AbstractLibrary implements AlertInterface, ConfirmInterfa
     /**
      * @const The library name
      */
-    const NAME = 'butterup';
+    public const NAME = 'butterup';
 
     /**
      * The css files

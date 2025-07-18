@@ -23,7 +23,7 @@ class JAlert extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @const The library name
      */
-    const NAME = 'jalert';
+    public const NAME = 'jalert';
 
     /**
      * The css files

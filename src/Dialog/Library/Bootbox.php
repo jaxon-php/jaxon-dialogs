@@ -24,7 +24,7 @@ class Bootbox extends AbstractLibrary implements ModalInterface, AlertInterface,
     /**
      * @const The library name
      */
-    const NAME = 'bootbox';
+    public const NAME = 'bootbox';
 
     /**
      * The js files

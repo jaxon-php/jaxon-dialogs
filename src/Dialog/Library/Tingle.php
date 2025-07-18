@@ -22,7 +22,7 @@ class Tingle extends AbstractLibrary implements ModalInterface
     /**
      * @const The library name
      */
-    const NAME = 'tingle';
+    public const NAME = 'tingle';
 
     /**
      * The css files

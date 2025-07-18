@@ -23,7 +23,7 @@ class Quantum extends AbstractLibrary implements AlertInterface, ConfirmInterfac
     /**
      * @const The library name
      */
-    const NAME = 'quantum';
+    public const NAME = 'quantum';
 
     /**
      * The js files

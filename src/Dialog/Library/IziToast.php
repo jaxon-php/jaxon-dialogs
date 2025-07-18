@@ -23,7 +23,7 @@ class IziToast extends AbstractLibrary implements AlertInterface, ConfirmInterfa
     /**
      * @const The library name
      */
-    const NAME = 'izitoast';
+    public const NAME = 'izitoast';
 
     /**
      * The css files

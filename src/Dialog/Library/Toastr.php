@@ -22,7 +22,7 @@ class Toastr extends AbstractLibrary implements AlertInterface
     /**
      * @const The library name
      */
-    const NAME = 'toastr';
+    public const NAME = 'toastr';
 
     /**
      * The css files

@@ -22,7 +22,7 @@ class Notyf extends AbstractLibrary implements AlertInterface
     /**
      * @const The library name
      */
-    const NAME = 'notyf';
+    public const NAME = 'notyf';
 
     /**
      * The css files

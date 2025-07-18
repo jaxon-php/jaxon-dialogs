@@ -23,7 +23,7 @@ class Alert extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @const The library name
      */
-    const NAME = '';
+    public const NAME = '';
 
     /**
      * Get the library name

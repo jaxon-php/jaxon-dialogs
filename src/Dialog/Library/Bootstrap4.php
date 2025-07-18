@@ -22,7 +22,7 @@ class Bootstrap4 extends AbstractLibrary implements ModalInterface
     /**
      * @const The library name
      */
-    const NAME = 'bootstrap4';
+    public const NAME = 'bootstrap4';
 
     /**
      * @inheritDoc

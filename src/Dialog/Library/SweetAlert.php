@@ -23,7 +23,7 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
     /**
      * @const The library name
      */
-    const NAME = 'sweetalert';
+    public const NAME = 'sweetalert';
 
     /**
      * The js files
