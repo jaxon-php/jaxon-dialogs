@@ -50,7 +50,7 @@ class TestDialogLibrary extends AbstractLibrary implements LibraryInterface, Con
     /**
      * @const The library name
      */
-    const NAME = 'test';
+    public const NAME = 'test';
 
     /**
      * @inheritDoc
