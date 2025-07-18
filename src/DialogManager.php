@@ -81,7 +81,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      *
      * @return void
      */
-    private function _registerLibrary(string $sClass, string $sLibraryName)
+    private function _registerLibrary(string $sClass, string $sLibraryName): void
     {
         $this->di->set($sClass, function($di) use($sClass) {
             return $di->make($sClass);
@@ -103,7 +103,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      * @return void
      * @throws SetupException
      */
-    public function registerLibrary(string $sClassName, string $sLibraryName)
+    public function registerLibrary(string $sClassName, string $sLibraryName): void
     {
         if(isset($this->aLibraries[$sLibraryName]))
         {
@@ -187,7 +187,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      * @return void
      * @throws SetupException
      */
-    public function setAlertLibrary(string $sLibraryName)
+    public function setAlertLibrary(string $sLibraryName): void
     {
         if(!isset($this->aLibraries[$sLibraryName]) || !$this->aLibraries[$sLibraryName]['alert'])
         {
@@ -217,7 +217,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      * @return void
      * @throws SetupException
      */
-    public function setModalLibrary(string $sLibraryName)
+    public function setModalLibrary(string $sLibraryName): void
     {
         if(!isset($this->aLibraries[$sLibraryName]) || !$this->aLibraries[$sLibraryName]['modal'])
         {
@@ -245,7 +245,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      * @return void
      * @throws SetupException
      */
-    protected function registerLibraries()
+    protected function registerLibraries(): void
     {
         $aLibraries = $this->xConfigManager->getAppOption('dialogs.lib.ext', []);
         foreach($aLibraries as $sLibraryName => $sClassName)
@@ -260,7 +260,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      * @return void
      * @throws SetupException
      */
-    protected function setDefaultLibraries()
+    protected function setDefaultLibraries(): void
     {
         // Set the default modal library
         if(($sLibraryName = $this->xConfigManager->getAppOption('dialogs.default.modal', '')))
@@ -287,7 +287,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      *
      * @return void
      */
-    protected function setUsedLibraries()
+    protected function setUsedLibraries(): void
     {
         // Set the other libraries in use
         $aLibraries = $this->xConfigManager->getAppOption('dialogs.lib.use', []);
@@ -325,7 +325,7 @@ class DialogManager implements ConfigListenerInterface, LibraryRegistryInterface
      * @inheritDoc
      * @throws SetupException
      */
-    public function onChange(Config $xConfig, string $sName)
+    public function onChange(Config $xConfig, string $sName): void
     {
         if($sName === '')
         {

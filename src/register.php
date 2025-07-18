@@ -24,7 +24,7 @@ function dialog(): DialogManager
 /**
  * @return void
  */
-function _register()
+function _register(): void
 {
     $jaxon = jaxon();
     $xDi = $jaxon->di();
@@ -76,7 +76,7 @@ function _register()
     $jaxon->registerPlugin(DialogPlugin::class, DialogPlugin::NAME, 900);
 }
 
-function register()
+function register(): void
 {
     // Do nothing if running in cli.
     if(php_sapi_name() !== 'cli')
