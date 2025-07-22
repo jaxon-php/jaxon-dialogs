@@ -61,16 +61,16 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap5', (self, options, utils)
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         modal.container.innerHTML = getHtml(title, content, buttons);
         const element = document.getElementById(modal.id);
         modal.instance = new bootstrap.Modal(element, {...modalOptions, ...options});
         // Pass the js content element to the callback.
-        element.addEventListener('shown.bs.modal', () => jsElement(modal.container));
+        element.addEventListener('shown.bs.modal', () => cbDomElement(modal.container));
         // Show the modal.
         modal.instance.show();
     };

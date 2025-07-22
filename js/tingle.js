@@ -23,11 +23,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('tingle', (self, options, utils) => 
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         self.hide();
         dialog.dom = new tingle.modal({
             ...modalOptions,
@@ -47,7 +47,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('tingle', (self, options, utils) => 
         // Open the modal
         dialog.dom.open();
         // Pass the js content element to the callback.
-        jsElement(dialog.dom.modalBox);
+        cbDomElement(dialog.dom.modalBox);
     };
 
     /**

@@ -20,11 +20,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils)
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         dialog = BootstrapDialog.show({
             ...modalOptions,
             ...options,
@@ -41,7 +41,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils)
             }),
         });
         // Pass the js content element to the callback.
-        jsElement(dialog.$modal.get(0));
+        cbDomElement(dialog.$modal.get(0));
     };
 
     /**

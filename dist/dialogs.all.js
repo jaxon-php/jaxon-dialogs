@@ -29,11 +29,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         /*
          * Warning: a new dialog factory will be registered each time a dialog is displayed.
          * Todo: Free the unused factories.
@@ -64,13 +64,13 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
                 prepare: function() {
                     this.setContent(this.message);
                     // Pass the js content element to the callback.
-                    dialog.jsElement(this.elements.content);
+                    dialog.cbDomElement(this.elements.content);
                     // Save the dialog instance locally.
                     dialog.instance = this;
                 },
                 build: function() {
                     // Pass the js content element to the callback.
-                    // dialog.jsElement(this.elements.content);
+                    // dialog.cbDomElement(this.elements.content);
                 },
                 callback:function(closeEvent) {
                     const button = dialog.buttons[closeEvent.index];
@@ -89,7 +89,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
         dialog.title = title;
         dialog.buttons = buttons;
         dialog.options = options;
-        dialog.jsElement = jsElement;
+        dialog.cbDomElement = cbDomElement;
         alertify[dialogName](content);
     };
 
@@ -168,11 +168,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         let btnIndex = 1;
         const oButtons = {};
         buttons.forEach(({ title: label, class: className, click }) => {
@@ -197,7 +197,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
             buttons: oButtons,
         });
         // Pass the js content element to the callback.
-        jsElement(dialog.dom.get(0));
+        cbDomElement(dialog.dom.get(0));
     };
 
     /**
@@ -285,11 +285,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils)
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         dialog = BootstrapDialog.show({
             ...modalOptions,
             ...options,
@@ -306,7 +306,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils)
             }),
         });
         // Pass the js content element to the callback.
-        jsElement(dialog.$modal.get(0));
+        cbDomElement(dialog.$modal.get(0));
     };
 
     /**
@@ -430,15 +430,15 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap4', (self, options, utils)
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         modal.container.innerHTML = getHtml(title, content, buttons);
         // Pass the js content element to the callback.
         const element = utils.jq('#' + modal.id);
-        element.on('shown.bs.modal', () => jsElement(modal.container));
+        element.on('shown.bs.modal', () => cbDomElement(modal.container));
         // Show the modal.
         element.modal({...modalOptions, ...options});
     };
@@ -515,16 +515,16 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap5', (self, options, utils)
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         modal.container.innerHTML = getHtml(title, content, buttons);
         const element = document.getElementById(modal.id);
         modal.instance = new bootstrap.Modal(element, {...modalOptions, ...options});
         // Pass the js content element to the callback.
-        element.addEventListener('shown.bs.modal', () => jsElement(modal.container));
+        element.addEventListener('shown.bs.modal', () => cbDomElement(modal.container));
         // Show the modal.
         modal.instance.show();
     };
@@ -688,11 +688,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         self.hide();
 
         // Add buttons
@@ -713,7 +713,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
             boxWidth: 600,
             buttons: xButtons,
             // Pass the js content element to the callback.
-            onContentReady: () => jsElement(dialog.dom.$jconfirmBox.get(0)),
+            onContentReady: () => cbDomElement(dialog.dom.$jconfirmBox.get(0)),
         });
     };
 
@@ -1061,11 +1061,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('tingle', (self, options, utils) => 
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         self.hide();
         dialog.dom = new tingle.modal({
             ...modalOptions,
@@ -1085,7 +1085,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('tingle', (self, options, utils) => 
         // Open the modal
         dialog.dom.open();
         // Pass the js content element to the callback.
-        jsElement(dialog.dom.modalBox);
+        cbDomElement(dialog.dom.modalBox);
     };
 
     /**
@@ -1144,7 +1144,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('toastr', (self, options) => {
  * Class: jaxon.dialog.libs.butterup
  */
 
-jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -1178,6 +1178,10 @@ jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
             icon: true,
             dismissable: true,
             ...alertOptions,
+            onRender: (toast) => {
+                // Give a custom id to the toast.
+                toast.id = 'butterupToast-' + utils.createUniqueId(10);
+            },
         });
     };
 
@@ -1210,6 +1214,8 @@ jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
             dismissable: false,
             ...confirmOptions,
             onRender: (toast) => {
+                // Give a custom id to the toast.
+                toast.id = 'butterupToast-' + utils.createUniqueId(10);
                 // Save the id of the confirm toast.
                 toastOptions.id = toast.id;
             },
@@ -1241,7 +1247,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('butterup', (self, options) => {
  * Class: jaxon.dialog.libs.quantum
  */
 
-jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
+jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options, utils) => {
     // Dialogs options
     const {
         labels,
@@ -1255,15 +1261,6 @@ jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
     };
 
     jaxon.dialog.quantum = {};
-    const createRandomString = (length) => {
-        const chars = "abcdefghijklmnopqrstuvwxyz";
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    };
-      
 
     /**
      * Show an alert message
@@ -1294,26 +1291,28 @@ jaxon.dom.ready(() => jaxon.dialog.register('quantum', (self, options) => {
      */
     self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
         // Create functions with random names for callbacks.
-        const yesCbName = createRandomString(16);
-        const noCbName = createRandomString(16);
-        jaxon.dialog.quantum[yesCbName] = () => {
-            // Remove after calling.
-            jaxon.dialog.quantum[yesCbName] = undefined;
-            close_qual(); // Close the confirm dialog.
-            // The close_qual() is called after a 250ms timeout.
-            // We set a 300ms timeout to make sure the callback is called after.
-            setTimeout(() => yesCb(), 300);
-        };
-        jaxon.dialog.quantum[noCbName] = () => {
-            // Remove after calling.
-            jaxon.dialog.quantum[noCbName] = undefined;
-            close_qual(); // Close the confirm dialog.
-            // The close_qual() is called after a 250ms timeout.
-            // We set a 300ms timeout to make sure the callback is called after.
-            setTimeout(() => noCb(), 300);
+        const sCbName = utils.createUniqueId(16);
+        // Make the callbacks globally accessible.
+        jaxon.dialog.quantum[sCbName] = {
+            yes: () => {
+                // Remove after calling.
+                delete jaxon.dialog.quantum[sCbName];
+                close_qual(); // Close the confirm dialog.
+                // The close_qual() function closes the dialog after a 250ms timeout.
+                // We set a 300ms timeout to make sure the callback is called after.
+                setTimeout(() => yesCb(), 300);
+            },
+            no: () => {
+                // Remove after calling.
+                delete jaxon.dialog.quantum[sCbName];
+                close_qual(); // Close the confirm dialog.
+                // The close_qual() function closes the dialog after a 250ms timeout.
+                // We set a 300ms timeout to make sure the callback is called after.
+                setTimeout(() => noCb(), 300);
+            },
         };
         Qual.confirm(title, question, succ, labels.yes, labels.no,
-            'jaxon.dialog.quantum.' + yesCbName, 'jaxon.dialog.quantum.' + noCbName);
+            `jaxon.dialog.quantum.${sCbName}.yes`, `jaxon.dialog.quantum.${sCbName}.no`);
     };
 }));
 

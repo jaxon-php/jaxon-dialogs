@@ -27,11 +27,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         let btnIndex = 1;
         const oButtons = {};
         buttons.forEach(({ title: label, class: className, click }) => {
@@ -56,7 +56,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
             buttons: oButtons,
         });
         // Pass the js content element to the callback.
-        jsElement(dialog.dom.get(0));
+        cbDomElement(dialog.dom.get(0));
     };
 
     /**

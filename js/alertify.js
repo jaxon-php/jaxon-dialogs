@@ -29,11 +29,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
      * @param {string} dialog.content The dialog HTML content
      * @param {array} dialog.buttons The dialog buttons
      * @param {array} dialog.options The dialog options
-     * @param {function} jsElement A callback to call with the dialog js content element
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
      *
      * @returns {object}
      */
-    self.show = ({ title, content, buttons, options }, jsElement) => {
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
         /*
          * Warning: a new dialog factory will be registered each time a dialog is displayed.
          * Todo: Free the unused factories.
@@ -64,13 +64,13 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
                 prepare: function() {
                     this.setContent(this.message);
                     // Pass the js content element to the callback.
-                    dialog.jsElement(this.elements.content);
+                    dialog.cbDomElement(this.elements.content);
                     // Save the dialog instance locally.
                     dialog.instance = this;
                 },
                 build: function() {
                     // Pass the js content element to the callback.
-                    // dialog.jsElement(this.elements.content);
+                    // dialog.cbDomElement(this.elements.content);
                 },
                 callback:function(closeEvent) {
                     const button = dialog.buttons[closeEvent.index];
@@ -89,7 +89,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
         dialog.title = title;
         dialog.buttons = buttons;
         dialog.options = options;
-        dialog.jsElement = jsElement;
+        dialog.cbDomElement = cbDomElement;
         alertify[dialogName](content);
     };
 
