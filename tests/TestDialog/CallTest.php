@@ -417,15 +417,15 @@ class CallTest extends TestCase
      */
     public function testConfirmMessageSuccess()
     {
-        jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
+        jaxon()->register(Jaxon::CALLABLE_CLASS, 'SampleDialog', __DIR__ . '/../src/sample.php');
         jaxon()->setAppOption('dialogs.default.alert', 'cute');
         jaxon()->setAppOption('dialogs.default.confirm', 'noty');
         $this->assertEquals(
-            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
+            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"SampleDialog.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"success","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseSuccess("No confirm")->__toString()
         );
     }
@@ -435,17 +435,17 @@ class CallTest extends TestCase
      */
     public function testConfirmMessageInfo()
     {
-        jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
+        jaxon()->register(Jaxon::CALLABLE_CLASS, 'SampleDialog', __DIR__ . '/../src/sample.php');
         jaxon()->setAppOptions([
             'alert' => 'cute',
             'confirm' => 'noty',
         ], 'dialogs.default');
         $this->assertEquals(
-            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
+            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"SampleDialog.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"info","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseInfo("No confirm")->__toString()
         );
     }
@@ -455,17 +455,17 @@ class CallTest extends TestCase
      */
     public function testConfirmMessageWarning()
     {
-        jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
+        jaxon()->register(Jaxon::CALLABLE_CLASS, 'SampleDialog', __DIR__ . '/../src/sample.php');
         jaxon()->setAppOptions([
             'alert' => 'cute',
             'confirm' => 'noty',
         ], 'dialogs.default');
         $this->assertEquals(
-            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
+            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"SampleDialog.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"warning","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseWarning("No confirm")->__toString()
         );
     }
@@ -475,17 +475,17 @@ class CallTest extends TestCase
      */
     public function testConfirmMessageError()
     {
-        jaxon()->register(Jaxon::CALLABLE_CLASS, 'Sample', __DIR__ . '/../src/sample.php');
+        jaxon()->register(Jaxon::CALLABLE_CLASS, 'SampleDialog', __DIR__ . '/../src/sample.php');
         jaxon()->setAppOptions([
             'alert' => 'cute',
             'confirm' => 'noty',
         ], 'dialogs.default');
         $this->assertEquals(
-            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"Sample.method",' .
+            'jaxon.exec({"_type":"expr","calls":[{"_type":"func","_name":"SampleDialog.method",' .
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"error","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('Sample')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
                 ->elseError("No confirm")->__toString()
         );
     }

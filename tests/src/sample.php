@@ -2,7 +2,7 @@
 
 use function Jaxon\jaxon;
 
-class Sample
+class SampleDialog
 {
     public function myMethod()
     {
