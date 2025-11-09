@@ -23,7 +23,7 @@ abstract class AbstractLibrary
     /**
      * The dialog library helper
      *
-     * @var LibraryHelper
+     * @var LibraryHelper|null
      */
     private $xHelper = null;
 
