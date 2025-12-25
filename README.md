@@ -111,7 +111,7 @@ The parameters of the `show()` methods are described as follow:
 - `$buttons`: a list of buttons to be printed in the dialog. Each button is an array with the following entries:
   - `title`: the text to be printed in the button.
   - `class`: the CSS class or classes to be applied on the button.
-  - `click`: the javascript code to be executed on a click on this button. It can be defined using the [Request Factory](https://www.jaxon-php.org/docs/requests/factory.html), or it can be set to `close` to close the dialog.
+  - `click`: the javascript code to be executed on a click on this button. It can be defined using the [Call Factory](https://www.jaxon-php.org/docs/v5x/ui-features/call-factories.html), or it can be set to `close` to close the dialog.
 - `$options`: an array of config options that are specific to the javascript library in use.
 
 Example.
@@ -169,11 +169,11 @@ Example.
     {
         if(!$this->validator->valid($formValues))
         {
-            $this->response->dialog->error("Invalid input", "Error");
+            $this->response->dialog->title("Error")->error("Invalid input");
             return;
         }
         $this->repository->save($formValues);
-        $this->response->dialog->success("Data saved!", "Success");
+        $this->response->dialog->title("Success")->success("Data saved!");
     }
 ```
 
