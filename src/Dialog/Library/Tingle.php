@@ -49,7 +49,7 @@ class Tingle extends AbstractLibrary implements ModalInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/tingle.js@0.16.0/dist';
     }

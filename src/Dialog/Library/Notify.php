@@ -42,7 +42,7 @@ class Notify extends AbstractLibrary implements AlertInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/notify-js-legacy@0.4.1';
     }

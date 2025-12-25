@@ -50,7 +50,7 @@ class CuteAlert extends AbstractLibrary implements AlertInterface, ConfirmInterf
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/gh/jaxon-php/jaxon-js@5.0.0/dist/libs/cute-alert';
     }

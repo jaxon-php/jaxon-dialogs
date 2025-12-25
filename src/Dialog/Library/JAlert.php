@@ -50,7 +50,7 @@ class JAlert extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/jAlert@4.9.1/dist';
     }

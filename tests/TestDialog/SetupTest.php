@@ -20,7 +20,8 @@ use TestDialogLibrary;
 use function get_class;
 use function Jaxon\jaxon;
 use function Jaxon\Dialogs\dialog;
-use function Jaxon\Dialogs\_register;
+use function Jaxon\Dialogs\_register as register_dialogs;
+use function Jaxon\Storage\_register as register_storage;
 
 class SetupTest extends TestCase
 {
@@ -29,7 +30,9 @@ class SetupTest extends TestCase
      */
     public function setUp(): void
     {
-        _register();
+        register_dialogs();
+        register_storage();
+
         jaxon()->setOption('core.prefix.class', '');
         jaxon()->setOption('core.request.uri', 'http://example.test/path');
         jaxon()->register(Jaxon::CALLABLE_CLASS, Dialog::class);
@@ -86,13 +89,12 @@ class SetupTest extends TestCase
         // Registering a library twice should not cause any issue.
         dialog()->registerLibrary(TestDialogLibrary::class, TestDialogLibrary::NAME);
         jaxon()->setAppOption('dialogs.default.confirm', TestDialogLibrary::NAME);
+
         $xConfirmLibrary = dialog()->getConfirmLibrary();
-        $this->assertEquals('', $xConfirmLibrary->getUri());
-        $this->assertEquals('', $xConfirmLibrary->getJs());
-        $this->assertEquals('', $xConfirmLibrary->getScript());
-        $this->assertEquals('', $xConfirmLibrary->getJsCode()->sJs);
-        $this->assertEquals('', $xConfirmLibrary->getJsCode()->sJsBefore);
-        $this->assertEquals('', $xConfirmLibrary->getJsCode()->sJsAfter);
+        $this->assertEmpty($xConfirmLibrary->getJsUrls());
+        $this->assertEmpty($xConfirmLibrary->getCssUrls());
+        $this->assertEquals('', $xConfirmLibrary->getJsCode());
+        $this->assertEquals('', $xConfirmLibrary->getCssCode());
     }
 
     public function testExtDialogLibrary()
@@ -162,13 +164,13 @@ class SetupTest extends TestCase
      */
     public function testDialogScriptFile()
     {
-        jaxon()->setOptions([
+        jaxon()->setAppOptions([
             'export' => true,
             'minify' => false,
-            'file' => 'app',
+            'file' => 'app.dialog',
             'dir' => __DIR__ . '/../js',
             'uri' => 'http://localhost',
-        ], 'js.app');
+        ], 'assets.js');
         jaxon()->setAppOptions([
             'default' => [
                 'modal' => 'alertify',
@@ -186,10 +188,7 @@ class SetupTest extends TestCase
         $this->assertStringNotContainsString("jaxon.dialog.register('cute'", $sScriptCode);
         $this->assertStringNotContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
 
-        $this->assertStringContainsString('/js/alertify.js', $sScriptCode);
-        $this->assertStringContainsString('/js/bootbox.js', $sScriptCode);
-        $this->assertStringContainsString('/js/cute.js', $sScriptCode);
-        $this->assertStringContainsString('/js/jalert.js', $sScriptCode);
+        $this->assertStringContainsString('app.dialog.js', $sScriptCode);
     }
 
     /**
@@ -197,13 +196,13 @@ class SetupTest extends TestCase
      */
     public function testDialogScriptMinFile()
     {
-        jaxon()->setOptions([
+        jaxon()->setAppOptions([
             'export' => true,
             'minify' => true,
-            'file' => 'app',
+            'file' => 'app.dialog',
             'dir' => __DIR__ . '/../js',
             'uri' => 'http://localhost',
-        ], 'js.app');
+        ], 'assets.js');
         jaxon()->setAppOptions([
             'default' => [
                 'modal' => 'alertify',
@@ -221,10 +220,7 @@ class SetupTest extends TestCase
         $this->assertStringNotContainsString("jaxon.dialog.register('cute'", $sScriptCode);
         $this->assertStringNotContainsString("jaxon.dialog.register('jalert'", $sScriptCode);
 
-        $this->assertStringContainsString('/js/alertify.min.js', $sScriptCode);
-        $this->assertStringContainsString('/js/bootbox.min.js', $sScriptCode);
-        $this->assertStringContainsString('/js/cute.min.js', $sScriptCode);
-        $this->assertStringContainsString('/js/jalert.min.js', $sScriptCode);
+        $this->assertStringContainsString('app.dialog.min.js', $sScriptCode);
     }
 
     public function testAlertifyLibrary()
@@ -390,17 +386,20 @@ class SetupTest extends TestCase
     {
         $this->expectException(SetupException::class);
         jaxon()->setAppOption('dialogs.default.alert', 'incorrect');
+        $xLibrary = dialog()->getAlertLibrary();
     }
 
     public function testErrorSetWrongModalLibrary()
     {
         $this->expectException(SetupException::class);
         jaxon()->setAppOption('dialogs.default.modal', 'incorrect');
+        $xLibrary = dialog()->getModalLibrary();
     }
 
     public function testErrorSetWrongConfirmLibrary()
     {
         $this->expectException(SetupException::class);
         jaxon()->setAppOption('dialogs.default.confirm', 'incorrect');
+        $xLibrary = dialog()->getConfirmLibrary();
     }
 }

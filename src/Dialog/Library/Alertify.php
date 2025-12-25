@@ -51,7 +51,7 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build';
     }
@@ -59,14 +59,13 @@ class Alertify extends AbstractLibrary implements ModalInterface, AlertInterface
     /**
      * @inheritDoc
      */
-    public function getCss(): string
+    public function getCssCode(): string
     {
-        return parent::getCss() . '
-<style>
-    .ajs-footer .ajs-buttons .btn {
-        margin-right: 10px;
-    }
-</style>
+        return '
+/* Custom CSS for the Alertify dialog library */
+.ajs-footer .ajs-buttons .btn {
+    margin-right: 10px;
+}
 ';
     }
 }

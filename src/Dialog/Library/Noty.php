@@ -50,7 +50,7 @@ class Noty extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/noty@3.1.4/lib';
     }
@@ -58,14 +58,13 @@ class Noty extends AbstractLibrary implements AlertInterface, ConfirmInterface
     /**
      * @inheritDoc
      */
-    public function getCss(): string
+    public function getCssCode(): string
     {
-        return parent::getCss() . '
-<style>
-    .noty_buttons button {
-        margin-right: 10px;
-    }
-</style>
+        return '
+/* Custom CSS for the Noty dialog library */
+.noty_buttons button {
+    margin-right: 10px;
+}
 ';
     }
 }

@@ -49,7 +49,7 @@ class Notyf extends AbstractLibrary implements AlertInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/notyf@3';
     }

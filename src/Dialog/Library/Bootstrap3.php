@@ -19,8 +19,7 @@ use Jaxon\App\Dialog\Library\AlertInterface;
 use Jaxon\App\Dialog\Library\ConfirmInterface;
 use Jaxon\App\Dialog\Library\ModalInterface;
 
-class Bootstrap3 extends AbstractLibrary
-    implements ModalInterface, AlertInterface, ConfirmInterface
+class Bootstrap3 extends AbstractLibrary implements ModalInterface, AlertInterface, ConfirmInterface
 {
     /**
      * @const The library name
@@ -52,7 +51,7 @@ class Bootstrap3 extends AbstractLibrary
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/bootstrap3-dialog@1.35.4/dist';
     }

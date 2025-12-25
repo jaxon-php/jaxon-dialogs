@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AbstractDialogLibrary.php
+ * AbstractLibrary.php
  *
  * Base class for javascript dialog libraries.
  *
@@ -14,11 +14,13 @@
 
 namespace Jaxon\Dialogs\Dialog;
 
-use Jaxon\Plugin\Code\JsCode;
+use Jaxon\App\Dialog\Library\LibraryInterface;
 
+use function array_map;
+use function rtrim;
 use function Jaxon\Dialogs\dialog;
 
-abstract class AbstractLibrary
+abstract class AbstractLibrary implements LibraryInterface
 {
     /**
      * The dialog library helper
@@ -55,59 +57,76 @@ abstract class AbstractLibrary
      */
     public function helper(): LibraryHelper
     {
-        return $this->xHelper ?:
-            $this->xHelper = dialog()->getLibraryHelper($this->getName());
+        return $this->xHelper ??= dialog()->getLibraryHelper($this->getName());
     }
 
     /**
-     * Get the library base URI
+     * Get the library base URL
      *
      * @return string
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return '';
     }
 
     /**
-     * Get the CSS header code and file includes
+     * @param string $sFile The javascript file name
      *
-     * @return string
+     * @return string|null
      */
-    public function getJs(): string
+    private function getFileUrl(string $sFile): ?string
     {
-        return $this->helper()->getJs($this->aJsFiles);
+        return rtrim($this->helper()->getBaseUrl(), '/') . "/$sFile";
     }
 
     /**
-     * Get the javascript header code and file includes
+     * Get the CSS urls
      *
-     * @return string
+     * @return array
      */
-    public function getCss(): string
+    public function getCssUrls(): array
     {
-        return $this->helper()->getCss($this->aCssFiles);
+        return array_map(fn($sFile) => $this->getFileUrl($sFile), $this->aCssFiles);
     }
 
     /**
-     * Get the javascript code to be printed into the page
+     * Get the CSS header code
      *
      * @return string
      */
-    public function getScript(): string
+    public function getCssCode(): string
     {
         return '';
     }
 
-    /**
-     * Get the javascript code to be executed on page load
+     /**
+     * Get the javascript files
      *
-     * @return JsCode|null
+     * @return array
      */
-    public function getJsCode(): ?JsCode
+    public function getJsUrls(): array
     {
-        $xJsCode = new JsCode();
-        $xJsCode->sJs = $this->helper()->getScript();
-        return $xJsCode;
+        return array_map(fn($sFile) => $this->getFileUrl($sFile), $this->aJsFiles);
+    }
+
+    /**
+     * Get the javascript code
+     *
+     * @return string
+     */
+    public function getJsCode(): string
+    {
+        return dialog()->renderLibraryScript($this->getName());
+    }
+
+    /**
+     * Get the options of the js library
+     *
+     * @return array
+     */
+    public function getJsOptions(): array
+    {
+        return $this->helper()->getJsOptions();
     }
 }

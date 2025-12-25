@@ -15,43 +15,76 @@
 
 namespace Jaxon\Dialogs;
 
+use Jaxon\App\Config\ConfigListenerInterface;
 use Jaxon\App\Config\ConfigManager;
+use Jaxon\App\Dialog\Library\AlertInterface;
+use Jaxon\App\Dialog\Library\ConfirmInterface;
+use Jaxon\App\Dialog\Manager\LibraryRegistryInterface;
+use Jaxon\App\Dialog\Library\ModalInterface;
 use Jaxon\App\I18n\Translator;
+use Jaxon\Config\Config;
 use Jaxon\Dialogs\Dialog\AbstractLibrary;
 use Jaxon\Dialogs\Dialog\LibraryHelper;
+use Jaxon\Dialogs\Dialog\Library\Alert;
+use Jaxon\Di\Container;
 use Jaxon\Exception\SetupException;
 use Jaxon\Plugin\AbstractPlugin;
-use Jaxon\Plugin\Code\JsCode;
-use Closure;
+use Jaxon\Plugin\CssCode;
+use Jaxon\Plugin\CssCodeGeneratorInterface;
+use Jaxon\Plugin\JsCode;
+use Jaxon\Plugin\JsCodeGeneratorInterface;
+use Jaxon\Utils\Template\TemplateEngine;
 
-use function array_filter;
 use function array_map;
+use function class_implements;
 use function count;
 use function implode;
-use function json_encode;
-use function trim;
+use function in_array;
+use function is_string;
 
-class DialogPlugin extends AbstractPlugin
+class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
+    LibraryRegistryInterface, CssCodeGeneratorInterface, JsCodeGeneratorInterface
 {
     /**
-     * @const The plugin name
+     * @var string The plugin name
      */
     public const NAME = 'dialog_code';
 
     /**
      * @var array
      */
-    protected $aLibraries = null;
+    protected $aLibraries = [];
+
+    /**
+     * @var array|null
+     */
+    protected $aActiveLibraries = null;
+
+    /**
+     * @var array
+     */
+    protected $aDefaultLibraries = [];
+
+    /**
+     * @var Config|null
+     */
+    protected $xConfig = null;
+
+    /**
+     * @var bool
+     */
+    protected $bConfigProcessed = false;
 
     /**
      * The constructor
      *
-     * @param ConfigManager $xConfigManager
+     * @param Container $di
      * @param Translator $xTranslator
-     * @param DialogManager $xDialogManager
+     * @param ConfigManager $xConfigManager
+     * @param TemplateEngine $xTemplateEngine
      */
-    public function __construct(private ConfigManager $xConfigManager,
-        private Translator $xTranslator, private DialogManager $xDialogManager)
+    public function __construct(private Container $di, private Translator $xTranslator,
+        private ConfigManager $xConfigManager, private TemplateEngine $xTemplateEngine)
     {}
 
     /**
@@ -72,79 +105,252 @@ class DialogPlugin extends AbstractPlugin
     }
 
     /**
-     * @return AbstractLibrary[]
+     * @return Config
      */
-    private function getLibraries(): array
+    public function config(): Config
     {
-        return $this->aLibraries ?: $this->aLibraries = $this->xDialogManager->getLibraries();
+        return $this->xConfig ??= $this->xConfigManager->getConfig('dialogs');
     }
 
     /**
-     * @return LibraryHelper[]
+     * Register a javascript dialog library adapter.
+     *
+     * @param string $sClass
+     * @param string $sLibraryName
+     *
+     * @return void
      */
-    private function getHelpers(): array
+    private function setLibraryInContainer(string $sClass, string $sLibraryName): void
     {
-        return array_map(fn($xLibrary) => $xLibrary->helper(), $this->getLibraries());
+        if(!$this->di->h($sClass))
+        {
+            $this->di->set($sClass, fn($di) => $di->make($sClass));
+        }
+        // Set the alias, so the libraries can be found by their names.
+        $this->di->alias("dialog_library_$sLibraryName", $sClass);
+        // Same for the helper.
+        $this->di->set("dialog_library_helper_$sLibraryName", fn($di) =>
+            new LibraryHelper($di->g($sClass), $this));
     }
 
     /**
-     * @param array $aCodes
+     * @param string $sClassName
+     *
+     * @return array{alert: bool, confirm: bool, modal: bool}
+     * @throws SetupException
+     */
+    private function getLibraryTypes(string $sClassName): array
+    {
+        $aInterfaces = class_implements($sClassName);
+        $bIsConfirm = in_array(ConfirmInterface::class, $aInterfaces);
+        $bIsAlert = in_array(AlertInterface::class, $aInterfaces);
+        $bIsModal = in_array(ModalInterface::class, $aInterfaces);
+        if(!$bIsConfirm && !$bIsAlert && !$bIsModal)
+        {
+            // The class is invalid.
+            $sMessage = $this->xTranslator->trans('errors.register.invalid', [
+                'name' => $sClassName,
+            ]);
+            throw new SetupException($sMessage);
+        }
+
+        return [
+            'confirm' => $bIsConfirm,
+            'alert' => $bIsAlert,
+            'modal' => $bIsModal,
+        ];
+    }
+
+    /**
+     * Register a javascript dialog library adapter.
+     *
+     * @param string $sClassName
+     * @param string $sLibraryName
+     *
+     * @return void
+     * @throws SetupException
+     */
+    public function registerLibrary(string $sClassName, string $sLibraryName): void
+    {
+        if(isset($this->aLibraries[$sLibraryName]))
+        {
+            return;
+        }
+
+        // Save the library
+        $this->aLibraries[$sLibraryName] = [
+            'name' => $sLibraryName,
+            'active' => false,
+            ...$this->getLibraryTypes($sClassName),
+        ];
+
+        // Register the library class in the container
+        $this->setLibraryInContainer($sClassName, $sLibraryName);
+    }
+
+    /**
+     * Get the dialog library
+     *
+     * @param string $sLibraryName
+     *
+     * @return AbstractLibrary|null
+     */
+    private function getLibrary(string $sLibraryName): AbstractLibrary|null
+    {
+        $sKey = "dialog_library_$sLibraryName";
+        return $this->di->h($sKey) ? $this->di->g($sKey) : null;
+    }
+
+    /**
+     * Get the dialog library helper
+     *
+     * @param string $sLibraryName
+     *
+     * @return LibraryHelper
+     */
+    public function getLibraryHelper(string $sLibraryName): LibraryHelper
+    {
+        return $this->di->g("dialog_library_helper_$sLibraryName");
+    }
+
+    /**
+     * @param string $sLibraryName
      *
      * @return string
      */
-    private function getCode(array $aCodes): string
+
+    public function renderLibraryScript(string $sLibraryName): string
     {
-        $aCodes = array_filter($aCodes, fn($sScript) => $sScript !== '');
-        return implode("\n", $aCodes);
+        return $this->xTemplateEngine->render("jaxon::dialogs::{$sLibraryName}.js");
     }
 
     /**
-     * @param Closure $fGetCode
+     * @param string $sType
      *
+     * @return AbstractLibrary|null
+     */
+    private function getDefaultLibrary(string $sType): AbstractLibrary|null
+    {
+        return $this->getLibrary($this->aDefaultLibraries[$sType] ?? '');
+    }
+
+    /**
+     * Register the javascript dialog libraries from config options.
+     *
+     * @return void
+     * @throws SetupException
+     */
+    private function processLibraryConfig(): void
+    {
+        if($this->bConfigProcessed)
+        {
+            return;
+        }
+
+        // Register the 3rd party libraries
+        $aLibraries = $this->config()->getOption('lib.ext', []);
+        foreach($aLibraries as $sLibraryName => $sClassName)
+        {
+            $this->registerLibrary($sClassName, $sLibraryName);
+        }
+
+        // Set the other libraries in use
+        $aLibraries = $this->config()->getOption('lib.use', []);
+        foreach($aLibraries as $sLibraryName)
+        {
+            if(isset($this->aLibraries[$sLibraryName])) // Make sure the library exists
+            {
+                $this->aLibraries[$sLibraryName]['active'] = true;
+            }
+        }
+
+        // Set the default alert, modal and confirm libraries.
+        foreach(['alert', 'modal', 'confirm'] as $sType)
+        {
+            $sLibraryName = trim($this->config()->getOption("default.$sType", ''));
+            if(!is_string($sLibraryName) || $sLibraryName === '')
+            {
+                continue;
+            }
+
+            if(!($this->aLibraries[$sLibraryName][$sType] ?? false))
+            {
+                $sMessage = $this->xTranslator->trans('errors.dialog.library', [
+                    'type' => $sType,
+                    'name' => $sLibraryName,
+                ]);
+                throw new SetupException($sMessage);
+            }
+
+            $this->aLibraries[$sLibraryName]['active'] = true;
+            $this->aDefaultLibraries[$sType] = $sLibraryName;
+        }
+
+        $this->bConfigProcessed = true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConfirmLibrary(): ConfirmInterface
+    {
+        $this->processLibraryConfig();
+
+        return $this->getDefaultLibrary('confirm') ?? $this->di->g(Alert::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAlertLibrary(): AlertInterface
+    {
+        $this->processLibraryConfig();
+
+        return $this->getDefaultLibrary('alert') ?? $this->di->g(Alert::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getModalLibrary(): ?ModalInterface
+    {
+        $this->processLibraryConfig();
+
+        return $this->getDefaultLibrary('modal');
+    }
+
+    /**
+     * @return array<AbstractLibrary>
+     */
+    private function getActiveLibraries(): array
+    {
+        if($this->aActiveLibraries !== null)
+        {
+            return $this->aActiveLibraries;
+        }
+
+        $this->processLibraryConfig();
+
+        // Set the active libraries.
+        $cFilter = fn(array $aLibrary) => $aLibrary['active'];
+        $cGetter = fn(array $aLibrary) => $this->getLibrary($aLibrary['name']);
+        $aLibraries = array_filter($this->aLibraries, $cFilter);
+        return $this->aActiveLibraries = array_map($cGetter, $aLibraries);
+    }
+
+    /**
      * @return string
-     */
-    private function getLibCodes(Closure $fGetCode): string
-    {
-        return $this->getCode(array_map($fGetCode, $this->getLibraries()));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getJs(): string
-    {
-        return $this->getLibCodes(fn($xLibrary) => trim($xLibrary->getJs()));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCss(): string
-    {
-        return $this->getLibCodes(fn($xLibrary) => trim($xLibrary->getCss()));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getScript(): string
-    {
-        return $this->getLibCodes(fn($xLibrary) => trim($xLibrary->getScript()));
-    }
-
-    /**
-     * @inheritDoc
      */
     private function getConfigScript(): string
     {
         $aOptions = [
             'labels' => $this->xTranslator->translations('labels'),
-            'defaults' => $this->xConfigManager->getAppOption('dialogs.default', []),
+            'defaults' => $this->config()->getOption('default', []),
         ];
         $aLibrariesOptions = [];
-        foreach($this->getLibraries() as $xLibrary)
+        foreach($this->getActiveLibraries() as $xLibrary)
         {
-            $aLibOptions = $xLibrary->helper()->getJsOptions();
+            $aLibOptions = $xLibrary->getJsOptions();
             if(count($aLibOptions) > 0)
             {
                 $aLibrariesOptions[$xLibrary->getName()] = $aLibOptions;
@@ -154,26 +360,58 @@ class DialogPlugin extends AbstractPlugin
         {
             $aOptions['options'] = $aLibrariesOptions;
         }
-        return "jaxon.dialog.config(" . json_encode($aOptions) . ");\n\n";
+
+        return 'jaxon.dom.ready(() => jaxon.dialog.config(' . json_encode($aOptions) . '));';
     }
 
     /**
      * @inheritDoc
-     * @throws SetupException
+     */
+    public function getCssCode(): CssCode
+    {
+        $aUrls = [];
+        $aCodes = [];
+        foreach($this->getActiveLibraries() as $xLibrary)
+        {
+            $aUrls = [...$aUrls, ...$xLibrary->getCssUrls()];
+            if(($sCode = $xLibrary->getCssCode()) !== '')
+            {
+                $aCodes[] = $sCode;
+            }
+        }
+
+        return new CssCode(implode("\n", $aCodes), $aUrls);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getJsCode(): JsCode
     {
-        $xJsCode = new JsCode();
-        $xJsCode->sJsBefore = $this->getConfigScript();
-
+        $sCodeBefore = $this->getConfigScript();
+        $aUrls = [];
         $aCodes = [];
-        foreach($this->getHelpers() as $xHelper)
+        foreach($this->getActiveLibraries() as $xLibrary)
         {
-            $aCodes[] = $xHelper->getScript();
-            $xJsCode->aFiles = array_merge($xJsCode->aFiles, $xHelper->getFiles());
+            $aUrls = [...$aUrls, ...$xLibrary->getJsUrls()];
+            if(($sCode = $xLibrary->getJsCode()) !== '')
+            {
+                $aCodes[] = $sCode;
+            }
         }
-        $xJsCode->sJs = $this->getCode($aCodes);
 
-        return $xJsCode;
+        return new JsCode(implode("\n", $aCodes), $aUrls, $sCodeBefore);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onChange(Config $xConfig, string $sName): void
+    {
+        // Reset all the config related data on config change.
+        $this->xConfig = null;
+        $this->aActiveLibraries = null;
+        $this->aDefaultLibraries = [];
+        $this->bConfigProcessed = false;
     }
 }

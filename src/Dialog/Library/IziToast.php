@@ -50,7 +50,7 @@ class IziToast extends AbstractLibrary implements AlertInterface, ConfirmInterfa
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist';
     }

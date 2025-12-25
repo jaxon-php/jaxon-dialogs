@@ -44,7 +44,7 @@ class Bootbox extends AbstractLibrary implements ModalInterface, AlertInterface,
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/bootbox@6.0.0/dist';
     }

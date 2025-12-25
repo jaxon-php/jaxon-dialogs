@@ -2,9 +2,7 @@
 
 namespace Jaxon\Dialogs;
 
-use Jaxon\App\Config\ConfigManager;
 use Jaxon\App\Dialog\Manager\LibraryRegistryInterface;
-use Jaxon\App\I18n\Translator;
 use Jaxon\Dialogs\Dialog\Library\Alert;
 use Jaxon\Exception\SetupException;
 
@@ -14,11 +12,11 @@ use function php_sapi_name;
 /**
  * Get the dialog library manager
  *
- * @return DialogManager
+ * @return DialogPlugin
  */
-function dialog(): DialogManager
+function dialog(): DialogPlugin
 {
-    return jaxon()->di()->g(DialogManager::class);
+    return jaxon()->di()->g(DialogPlugin::class);
 }
 
 /**
@@ -27,14 +25,14 @@ function dialog(): DialogManager
 function _register(): void
 {
     $jaxon = jaxon();
-    $xDi = $jaxon->di();
+    $di = $jaxon->di();
 
-    // Dialog library manager
-    $xDi->set(DialogManager::class, function($di) {
+    // Setup the Dialog plugin in the DI.
+    $di->set(DialogPlugin::class, function($di) {
         // Register the template dir into the template renderer
         jaxon()->template()->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/js');
 
-        $xDialog = new DialogManager($di, $di->g(ConfigManager::class), $di->g(Translator::class));
+        $xDialogPlugin = $di->make(DialogPlugin::class);
         // Register the provided libraries.
         $aLibraries = [
             Dialog\Library\Alertify::class, // Alertify
@@ -59,19 +57,20 @@ function _register(): void
         {
             try
             {
-                $xDialog->registerLibrary($sClass, $sClass::NAME);
+                $xDialogPlugin->registerLibrary($sClass, $sClass::NAME);
             }
             catch(SetupException $_){}
         }
 
-        return $xDialog;
+        return $xDialogPlugin;
     });
 
-    $xDi->alias(LibraryRegistryInterface::class, DialogManager::class);
-    $xDi->set(Alert::class, fn() => new Alert());
+    $di->alias(LibraryRegistryInterface::class, DialogPlugin::class);
+    $di->set(Alert::class, fn() => new Alert());
 
     // Listener for app config changes.
-    $jaxon->config()->addAppEventListener(DialogManager::class);
+    $jaxon->config()->addAppEventListener(DialogPlugin::class);
+
     // Register the plugin
     $jaxon->registerPlugin(DialogPlugin::class, DialogPlugin::NAME, 900);
 }

@@ -50,7 +50,7 @@ class Butterup extends AbstractLibrary implements AlertInterface, ConfirmInterfa
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/gh/dgtlss/butterup@2.0.0';
     }

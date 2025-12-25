@@ -49,7 +49,7 @@ class Toastr extends AbstractLibrary implements AlertInterface
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/toastr@2.1.4';
     }

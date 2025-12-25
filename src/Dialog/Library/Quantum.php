@@ -43,7 +43,7 @@ class Quantum extends AbstractLibrary implements AlertInterface, ConfirmInterfac
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/gh/cosmogicofficial/quantumalert@latest';
     }

@@ -43,7 +43,7 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getBaseUrl(): string
     {
         return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
     }
