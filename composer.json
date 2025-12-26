@@ -13,7 +13,7 @@
         "source": "https://github.com/jaxon-php/jaxon-dialogs"
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "jaxon-php/jaxon-core": "^5.3"
     },
     "require-dev": {
