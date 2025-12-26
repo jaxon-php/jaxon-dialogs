@@ -18,7 +18,6 @@ use function Jaxon\rq;
 use function Jaxon\pm;
 use function Jaxon\Dialogs\dialog;
 use function Jaxon\Dialogs\_register as register_dialogs;
-use function Jaxon\Storage\_register as register_storage;
 
 class CallTest extends TestCase
 {
@@ -28,7 +27,6 @@ class CallTest extends TestCase
     public function setUp(): void
     {
         register_dialogs();
-        register_storage();
 
         jaxon()->setOption('core.prefix.class', '');
         jaxon()->setOption('core.request.uri', 'http://example.test/path');
