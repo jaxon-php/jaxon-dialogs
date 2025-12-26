@@ -380,7 +380,7 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
             }
         }
 
-        return new CssCode(implode("\n", $aCodes), $aUrls);
+        return new CssCode(sCode: implode("\n", $aCodes), aUrls: $aUrls);
     }
 
     /**
@@ -400,7 +400,7 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
             }
         }
 
-        return new JsCode(implode("\n", $aCodes), $aUrls, $sCodeBefore);
+        return new JsCode(sCode: implode("\n", $aCodes), aUrls: $aUrls, sCodeBefore: $sCodeBefore);
     }
 
     /**
