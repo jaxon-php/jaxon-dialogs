@@ -27,7 +27,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('sweetalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.alert = ({ type, message, title }) => swal({
+    self.alert = ({ type, message, title }) => Swal.fire({
         ...alertOptions,
         text: message,
         title: title ?? '',
@@ -46,13 +46,16 @@ jaxon.dom.ready(() => jaxon.dialog.register('sweetalert', (self, options) => {
      *
      * @returns {void}
      */
-    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => swal({
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => Swal.fire({
         ...confirmOptions,
-        icon: "warning",
+        icon: "question",
         title,
         text: question,
-        buttons: [labels.no, labels.yes],
-    }).then((res) => {
-        res ? yesCb() : noCb();
+        showCancelButton: true,
+        confirmButtonText: labels.yes,
+        cancelButtonText: labels.no,
+        reverseButtons: true,
+    }).then((result) => {
+        result.isConfirmed ? yesCb() : noCb();
     });
 }));

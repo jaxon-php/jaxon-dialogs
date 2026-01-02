@@ -30,7 +30,7 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
      *
      * @var array
      */
-    protected $aJsFiles = ['sweetalert.min.js'];
+    protected $aJsFiles = ['sweetalert2.all.min.js'];
 
     /**
      * @inheritDoc
@@ -45,6 +45,6 @@ class SweetAlert extends AbstractLibrary implements AlertInterface, ConfirmInter
      */
     public function getBaseUrl(): string
     {
-        return 'https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist';
+        return 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist';
     }
 }
