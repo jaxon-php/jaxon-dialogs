@@ -14,7 +14,7 @@
     },
     "require": {
         "php": ">=8.1",
-        "jaxon-php/jaxon-core": "^5.3"
+        "jaxon-php/jaxon-core": "dev-main"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
