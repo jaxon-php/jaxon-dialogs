@@ -343,7 +343,7 @@ class SetupTest extends TestCase
     {
         jaxon()->setAppOption('dialogs.lib.use', ['sweetalert']);
 
-        $this->assertStringContainsString('sweetalert.min.js', jaxon()->js());
+        $this->assertStringContainsString('sweetalert2.all.min.js', jaxon()->js());
         $this->assertStringContainsString("jaxon.dialog.register('sweetalert'", jaxon()->script());
     }
 
