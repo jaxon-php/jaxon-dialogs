@@ -29,7 +29,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap3', (self, options, utils)
             ...modalOptions,
             ...options,
             title,
-            message: content,
+            message: content !== '' ? content : '&nbsp;',
             buttons: buttons.map(({ title: label, class: cssClass, click }) => {
                 const handler = utils.isObject(click) ?
                     () => utils.js(click) : dialog => dialog.close();

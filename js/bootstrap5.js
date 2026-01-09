@@ -42,7 +42,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap5', (self, options, utils)
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ${content}
+                ${content !== '' ? content : '&nbsp;'}
             </div>
             <div class="modal-footer">
                 ${buttons}

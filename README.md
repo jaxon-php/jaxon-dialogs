@@ -120,13 +120,11 @@ Example.
     public function showDialog()
     {
         // The dialog buttons
-        $buttons = [
-            [
-                'title' => 'Close',
-                'class' => 'btn',
-                'click' => 'close'
-            ]
-        ];
+        $buttons = [[
+            'title' => 'Close',
+            'class' => 'btn',
+            'click' => 'close'
+        ]];
         // The HTML content of the dialog
         $content = "This modal dialog depends on application settings!!";
         // The dialog specific options
@@ -199,8 +197,8 @@ Example with Jaxon selector.
 
 ```php
 <select class="form-control" id="colorselect" name="colorselect" onchange="<?php
-    echo rq('HelloWorld')->setColor(pm()->select('colorselect'))
-        ->confirm('Set color to {1}?', pm()->select('colorselect')) ?>; return false;">
+    echo rq('HelloWorld')->setColor(je('colorselect')->rd()->select())
+        ->confirm('Set color to {1}?', je('colorselect')->rd()->select()) ?>; return false;">
     <option value="black" selected="selected">Black</option>
     <option value="red">Red</option>
     <option value="green">Green</option>

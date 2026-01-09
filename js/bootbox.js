@@ -52,7 +52,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
             ...modalOptions,
             ...options,
             title,
-            message: content,
+            message: content !== '' ? content : '&nbsp;',
             buttons: oButtons,
         });
         // Pass the js content element to the callback.

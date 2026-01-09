@@ -90,7 +90,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
         dialog.buttons = buttons;
         dialog.options = options;
         dialog.cbDomElement = cbDomElement;
-        alertify[dialogName](content);
+        alertify[dialogName](content !== '' ? content : '&nbsp;');
     };
 
     /**

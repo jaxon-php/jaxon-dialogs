@@ -44,7 +44,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap4', (self, options, utils)
                 </button>
             </div>
             <div class="modal-body">
-                ${content}
+                ${content !== '' ? content : '&nbsp;'}
             </div>
             <div class="modal-footer">
                 ${buttons}

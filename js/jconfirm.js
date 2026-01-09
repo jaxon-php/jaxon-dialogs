@@ -44,7 +44,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('jconfirm', (self, options, utils) =
         dialog.dom = $.confirm({
             ...modalOptions,
             title,
-            content,
+            content: content !== '' ? content : '&nbsp;',
             ...options,
             closeIcon: true,
             useBootstrap: true,
