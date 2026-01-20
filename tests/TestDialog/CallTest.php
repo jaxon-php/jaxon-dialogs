@@ -49,8 +49,8 @@ class CallTest extends TestCase
     public function testDefaultDialogSuccess()
     {
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -59,8 +59,7 @@ class CallTest extends TestCase
                         'method' => 'success',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -81,8 +80,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -91,8 +90,7 @@ class CallTest extends TestCase
                         'method' => 'success',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -109,8 +107,8 @@ class CallTest extends TestCase
     public function testDefaultDialogWarning()
     {
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -119,8 +117,7 @@ class CallTest extends TestCase
                         'method' => 'warning',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -141,8 +138,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -151,8 +148,7 @@ class CallTest extends TestCase
                         'method' => 'warning',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -169,8 +165,8 @@ class CallTest extends TestCase
     public function testDefaultDialogInfo()
     {
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -179,8 +175,7 @@ class CallTest extends TestCase
                         'method' => 'info',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -201,8 +196,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -211,8 +206,7 @@ class CallTest extends TestCase
                         'method' => 'info',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -229,8 +223,8 @@ class CallTest extends TestCase
     public function testDefaultDialogError()
     {
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -239,8 +233,7 @@ class CallTest extends TestCase
                         'method' => 'error',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -261,8 +254,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
             ->fromGlobals()
             ->withQueryParams([
                 'jxncall' => json_encode([
@@ -271,8 +264,7 @@ class CallTest extends TestCase
                     'method' => 'error',
                     'args' => [],
                 ]),
-            ]);
-        });
+            ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -294,8 +286,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -304,8 +296,7 @@ class CallTest extends TestCase
                         'method' => 'show',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -327,8 +318,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -337,8 +328,7 @@ class CallTest extends TestCase
                         'method' => 'show',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -359,8 +349,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -369,8 +359,7 @@ class CallTest extends TestCase
                         'method' => 'showWith',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
@@ -391,8 +380,8 @@ class CallTest extends TestCase
             'confirm' => 'alertify',
         ], 'dialogs.default');
         // The server request
-        jaxon()->di()->set(ServerRequestInterface::class, function($c) {
-            return $c->g(ServerRequestCreator::class)
+        jaxon()->di()->set(ServerRequestInterface::class, fn($c) =>
+            $c->g(ServerRequestCreator::class)
                 ->fromGlobals()
                 ->withQueryParams([
                     'jxncall' => json_encode([
@@ -401,8 +390,7 @@ class CallTest extends TestCase
                         'method' => 'hide',
                         'args' => [],
                     ]),
-                ]);
-        });
+                ]));
 
         $this->assertTrue(jaxon()->di()->getRequestHandler()->canProcessRequest());
         jaxon()->di()->getRequestHandler()->processRequest();
