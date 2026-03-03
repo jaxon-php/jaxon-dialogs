@@ -87,7 +87,7 @@ abstract class AbstractLibrary implements LibraryInterface
      */
     public function getCssUrls(): array
     {
-        return array_map(fn($sFile) => $this->getFileUrl($sFile), $this->aCssFiles);
+        return array_map($this->getFileUrl(...), $this->aCssFiles);
     }
 
     /**
@@ -107,7 +107,7 @@ abstract class AbstractLibrary implements LibraryInterface
      */
     public function getJsUrls(): array
     {
-        return array_map(fn($sFile) => $this->getFileUrl($sFile), $this->aJsFiles);
+        return array_map($this->getFileUrl(...), $this->aJsFiles);
     }
 
     /**

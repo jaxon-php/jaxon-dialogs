@@ -2,7 +2,7 @@
 
 namespace Jaxon\Dialogs\Dialog;
 
-use Jaxon\Dialogs\DialogPlugin;
+use Jaxon\Config\Config;
 
 use function is_array;
 use function rtrim;
@@ -10,12 +10,24 @@ use function rtrim;
 class LibraryHelper
 {
     /**
-     * @param AbstractLibrary $xDialogLibrary
-     * @param DialogPlugin $xDialogPlugin
+     * @var string
      */
-    public function __construct(private AbstractLibrary $xDialogLibrary,
-        private DialogPlugin $xDialogPlugin)
-    {}
+    private string $sLibName;
+
+    /**
+     * @var string
+     */
+    private string $sBaseUrl;
+
+    /**
+     * @param AbstractLibrary $xDialogLibrary
+     * @param Config $xConfig
+     */
+    public function __construct(private AbstractLibrary $xDialogLibrary, private Config $xConfig)
+    {
+        $this->sLibName = $this->xDialogLibrary->getName();
+        $this->sBaseUrl = $this->xDialogLibrary->getBaseUrl();
+    }
 
     /**
      * Get the value of a config option
@@ -27,8 +39,7 @@ class LibraryHelper
      */
     private function getOption(string $sOptionName, $xDefault = null): mixed
     {
-        return $this->xDialogPlugin->config()
-            ->getOption($this->xDialogLibrary->getName() . ".$sOptionName", $xDefault);
+        return $this->xConfig->getOption("{$this->sLibName}.$sOptionName", $xDefault);
     }
 
     /**
@@ -40,8 +51,7 @@ class LibraryHelper
      */
     private function hasOption(string $sOptionName): bool
     {
-        return $this->xDialogPlugin->config()
-            ->hasOption($this->xDialogLibrary->getName() . ".$sOptionName");
+        return $this->xConfig->hasOption("{$this->sLibName}.$sOptionName");
     }
 
     /**
@@ -53,8 +63,7 @@ class LibraryHelper
     {
         $sBaseUrl = $this->hasOption('uri') ?
             $this->getOption('uri') :
-            $this->xDialogPlugin->config()->getOption('lib.uri',
-                $this->xDialogLibrary->getBaseUrl());
+            $this->xConfig->getOption('lib.uri', $this->sBaseUrl);
         if($this->hasOption('subdir'))
         {
             $sBaseUrl = rtrim($sBaseUrl, '/') . '/' . $this->getOption('subdir');

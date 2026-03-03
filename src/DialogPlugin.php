@@ -124,13 +124,13 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
     {
         if(!$this->di->h($sClass))
         {
-            $this->di->set($sClass, fn($di) => $di->make($sClass));
+            $this->di->set($sClass, fn(Container $di) => $di->make($sClass));
         }
         // Set the alias, so the libraries can be found by their names.
         $this->di->alias("dialog_library_$sLibraryName", $sClass);
         // Same for the helper.
-        $this->di->set("dialog_library_helper_$sLibraryName", fn($di) =>
-            new LibraryHelper($di->g($sClass), $this));
+        $this->di->set("dialog_library_helper_$sLibraryName", fn(Container $di) =>
+            new LibraryHelper($di->g($sClass), $this->config()));
     }
 
     /**
