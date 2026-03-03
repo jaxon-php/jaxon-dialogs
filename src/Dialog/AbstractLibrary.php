@@ -81,9 +81,7 @@ abstract class AbstractLibrary implements LibraryInterface
     }
 
     /**
-     * Get the CSS urls
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getCssUrls(): array
     {
@@ -91,9 +89,7 @@ abstract class AbstractLibrary implements LibraryInterface
     }
 
     /**
-     * Get the CSS header code
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getCssCode(): string
     {
@@ -101,9 +97,7 @@ abstract class AbstractLibrary implements LibraryInterface
     }
 
      /**
-     * Get the javascript files
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getJsUrls(): array
     {
@@ -111,9 +105,7 @@ abstract class AbstractLibrary implements LibraryInterface
     }
 
     /**
-     * Get the javascript code
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getJsCode(): string
     {

@@ -13,9 +13,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Dialog;
 use TestDialogLibrary;
 
+use function Jaxon\html;
 use function Jaxon\jaxon;
 use function Jaxon\rq;
-use function Jaxon\pm;
 use function Jaxon\Dialogs\dialog;
 use function Jaxon\Dialogs\_register as register_dialogs;
 
@@ -414,7 +414,7 @@ class CallTest extends TestCase
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"success","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(html('elt_id'))->confirm("Really?")
                 ->elseSuccess("No confirm")->__toString()
         );
     }
@@ -434,7 +434,7 @@ class CallTest extends TestCase
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"info","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(html('elt_id'))->confirm("Really?")
                 ->elseInfo("No confirm")->__toString()
         );
     }
@@ -454,7 +454,7 @@ class CallTest extends TestCase
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"warning","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(html('elt_id'))->confirm("Really?")
                 ->elseWarning("No confirm")->__toString()
         );
     }
@@ -474,7 +474,7 @@ class CallTest extends TestCase
                 '"args":[{"_type":"html","_name":"elt_id"}]}],' .
                 '"confirm":{"lib":"noty","question":{"title":"","phrase":{"str":"Really?","args":[]}}},' .
                 '"alert":{"lib":"cute","message":{"type":"error","title":"","phrase":{"str":"No confirm","args":[]}}}})',
-            rq('SampleDialog')->method(pm()->html('elt_id'))->confirm("Really?")
+            rq('SampleDialog')->method(html('elt_id'))->confirm("Really?")
                 ->elseError("No confirm")->__toString()
         );
     }
