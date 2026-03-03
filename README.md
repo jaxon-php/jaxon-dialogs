@@ -13,7 +13,6 @@ Dialogs for Jaxon
 
 Modals, alerts and confirmation dialogs for Jaxon with various javascript libraries.
 
-
 Features
 --------
 
@@ -39,16 +38,16 @@ Add the following lines in the `composer.json` file, and run the `composer updat
 Configuration
 -------------
 
-This package defines 3 config options in the `default` section to set the default library to be used.
+This package defines 3 config options in the `app.dialogs.default` section to set the default library to be used.
 - modal: the default library for modal dialogs
 - alert: the default library for alerts
 - confirm: the default library for questions
 
-The `lib.use` option allows to load additional libraries into the page, if they are used in the application.
+The `app.dialogs.confirm` section defines options for the confirm dialog.
 
-The `confirm` section defines options for the confirm dialog.
+The `app.dialogs.lib.use` option allows to load additional libraries into the page, if they are used in the application.
 
-The `lib.uri` option defines the URI where to download the libraries files from.
+The `app.dialogs.lib.uri` option defines the URI where to download the libraries files from.
 
 Specific options can also be set for each library.
 
@@ -352,6 +351,186 @@ https://codeseven.github.io/toastr/
 - Dialog id: toastr
 - Implements: Alert
 - Version: 2.1.4
+
+Adding a new library
+--------------------
+
+Adding a new javascript library to the Dialogs plugin requires to provides some javascript and PHP code.
+Depending on the features in the library, the javascript code needs to implement functions to show dialog windows, alert messages or confirm questions.
+The required PHP class only implements functions to load the javascript code into the web page.
+
+### The javascript code
+
+The `jaxon.dialog.register()` function of the Jaxon javascript library registers a new dialog library into the web application.
+It must be provided with the dialog library unique name and a callback returning a javascript object with one or more of the above functions.
+
+```javascript
+    /**
+     * Show the modal dialog
+     *
+     * @param {object} dialog The dialog parameters
+     * @param {string} dialog.title The dialog title
+     * @param {string} dialog.content The dialog HTML content
+     * @param {array} dialog.buttons The dialog buttons
+     * @param {array} dialog.options The dialog options
+     * @param {function} cbDomElement A callback to call with the DOM element of the dialog content
+     *
+     * @returns {object}
+     */
+    self.show = ({ title, content, buttons, options }, cbDomElement) => {
+        //
+    };
+```
+
+The `cbDomElement` callback is very important.
+The Jaxon library needs to parse any HTML code inserted in the page, in order to process its custom attributes.
+This callback does that, and thus needs to be provided with the root HTML element inserted in the page when showing the dialog window.
+
+```javascript
+    /**
+     * Hide the modal dialog
+     *
+     * @returns {void}
+     */
+    self.hide = () => {
+        //
+    };
+```
+
+```javascript
+    /**
+     * Show an alert message
+     *
+     * @param {object} alert The alert parameters
+     * @param {string} alert.type The alert type
+     * @param {string} alert.message The alert message
+     * @param {string} alert.title The alert title
+     *
+     * @returns {void}
+     */
+    self.alert = ({ type, message, title }) => {
+        //
+    };
+```
+
+```javascript
+    /**
+     * Ask a confirm question to the user.
+     *
+     * @param {object} confirm The confirm parameters
+     * @param {string} confirm.question The question to ask
+     * @param {string} confirm.title The question title
+     * @param {object} callback The confirm callbacks
+     * @param {callback} callback.yes The function to call if the answer is yes
+     * @param {callback=} callback.no The function to call if the answer is no
+     *
+     * @returns {void}
+     */
+    self.confirm = ({ question, title }, { yes: yesCb, no: noCb = () => {} }) => {
+        //
+    };
+```
+
+> Note: the `js/` dir in this repo contains the javascript codes for the already supported dialog libraries.
+
+### The abstract PHP class
+
+The PHP class must extend the `Jaxon\Dialogs\Dialog\AbstractLibrary` abstract class, and implement at least one of the
+`Jaxon\App\Dialog\Library\AlertInterface`, `Jaxon\App\Dialog\Library\ConfirmInterface`, or `Jaxon\App\Dialog\Library\ModalInterface`
+interfaces, depending on the features it provides.
+
+The `Jaxon\Dialogs\Dialog\AbstractLibrary` abstract class implements the `Jaxon\Dialogs\Dialog\LibraryInterface` interface, and provides default implementations for the methods it defines.
+
+The `public function getName(): string` method returns the unique name of the dialog library.
+It will namely be used in the config options to identify the library.
+
+The `public function getBaseUrl(): string` method returns a base URL for the library javascript and CSS files.
+The `public function helper()` returns a helper which implements defaults for the class functions.
+These two methods are not part of the `Jaxon\Dialogs\Dialog\LibraryInterface` interface.
+
+The `public function getCssUrls(): array` method returns an array of URLs to the library CSS files.
+Its default implementation returns the values in the `protected $aCssFiles` property, prefixed with the `getBaseUrl()` value.
+
+The `public function getCssCode(): string` method returns raw CSS code for the dialog library, without the `<style>` tag.
+Its default implementation returns an empty string.
+
+The `public function getJsUrls(): array` method returns an array of URLs to the library javascript files.
+Its default implementation returns the values in the `protected $aJsFiles` property, prefixed with the `getBaseUrl()` value.
+
+The `public function getJsCode(): string` method returns raw javascript code for the dialog library, without the `<script>` tag.
+Its default implementation returns the content of the dialog library file in the `js/` dir in the repository.
+
+The `public function getJsOptions(): array` method returns an array of custom javascript options for the dialog library.
+Its default implementation returns the values defined in the `Dialogs` plugin options, as decribed above.
+
+### The other interfaces
+
+Depending on the javascript library features, the class must implement one or more of the following three interfaces.
+These interfaces are empty, and thay just give an indication of which features are implemented by the library.
+
+For windows and modal dialogs.
+
+```php
+interface ModalInterface
+{
+}
+```
+
+For notifications alerts.
+
+```php
+interface AlertInterface
+{
+}
+```
+
+For confirmation questions.
+
+```php
+interface ConfirmInterface
+{
+}
+```
+
+### Helper
+
+The `Jaxon\App\Dialog\Library\AbstractDialogLibrary` base class provides default implementations for some methods of the
+`Jaxon\App\Dialog\Library\LibraryInterface` interface, as well as a `Jaxon\App\Dialog\Library\DialogLibraryHelper` object,
+returned by the `helper()` method, which gives access to the dialog config options, and templates.
+
+### Registration
+
+After it is defined, the library class needs to be configured and registered before it can be used in the application.
+
+The class can be registered when starting the library.
+
+```php
+use function Jaxon\Dialogs\dialog;
+
+dialog()->registerLibrary(\Path\To\My\Plugin::class, 'myplugin');
+```
+
+Or declared in the `dialog` section of the Jaxon configuration.
+
+```php
+    'dialogs' => [
+        'default' => [
+            'modal' => 'myplugin', // Default library for modal dialogs
+            'alert' => 'myplugin', // Default library for alerts
+            'confirm' => 'myplugin', // Default library for confirm questions
+        ],
+        'lib' => [
+            'ext' => [
+                'myplugin' => \Path\To\My\Plugin::class,
+            ],
+        ],
+        'myplugin' => [         // Plugin config options
+            'options' => [
+               'position' => 'center',
+            ],
+        ],
+    ],
+```
 
 Contribute
 ----------
