@@ -120,7 +120,7 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
      *
      * @return void
      */
-    private function setLibraryInContainer(string $sClass, string $sLibraryName): void
+    private function saveLibraryInContainer(string $sClass, string $sLibraryName): void
     {
         if(!$this->di->h($sClass))
         {
@@ -180,12 +180,12 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
         // Save the library
         $this->aLibraries[$sLibraryName] = [
             'name' => $sLibraryName,
-            'active' => false,
+            'enabled' => false,
             ...$this->getLibraryTypes($sClassName),
         ];
 
         // Register the library class in the container
-        $this->setLibraryInContainer($sClassName, $sLibraryName);
+        $this->saveLibraryInContainer($sClassName, $sLibraryName);
     }
 
     /**
@@ -219,7 +219,7 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
      * @return string
      */
 
-    public function renderLibraryScript(string $sLibraryName): string
+    public function renderJsCode(string $sLibraryName): string
     {
         return $this->xTemplateEngine->render("jaxon::dialogs::{$sLibraryName}.js");
     }
@@ -260,7 +260,7 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
         {
             if(isset($this->aLibraries[$sLibraryName])) // Make sure the library exists
             {
-                $this->aLibraries[$sLibraryName]['active'] = true;
+                $this->aLibraries[$sLibraryName]['enabled'] = true;
             }
         }
 
@@ -282,7 +282,7 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
                 throw new SetupException($sMessage);
             }
 
-            $this->aLibraries[$sLibraryName]['active'] = true;
+            $this->aLibraries[$sLibraryName]['enabled'] = true;
             $this->aDefaultLibraries[$sType] = $sLibraryName;
         }
 
@@ -331,8 +331,8 @@ class DialogPlugin extends AbstractPlugin implements ConfigListenerInterface,
 
         $this->processLibraryConfig();
 
-        // Set the active libraries.
-        $cFilter = fn(array $aLibrary) => $aLibrary['active'];
+        // Set the enabled libraries.
+        $cFilter = fn(array $aLibrary) => $aLibrary['enabled'];
         $cGetter = fn(array $aLibrary) => $this->getLibrary($aLibrary['name']);
         $aLibraries = array_filter($this->aLibraries, $cFilter);
         return $this->aActiveLibraries = array_map($cGetter, $aLibraries);

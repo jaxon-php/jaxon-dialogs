@@ -109,7 +109,7 @@ abstract class AbstractLibrary implements LibraryInterface
      */
     public function getJsCode(): string
     {
-        return dialog()->renderLibraryScript($this->getName());
+        return dialog()->renderJsCode($this->getName());
     }
 
     /**

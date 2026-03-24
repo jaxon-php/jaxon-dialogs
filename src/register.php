@@ -3,14 +3,17 @@
 namespace Jaxon\Dialogs;
 
 use Jaxon\App\Dialog\Manager\LibraryRegistryInterface;
+use Jaxon\Di\Container;
 use Jaxon\Dialogs\Dialog\Library\Alert;
 use Jaxon\Exception\SetupException;
+use Jaxon\Utils\Template\TemplateEngine;
 
+use function dirname;
 use function Jaxon\jaxon;
 use function php_sapi_name;
 
 /**
- * Get the dialog library manager
+ * Get the dialog plugin
  *
  * @return DialogPlugin
  */
@@ -28,9 +31,10 @@ function _register(): void
     $di = $jaxon->di();
 
     // Setup the Dialog plugin in the DI.
-    $di->set(DialogPlugin::class, function($di) {
+    $di->set(DialogPlugin::class, function(Container $di) {
         // Register the template dir into the template renderer
-        jaxon()->template()->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/js');
+        $xTemplateEngine = $di->g(TemplateEngine::class);
+        $xTemplateEngine->addNamespace('jaxon::dialogs', dirname(__DIR__) . '/js');
 
         $xDialogPlugin = $di->make(DialogPlugin::class);
         // Register the provided libraries.
