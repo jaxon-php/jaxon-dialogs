@@ -84,7 +84,7 @@ jaxon.dom.ready(() => jaxon.dialog.register('bulma', (self, options, utils) => {
         // Pass the js content element to the callback.
         cbDomElement(modal.instance);
         // Show the modal.
-        modal.instance.classList.add("is-active");;
+        modal.instance.classList.add("is-active");
     };
 
     /**
@@ -92,5 +92,5 @@ jaxon.dom.ready(() => jaxon.dialog.register('bulma', (self, options, utils) => {
      *
      * @returns {void}
      */
-    self.hide = () => modal.instance?.classList.remove("is-active");;
+    self.hide = () => modal.instance?.classList.remove("is-active");
 }));

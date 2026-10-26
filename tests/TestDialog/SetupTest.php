@@ -239,13 +239,6 @@ class SetupTest extends TestCase
         $this->assertStringContainsString("jaxon.dialog.register('bootbox'", jaxon()->script());
     }
 
-    public function testBootstrap3Library()
-    {
-        jaxon()->setAppOption('dialogs.lib.use', ['bootstrap3']);
-
-        $this->assertStringContainsString("jaxon.dialog.register('bootstrap3'", jaxon()->script());
-    }
-
     public function testBootstrap4Library()
     {
         jaxon()->setAppOption('dialogs.lib.use', ['bootstrap4']);
@@ -260,13 +253,11 @@ class SetupTest extends TestCase
         $this->assertStringContainsString("jaxon.dialog.register('bootstrap5'", jaxon()->script());
     }
 
-    public function testButterupLibrary()
+    public function testBulmaLibrary()
     {
-        jaxon()->setAppOption('dialogs.lib.use', ['butterup']);
+        jaxon()->setAppOption('dialogs.lib.use', ['bulma']);
 
-        $this->assertStringContainsString('butterup.min.js', jaxon()->js());
-        $this->assertStringContainsString('butterup.min.css', jaxon()->css());
-        $this->assertStringContainsString("jaxon.dialog.register('butterup'", jaxon()->script());
+        $this->assertStringContainsString("jaxon.dialog.register('bulma'", jaxon()->script());
     }
 
     public function testCuteAlertLibrary()
@@ -296,23 +287,6 @@ class SetupTest extends TestCase
         $this->assertStringContainsString("jaxon.dialog.register('jalert'", jaxon()->script());
     }
 
-    public function testJQueryConfirmLibrary()
-    {
-        jaxon()->setAppOption('dialogs.lib.use', ['jconfirm']);
-
-        $this->assertStringContainsString('jquery-confirm.min.js', jaxon()->js());
-        $this->assertStringContainsString('jquery-confirm.min.css', jaxon()->css());
-        $this->assertStringContainsString("jaxon.dialog.register('jconfirm'", jaxon()->script());
-    }
-
-    public function testNotifyLibrary()
-    {
-        jaxon()->setAppOption('dialogs.lib.use', ['notify']);
-
-        $this->assertStringContainsString('notify.min.js', jaxon()->js());
-        $this->assertStringContainsString("jaxon.dialog.register('notify'", jaxon()->script());
-    }
-
     public function testNotyLibrary()
     {
         jaxon()->setAppOption('dialogs.lib.use', ['noty']);
@@ -331,29 +305,12 @@ class SetupTest extends TestCase
         $this->assertStringContainsString("jaxon.dialog.register('notyf'", jaxon()->script());
     }
 
-    public function testQuantumLibrary()
-    {
-        jaxon()->setAppOption('dialogs.lib.use', ['quantum']);
-
-        $this->assertStringContainsString('minfile/quantumalert.js', jaxon()->js());
-        $this->assertStringContainsString("jaxon.dialog.register('quantum'", jaxon()->script());
-    }
-
     public function testSweetAlertLibrary()
     {
         jaxon()->setAppOption('dialogs.lib.use', ['sweetalert']);
 
         $this->assertStringContainsString('sweetalert2.all.min.js', jaxon()->js());
         $this->assertStringContainsString("jaxon.dialog.register('sweetalert'", jaxon()->script());
-    }
-
-    public function testTingleLibrary()
-    {
-        jaxon()->setAppOption('dialogs.lib.use', ['tingle']);
-
-        $this->assertStringContainsString('tingle.min.js', jaxon()->js());
-        $this->assertStringContainsString('tingle.min.css', jaxon()->css());
-        $this->assertStringContainsString("jaxon.dialog.register('tingle'", jaxon()->script());
     }
 
     public function testToastrLibrary()
