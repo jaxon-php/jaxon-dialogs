@@ -19,6 +19,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap5', (self, options, utils)
         container: document.getElementById('bootstrap5ModalContainer'),
         id: 'bootstrap5Modal',
     };
+    const btnClasses = {
+        primary: 'class="btn btn-primary"',
+        danger: 'class="btn btn-danger"',
+        default: 'class="btn btn-secondary"',
+    };
 
     const encodeHandler = (click) => JSON.stringify(click)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -26,10 +31,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootstrap5', (self, options, utils)
 
     const getHtml = (title, content, buttons) => {
         buttons = buttons
-            .map(({ title, class: cssClass, click }) => {
+            .map(({ title, class: btnClass, click }) => {
+                btnClass = btnClasses[btnClass] ?? btnClasses.default;
                 const attrs = click === 'close' ? 'data-bs-dismiss="modal"' :
                     `jxn-click="${encodeHandler(click)}"`;
-                return `<button type="button" class="${cssClass}" ${attrs}>${title}</button>`;
+                return `<button type="button" ${btnClass} ${attrs}>${title}</button>`;
             })
             .reduce((html, button) => html + button, '');
 

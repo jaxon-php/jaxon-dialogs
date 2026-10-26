@@ -20,6 +20,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
         name: 'jaxon_dialog',
         index: 1,
     };
+    const btnClasses = {
+        primary: alertify.defaults.theme.ok,
+        danger: alertify.defaults.theme.cancel,
+        default: alertify.defaults.theme.input,
+    };
 
     /**
      * Show the modal dialog
@@ -54,8 +59,8 @@ jaxon.dom.ready(() => jaxon.dialog.register('alertify', (self, options, utils) =
                             ...modalOptions,
                             title: dialog.title,
                         },
-                        buttons: dialog.buttons.map(({ title: text, class: btnClass }) =>
-                            ({ text, attrs: { class: btnClass } })),
+                        buttons: dialog.buttons.map(({ title: text, class: className }) =>
+                            ({ text, className: btnClasses[className] ?? btnClasses.default })),
                         // focus: {
                         //     element: 0,
                         // },

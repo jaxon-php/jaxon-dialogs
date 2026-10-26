@@ -18,6 +18,11 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
     const dialog = {
         dom: null,
     };
+    const btnClasses = {
+        primary: 'btn-primary',
+        danger: 'btn-danger',
+        default: 'btn-secondary',
+    };
 
     /**
      * Show the modal dialog
@@ -34,9 +39,10 @@ jaxon.dom.ready(() => jaxon.dialog.register('bootbox', (self, options, utils) =>
     self.show = ({ title, content, buttons, options }, cbDomElement) => {
         let btnIndex = 1;
         const oButtons = {};
-        buttons.forEach(({ title: label, class: className, click }) => {
+        buttons.forEach(({ title: label, class: btnClass, click }) => {
+            className = btnClasses[btnClass] ?? btnClasses.default;
             if (!utils.isObject(click)) {
-                oButtons.cancel = {label, className: 'btn-danger' };
+                oButtons.cancel = {label, className };
                 return;
             }
             oButtons[`btn${btnIndex++}`] = {
