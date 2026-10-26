@@ -41,20 +41,14 @@ function _register(): void
         $aLibraries = [
             Dialog\Library\Alertify::class, // Alertify
             Dialog\Library\Bootbox::class, // Bootbox
-            Dialog\Library\Bootstrap3::class, // Bootstrap 3
             Dialog\Library\Bootstrap4::class, // Bootstrap 4
             Dialog\Library\Bootstrap5::class, // Bootstrap 5
             Dialog\Library\Toastr::class, // Toastr
             Dialog\Library\JAlert::class, // JAlert
-            Dialog\Library\Tingle::class, // Tingle
             Dialog\Library\Noty::class, // Noty
-            Dialog\Library\Notify::class, // Notify
             Dialog\Library\SweetAlert::class, // SweetAlert
-            Dialog\Library\JQueryConfirm::class, // JQuery Confirm
             Dialog\Library\CuteAlert::class, // CuteAlert
             Dialog\Library\Notyf::class, // Notyf
-            Dialog\Library\Quantum::class, // QuantumAlert
-            Dialog\Library\Butterup::class, // Butterup
             Dialog\Library\IziToast::class, // IziToast
         ];
         foreach($aLibraries as $sClass)

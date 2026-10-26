@@ -253,21 +253,6 @@ https://getbootstrap.com/docs/4.0/components/modal/
 - Dialog id: bootstrap4
 - Implements: Modal
 
-#### Bootstrap 3
-
-https://nakupanda.github.io/bootstrap3-dialog/
-
-- Dialog id: bootstrap3
-- Implements: Modal, Alert, Confirm
-- Version: 1.35.4
-
-#### Butterup
-
-https://butteruptoast.com
-
-- Dialog id: butterup
-- Implements: Alert, Confirm
-
 #### CuteAlert
 
 https://github.com/gustavosmanc/cute-alert/
@@ -290,22 +275,6 @@ https://htmlguyllc.github.io/jAlert/
 - Implements: Alert, Confirm
 - Version: 4.9.1
 
-#### JQuery-Confirm
-
-https://craftpip.github.io/jquery-confirm/
-
-- Dialog id: jconfirm
-- Implements: Modal, Alert, Confirm
-- Version: 3.3.4
-
-#### Notify
-
-https://notifyjs.jpillora.com/
-
-- Dialog id: notify
-- Implements: Alert
-- Versions: 0.4.1
-
 #### Noty
 
 https://ned.im/noty/
@@ -321,13 +290,6 @@ https://carlosroso.com/notyf/
 - Dialog id: notyf
 - Implements: Alert, Confirm
 
-#### Quantum
-
-https://quantumalert.cosmogic.com/
-
-- Dialog id: quantum
-- Implements: Alert, Confirm
-
 #### Sweet Alert
 
 Sweet Alert: https://sweetalert.js.org/
@@ -335,14 +297,6 @@ Sweet Alert: https://sweetalert.js.org/
 - Dialog id: sweetalert
 - Implements: Alert, Confirm
 - Version: 2.1.2
-
-#### Tingle
-
-https://tingle.robinparisi.com/
-
-- Dialog id: tingle
-- Implements: Modal
-- Version: 0.16.0
 
 #### Toastr
 
