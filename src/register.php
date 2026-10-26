@@ -43,6 +43,7 @@ function _register(): void
             Dialog\Library\Bootbox::class, // Bootbox
             Dialog\Library\Bootstrap4::class, // Bootstrap 4
             Dialog\Library\Bootstrap5::class, // Bootstrap 5
+            Dialog\Library\Bulma::class, // Bulma
             Dialog\Library\Toastr::class, // Toastr
             Dialog\Library\JAlert::class, // JAlert
             Dialog\Library\Noty::class, // Noty

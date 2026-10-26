@@ -253,6 +253,13 @@ https://getbootstrap.com/docs/4.0/components/modal/
 - Dialog id: bootstrap4
 - Implements: Modal
 
+#### Bulma
+
+https://bulma.io/
+
+- Dialog id: bulma
+- Implements: Modal
+
 #### CuteAlert
 
 https://github.com/gustavosmanc/cute-alert/
